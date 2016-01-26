@@ -6,19 +6,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Database
+namespace LiteRepository.Models
 {
-    public interface IDb
+    public class Entity
     {
-        IDbConnection OpenConnection();
-        void CloseConnection(IDbConnection dbConnection);
+        public long Id { get; set; }
+        public string Text { get; set; }
+    }
 
-        ISqlGenerator GetSqlGenerator<E>() where E : class;
-        ISqlExecutor GetSqlExecutor();
+    public class IdKey
+    {
+        public long Id { get; set; }
     }
 }

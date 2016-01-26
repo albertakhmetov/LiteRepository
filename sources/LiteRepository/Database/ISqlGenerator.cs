@@ -14,5 +14,12 @@ namespace LiteRepository.Database
 {
     public interface ISqlGenerator
     {
+        string SelectSql { get; }
+        string SelectAllSql { get; }
+        string CountSql { get; }
+        string InsertSql { get; }
+        string UpdateSql { get; }
+        string DeleteSql { get; }
+        string DeleteAllSql { get; }
     }
 }
