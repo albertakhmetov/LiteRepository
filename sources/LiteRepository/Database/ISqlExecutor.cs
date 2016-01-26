@@ -21,6 +21,7 @@ namespace LiteRepository.Database
 
         Task<IEnumerable<T>> QueryAsync<T>(IDbConnection connection, string sql, CancellationToken? cancellationToken = default(CancellationToken?));
         Task<IEnumerable<T>> QueryAsync<Q, T>(IDbConnection connection, string sql, Q parameters, CancellationToken? cancellationToken = default(CancellationToken?));
+
         Task<int> ExecuteAsync(IDbConnection connection, string sql, CancellationToken? cancellationToken = default(CancellationToken?));
         Task<int> ExecuteAsync<Q>(IDbConnection connection, string sql, Q parameters, CancellationToken? cancellationToken = default(CancellationToken?));
     }

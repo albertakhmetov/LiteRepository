@@ -21,5 +21,7 @@ namespace LiteRepository.Database
         string UpdateSql { get; }
         string DeleteSql { get; }
         string DeleteAllSql { get; }
+
+        bool IsIdentity { get; }
     }
 }
