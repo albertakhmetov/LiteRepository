@@ -12,7 +12,21 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Database
 {
-    public class StoreAsAttribute
+    [AttributeUsage(validOn: AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
+    public sealed class StoreAsAttribute : Attribute
     {
+        public string DbName
+        {
+            get;
+            private set;
+        }
+
+        public StoreAsAttribute(string dbName)
+        {
+            if (string.IsNullOrWhiteSpace(dbName))
+                throw new ArgumentException(nameof(dbName));
+
+            DbName = dbName;
+        }
     }
 }

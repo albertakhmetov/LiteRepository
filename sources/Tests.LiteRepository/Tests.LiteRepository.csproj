@@ -69,13 +69,20 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Database\PrimaryKeyAttributeTests.cs" />
+    <Compile Include="Database\StoreAsAttributeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Database\" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\LiteRepository\LiteRepository.csproj">
+      <Project>{8306ef9f-1b34-4e80-abc7-bd9ebc4bdd0b}</Project>
+      <Name>LiteRepository</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
