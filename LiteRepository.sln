@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteRepository", "sources\L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.LiteRepository", "sources\Tests.LiteRepository\Tests.LiteRepository.csproj", "{31D3FD6D-8EA9-4221-BD44-9397B35FD4C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteRepository.Database.SqlServer", "sources\LiteRepository.Database.SqlServer\LiteRepository.Database.SqlServer.csproj", "{B7181317-9A3B-4932-A202-62211414E3F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{31D3FD6D-8EA9-4221-BD44-9397B35FD4C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D3FD6D-8EA9-4221-BD44-9397B35FD4C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31D3FD6D-8EA9-4221-BD44-9397B35FD4C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7181317-9A3B-4932-A202-62211414E3F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7181317-9A3B-4932-A202-62211414E3F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7181317-9A3B-4932-A202-62211414E3F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7181317-9A3B-4932-A202-62211414E3F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

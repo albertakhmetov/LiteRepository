@@ -134,19 +134,19 @@ namespace LiteRepository
             CheckDisposed();
 
             var sql = Db.GetSqlGenerator<E>().InsertSql;
-            var execResult = await Db.GetSqlExecutor().ExecuteAsync<E>(connection, sql, entity, cancellationToken);
-
             var result = default(E);
 
-            if (execResult == 0)
-                result = default(E);
-            else if (_entityFactory != null)
+            if (_entityFactory == null)
             {
-                var insertedRowId = await Db.GetSqlExecutor().GetLastInsertedRowIdAsync(connection);
-                result = _entityFactory(entity, insertedRowId);
+                var execResult = await Db.GetSqlExecutor().ExecuteAsync<E>(connection, sql, entity, cancellationToken);
+                if (execResult == 1)
+                    result = entity;
             }
             else
-                result = entity;
+            {
+                var insertedRowId = await Db.GetSqlExecutor().QueryScalarAsync<E, long>(connection, sql, entity, cancellationToken);
+                result = _entityFactory(entity, insertedRowId);
+            }
 
             if (result != default(E))
                 _insertedSubject.OnNext(result);
@@ -246,7 +246,7 @@ namespace LiteRepository
             CheckDisposed();
 
             var sql = Db.GetSqlGenerator<E>().SelectSql;
-            var execResult = await Db.GetSqlExecutor().QueryAsync<E, K>(connection, sql, key, cancellationToken);
+            var execResult = await Db.GetSqlExecutor().QueryAsync<K, E>(connection, sql, key, cancellationToken);
 
             return execResult.FirstOrDefault();
         }

@@ -236,7 +236,6 @@ namespace LiteRepository
             var observers = SubscribeToRepository(r);
 
             SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 1);
-            r.Db.GetSqlExecutor().GetLastInsertedRowIdAsync(Arg.Any<IDbConnection>()).Returns(newId);
 
             var execResult = await r.InsertAsync(entity);
 
@@ -332,7 +331,6 @@ namespace LiteRepository
 
             r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == updateSql), entity).Returns(0);
             r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == insertSql), entity).Returns(1);
-            r.Db.GetSqlExecutor().GetLastInsertedRowIdAsync(Arg.Any<IDbConnection>()).Returns(newId);
 
             r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(updateSql);
             r.Db.GetSqlGenerator<Entity>().InsertSql.Returns(insertSql);
@@ -451,14 +449,13 @@ namespace LiteRepository
             var dbConnection = Substitute.For<IDbConnection>();
 
             var r = GetRepository(dbConnection: dbConnection);
-            SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 1);
+            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity).Returns(1);
             r.Db.GetSqlGenerator<Entity>().InsertSql.Returns(sql);
 
             var insertedEntity = await r.InsertAsync(entity);
             Assert.Equal(entity, insertedEntity);
 
             await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, sql, entity);
-            await r.Db.GetSqlExecutor().Received(0).GetLastInsertedRowIdAsync(Arg.Any<IDbConnection>());
         }
 
         [Fact]
@@ -468,8 +465,7 @@ namespace LiteRepository
             var entity = new Entity() { Text = "Hi!", Id = 42 };
 
             var r = GetRepository(entityFactory: (x, y) => new Entity { Text = x.Text, Id = y });
-            SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 1);
-            r.Db.GetSqlExecutor().GetLastInsertedRowIdAsync(Arg.Any<IDbConnection>()).Returns(newId);
+            r.Db.GetSqlExecutor().QueryScalarAsync<Entity, long>(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity).Returns(newId);
 
             var insertedEntity = await r.InsertAsync(entity);
             Assert.NotEqual(entity, insertedEntity);
@@ -576,9 +572,8 @@ namespace LiteRepository
             var dbConnection = Substitute.For<IDbConnection>();
 
             var r = GetRepository(dbConnection: dbConnection, entityFactory: (x, y) => new Entity { Text = x.Text, Id = y });
-            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == updateSql), entity).Returns(0);
-            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == insertSql), entity).Returns(1);
-            r.Db.GetSqlExecutor().GetLastInsertedRowIdAsync(Arg.Any<IDbConnection>()).Returns(newId);
+            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity).Returns(0);
+            r.Db.GetSqlExecutor().QueryScalarAsync<Entity, long>(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity).Returns(newId);
 
             r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(updateSql);
             r.Db.GetSqlGenerator<Entity>().InsertSql.Returns(insertSql);
@@ -590,8 +585,7 @@ namespace LiteRepository
             Assert.Equal(newId, execResult.Id);
 
             await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, updateSql, entity);
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, insertSql, entity);
-            await r.Db.GetSqlExecutor().Received(2).ExecuteAsync<Entity>(dbConnection, Arg.Any<string>(), entity);
+            await r.Db.GetSqlExecutor().Received(1).QueryScalarAsync<Entity, long>(dbConnection, insertSql, entity);
         }
 
         [Fact]
@@ -712,13 +706,13 @@ namespace LiteRepository
             var dbConnection = Substitute.For<IDbConnection>();
 
             var r = GetRepository(dbConnection: dbConnection);
-            r.Db.GetSqlExecutor().QueryAsync<Entity, IdKey>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<IdKey>()).Returns(new Entity[] { result });
+            r.Db.GetSqlExecutor().QueryAsync<IdKey, Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<IdKey>()).Returns(new Entity[] { result });
             r.Db.GetSqlGenerator<Entity>().SelectSql.Returns(sql);
 
             var execResult = await r.GetAsync(key);
             Assert.Equal(result, execResult);
 
-            await r.Db.GetSqlExecutor().Received(1).QueryAsync<Entity, IdKey>(dbConnection, sql, key);
+            await r.Db.GetSqlExecutor().Received(1).QueryAsync<IdKey, Entity>(dbConnection, sql, key);
         }
 
         [Fact]
@@ -727,7 +721,7 @@ namespace LiteRepository
             var key = new IdKey();
 
             var r = GetRepository();
-            r.Db.GetSqlExecutor().QueryAsync<Entity, IdKey>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<IdKey>()).Returns(new Entity[0]);
+            r.Db.GetSqlExecutor().QueryAsync<IdKey, Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<IdKey>()).Returns(new Entity[0]);
 
             var execResult = await r.GetAsync(key);
             Assert.Null(execResult);
