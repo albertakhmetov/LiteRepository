@@ -20,7 +20,7 @@ namespace LiteRepository
     /// </summary>
     /// <typeparam name="E"></typeparam>
     /// <typeparam name="K"></typeparam>
-    public interface IDataRepository<E, K>
+    public interface IDataRepository<E, K> : IDisposable
         where E : class
         where K : class
     {
@@ -54,8 +54,8 @@ namespace LiteRepository
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>Count of updated entity</returns>
-        Task<int> UpdateAsync(E entity, CancellationToken? cancellationToken = null);
+        /// <returns>Updated entity</returns>
+        Task<E> UpdateAsync(E entity, CancellationToken? cancellationToken = null);
 
         /// <summary>
         /// Updates or inserts entity
@@ -71,8 +71,8 @@ namespace LiteRepository
         /// </summary>
         /// <param name="key">Entities key</param>
         /// <param name="cancellationToken"></param>
-        /// <returns>Count of deleted entities</returns>
-        Task<int> DeleteAsync(K key, CancellationToken? cancellationToken = null);
+        /// <returns>Key of deleted entity</returns>
+        Task<K> DeleteAsync(K key, CancellationToken? cancellationToken = null);
 
         /// <summary>
         /// Deletes all entities

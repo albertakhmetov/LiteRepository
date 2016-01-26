@@ -34,7 +34,7 @@ namespace LiteRepository
         {
             Assert.Throws<ArgumentNullException>(() => new DataRepository<Entity, IdKey>(null));
         }
-
+       
         private DataRepository<Entity, IdKey> GetRepository(
             ISqlGenerator sqlGenerator = null,
             ISqlExecutor sqlExecutor = null,
@@ -100,6 +100,335 @@ namespace LiteRepository
                 .When(x => x.ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<Entity>()))
                 .Do(x => { throw new DataException(); });
             await Assert.ThrowsAsync<DataRepositoryException>(() => r.InsertAsync(new Entity()));
+        }
+
+        #endregion
+
+        #region Dispose
+
+        [Fact]
+        public async void Insert_Disposed_Test()
+        {
+            var r = GetRepository();
+            r.Dispose();
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await r.InsertAsync(new Entity()));        
+        }
+
+        [Fact]
+        public async void Update_Disposed_Test()
+        {
+            var r = GetRepository();
+            r.Dispose();
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await r.UpdateAsync(new Entity()));
+        }
+
+        [Fact]
+        public async void UpdateOrInsert_Disposed_Test()
+        {
+            var r = GetRepository();
+            r.Dispose();
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await r.UpdateOrInsertAsync(new Entity()));
+        }
+
+        [Fact]
+        public async void Delete_Disposed_Test()
+        {
+            var r = GetRepository();
+            r.Dispose();
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await r.DeleteAsync(new IdKey()));
+        }
+
+        [Fact]
+        public async void DeleteAll_Disposed_Test()
+        {
+            var r = GetRepository();
+            r.Dispose();
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await r.DeleteAllAsync());
+        }
+
+        [Fact]
+        public async void Get_Disposed_Test()
+        {
+            var r = GetRepository();
+            r.Dispose();
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await r.GetAsync(new IdKey()));
+        }
+
+        [Fact]
+        public async void GetAll_Disposed_Test()
+        {
+            var r = GetRepository();
+            r.Dispose();
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await r.GetAllAsync());
+        }
+
+        [Fact]
+        public async void GetCount_Disposed_Test()
+        {
+            var r = GetRepository();
+            r.Dispose();
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await r.GetCountAsync());
+        }
+
+        #endregion
+
+        #region Notifications
+
+        private class Observers
+        {
+            public IObserver<Entity> Insert { get; set; }
+            public IObserver<Entity> Update { get; set; }
+            public IObserver<IdKey> Delete { get; set; }
+        }
+
+        private Observers SubscribeToRepository(IDataRepository<Entity, IdKey> repository)
+        {
+            var insertObserver = Substitute.For<IObserver<Entity>>();
+            var updateObserver = Substitute.For<IObserver<Entity>>();
+            var deleteObserver = Substitute.For<IObserver<IdKey>>();
+
+            repository.InsertedObservable.Subscribe(insertObserver);
+            repository.UpdatedObservable.Subscribe(updateObserver);
+            repository.DeletedObservable.Subscribe(deleteObserver);
+
+            return new Observers { Insert = insertObserver, Update = updateObserver, Delete = deleteObserver };
+        }
+
+        [Fact]
+        public void CompleteNotification_Dispose_Test()
+        {
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            r.Dispose();
+
+            observers.Insert.Received(1).OnCompleted();
+            observers.Update.Received(1).OnCompleted();            
+            observers.Delete.Received(1).OnCompleted();
+        }
+
+        [Fact]
+        public async void Insert_Notification_Test()
+        {
+            var entity = new Entity();
+
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 1);
+
+            var execResult = await r.InsertAsync(entity);
+
+            observers.Insert.Received(1).OnNext(entity);
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
+        }
+
+        [Fact]
+        public async void Insert_Factory_Notification_Test()
+        {
+            // case when entity doesn't exist (try update and then insert)
+
+            var newId = 13;
+            var entity = new Entity() { Text = "Hi!", Id = 42 };
+
+            var r = GetRepository(entityFactory: (x, y) => new Entity { Text = x.Text, Id = y });
+            var observers = SubscribeToRepository(r);
+
+            SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 1);
+            r.Db.GetSqlExecutor().GetLastInsertedRowIdAsync(Arg.Any<IDbConnection>()).Returns(newId);
+
+            var execResult = await r.InsertAsync(entity);
+
+            observers.Insert.Received(1).OnNext(execResult);
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
+        }
+
+        [Fact]
+        public async void Insert_NoData_NoNotification_Test()
+        {
+            var entity = new Entity();
+
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 0);
+
+            var execResult = await r.InsertAsync(entity);
+
+            observers.Insert.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
+        }
+
+        [Fact]
+        public async void Update_Notification_Test()
+        {
+            var entity = new Entity();
+
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 1);
+
+            var execResult = await r.UpdateAsync(entity);
+
+            observers.Insert.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Update.Received(1).OnNext(entity);
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
+        }
+
+        [Fact]
+        public async void Update_NoData_NoNotification_Test()
+        {
+            var entity = new Entity();
+
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 0);
+
+            var execResult = await r.UpdateAsync(entity);
+
+            observers.Insert.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
+        }
+
+        [Fact]
+        public async void UpdateOrInsert_Exists_Notification_Test()
+        {
+            // case when entity already exist (only update)
+
+            var updateSql = "update sql";
+            var entity = new Entity();
+
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+            SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 1);
+
+            r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(updateSql);
+
+            var execResult = await r.UpdateOrInsertAsync(entity);
+
+            observers.Insert.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Update.Received(1).OnNext(execResult);
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
+        }
+
+        [Fact]
+        public async void UpdateOrInsert_NotExists_Notification_Test()
+        {
+            // case when entity doesn't exist (try update and then insert)
+
+            var updateSql = "update sql";
+            var insertSql = "insert sql";
+            var newId = 13;
+            var entity = new Entity() { Text = "Hi!", Id = 42 };
+
+            var r = GetRepository(entityFactory: (x, y) => new Entity { Text = x.Text, Id = y });
+            var observers = SubscribeToRepository(r);
+
+            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == updateSql), entity).Returns(0);
+            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == insertSql), entity).Returns(1);
+            r.Db.GetSqlExecutor().GetLastInsertedRowIdAsync(Arg.Any<IDbConnection>()).Returns(newId);
+
+            r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(updateSql);
+            r.Db.GetSqlGenerator<Entity>().InsertSql.Returns(insertSql);
+
+            var execResult = await r.UpdateOrInsertAsync(entity);
+
+            observers.Insert.Received(1).OnNext(execResult);
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
+        }
+
+        [Fact]
+        public async void UpdateOrInsert_NoData_NoNotification_Test()
+        {
+            // entity doesn't exist and can't be added
+
+            var updateSql = "update sql";
+            var insertSql = "insert sql";
+            var entity = new Entity() { Text = "Hi!", Id = 42 };
+
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 0);
+
+            r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(updateSql);
+            r.Db.GetSqlGenerator<Entity>().InsertSql.Returns(insertSql);
+
+            var execResult = await r.UpdateOrInsertAsync(entity);
+            observers.Insert.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
+        }
+
+        [Fact]
+        public async void Delete_Notification_Test()
+        {
+            var key = new IdKey();
+
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            SetExecuteAsyncResult<IdKey>(r.Db.GetSqlExecutor(), 1);
+
+            var execResult = await r.DeleteAsync(key);
+
+            observers.Insert.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(1).OnNext(key);
+        }
+
+        [Fact]
+        public async void Delete_NoData_NoNotification_Test()
+        {
+            var key = new IdKey();
+
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            SetExecuteAsyncResult<IdKey>(r.Db.GetSqlExecutor(), 0);
+
+            var execResult = await r.DeleteAsync(key);
+
+            observers.Insert.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
+        }
+
+        [Fact]
+        public async void DeleteAll_Notification_Test()
+        {
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(10);
+
+            var execResult = await r.DeleteAllAsync();
+
+            observers.Insert.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(1).OnNext(null);
+        }
+
+        [Fact]
+        public async void DeleteAll_NoData_NoNotification_Test()
+        {
+            var r = GetRepository();
+            var observers = SubscribeToRepository(r);
+
+            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(0);
+
+            var execResult = await r.DeleteAllAsync();
+
+            observers.Insert.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Update.Received(0).OnNext(Arg.Any<Entity>());
+            observers.Delete.Received(0).OnNext(Arg.Any<IdKey>());
         }
 
         #endregion
@@ -185,7 +514,7 @@ namespace LiteRepository
             r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(sql);
 
             var execResult = await r.UpdateAsync(entity);
-            Assert.Equal(1, execResult);
+            Assert.Equal(entity, execResult);
 
             await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, sql, entity);
         }
@@ -198,7 +527,7 @@ namespace LiteRepository
             var entity = new Entity();
 
             var execResult = await r.UpdateAsync(entity);
-            Assert.Equal(0, execResult);
+            Assert.Null(execResult);
         }
 
         #endregion
@@ -314,7 +643,7 @@ namespace LiteRepository
             r.Db.GetSqlGenerator<Entity>().DeleteSql.Returns(sql);
 
             var execResult = await r.DeleteAsync(key);
-            Assert.Equal(1, execResult);
+            Assert.Equal(key, execResult);
 
             await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<IdKey>(dbConnection, sql, key);
         }
@@ -327,7 +656,7 @@ namespace LiteRepository
             var key = new IdKey();
 
             var execResult = await r.DeleteAsync(key);
-            Assert.Equal(0, execResult);
+            Assert.Null(execResult);
         }
 
         #endregion
