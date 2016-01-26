@@ -56,7 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\EntityMetadata.cs" />
+    <Compile Include="Database\EntityMetadataItem.cs" />
     <Compile Include="Database\IDb.cs" />
+    <Compile Include="Database\IgnoreAttribute.cs" />
     <Compile Include="Database\ISqlExecutor.cs" />
     <Compile Include="Database\ISqlGenerator.cs" />
     <Compile Include="Database\PrimaryKeyAttribute.cs" />

@@ -86,6 +86,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Database\EntityMetadataItemTests.cs" />
+    <Compile Include="Database\EntityMetadataTests.cs" />
     <Compile Include="Database\PrimaryKeyAttributeTests.cs" />
     <Compile Include="Database\StoreAsAttributeTests.cs" />
     <Compile Include="DataRepositoryTests.cs" />
