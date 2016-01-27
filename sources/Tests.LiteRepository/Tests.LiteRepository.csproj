@@ -91,6 +91,7 @@
     <Compile Include="Database\PrimaryKeyAttributeTests.cs" />
     <Compile Include="Database\StoreAsAttributeTests.cs" />
     <Compile Include="DataRepositoryTests.cs" />
+    <Compile Include="Database\DefaultDbTests.cs" />
     <Compile Include="Models\Entities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

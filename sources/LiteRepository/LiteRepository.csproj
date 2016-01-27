@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\DefaultDb.cs" />
     <Compile Include="Database\DefaultSqlExecutor.cs" />
     <Compile Include="Database\EntityMetadata.cs" />
     <Compile Include="Database\EntityMetadataItem.cs" />
