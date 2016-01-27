@@ -37,34 +37,34 @@ namespace LiteRepository.Database
             _taskFactory = new TaskFactory(taskScheduler);
         }
 
-        public Task<T> QueryScalarAsync<T>(IDbConnection connection, string sql, CancellationToken? cancellationToken = default(CancellationToken?))
+        public Task<T> QueryScalarAsync<T>(IDbConnection connection, string sql, CommandType commandType, CancellationToken? cancellationToken = default(CancellationToken?))
         {
-            return _taskFactory.StartNew<T>(() => connection.ExecuteScalar<T>(sql), cancellationToken ?? CancellationToken.None);
+            return _taskFactory.StartNew<T>(() => connection.ExecuteScalar<T>(sql: sql, commandType: commandType), cancellationToken ?? CancellationToken.None);
         }
 
-        public Task<T> QueryScalarAsync<Q, T>(IDbConnection connection, string sql, Q parameters, CancellationToken? cancellationToken = default(CancellationToken?))
+        public Task<T> QueryScalarAsync<Q, T>(IDbConnection connection, string sql, Q parameters, CommandType commandType, CancellationToken? cancellationToken = default(CancellationToken?))
         {
-            return _taskFactory.StartNew<T>(() => connection.ExecuteScalar<T>(sql, parameters), cancellationToken ?? CancellationToken.None);
+            return _taskFactory.StartNew<T>(() => connection.ExecuteScalar<T>(sql: sql, param: parameters, commandType: commandType), cancellationToken ?? CancellationToken.None);
         }
 
-        public Task<IEnumerable<T>> QueryAsync<T>(IDbConnection connection, string sql, CancellationToken? cancellationToken = default(CancellationToken?))
+        public Task<IEnumerable<T>> QueryAsync<T>(IDbConnection connection, string sql, CommandType commandType, CancellationToken? cancellationToken = default(CancellationToken?))
         {
-            return _taskFactory.StartNew<IEnumerable<T>>(() => connection.Query<T>(sql), cancellationToken ?? CancellationToken.None);
+            return _taskFactory.StartNew<IEnumerable<T>>(() => connection.Query<T>(sql: sql, commandType: commandType), cancellationToken ?? CancellationToken.None);
         }
 
-        public Task<IEnumerable<T>> QueryAsync<Q, T>(IDbConnection connection, string sql, Q parameters, CancellationToken? cancellationToken = default(CancellationToken?))
+        public Task<IEnumerable<T>> QueryAsync<Q, T>(IDbConnection connection, string sql, Q parameters, CommandType commandType, CancellationToken? cancellationToken = default(CancellationToken?))
         {
-            return _taskFactory.StartNew<IEnumerable<T>>(() => connection.Query<T>(sql, parameters), cancellationToken ?? CancellationToken.None);
+            return _taskFactory.StartNew<IEnumerable<T>>(() => connection.Query<T>(sql: sql, param: parameters, commandType: commandType), cancellationToken ?? CancellationToken.None);
         }
 
-        public Task<int> ExecuteAsync(IDbConnection connection, string sql, CancellationToken? cancellationToken = default(CancellationToken?))
+        public Task<int> ExecuteAsync(IDbConnection connection, string sql, CommandType commandType, CancellationToken? cancellationToken = default(CancellationToken?))
         {
-            return _taskFactory.StartNew<int>(() => connection.Execute(sql), cancellationToken ?? CancellationToken.None);
+            return _taskFactory.StartNew<int>(() => connection.Execute(sql: sql, commandType: commandType), cancellationToken ?? CancellationToken.None);
         }
 
-        public Task<int> ExecuteAsync<Q>(IDbConnection connection, string sql, Q parameters, CancellationToken? cancellationToken = default(CancellationToken?))
+        public Task<int> ExecuteAsync<Q>(IDbConnection connection, string sql, Q parameters, CommandType commandType, CancellationToken? cancellationToken = default(CancellationToken?))
         {
-            return _taskFactory.StartNew<int>(() => connection.Execute(sql, parameters), cancellationToken ?? CancellationToken.None);
+            return _taskFactory.StartNew<int>(() => connection.Execute(sql: sql, param: parameters, commandType: commandType), cancellationToken ?? CancellationToken.None);
         }
     }
 }

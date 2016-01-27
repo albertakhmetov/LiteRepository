@@ -62,7 +62,7 @@ namespace LiteRepository
 
         private void SetExecuteAsyncResult<T>(ISqlExecutor sqlExecutor, int execResult)
         {
-            sqlExecutor.ExecuteAsync<T>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<T>()).Returns(execResult);
+            sqlExecutor.ExecuteAsync<T>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<T>(), Arg.Any<CommandType>()).Returns(execResult);
         }
 
         #region Connection and error management (in the case of insert operation)
@@ -108,7 +108,7 @@ namespace LiteRepository
         {
             var r = GetRepository();
             r.Db.GetSqlExecutor()
-                .When(x => x.ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<Entity>()))
+                .When(x => x.ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<Entity>(), Arg.Any<CommandType>()))
                 .Do(x => { throw new DataException(); });
             await Assert.ThrowsAsync<DataRepositoryException>(() => r.InsertAsync(new Entity()));
         }
@@ -338,8 +338,8 @@ namespace LiteRepository
             var r = GetRepository(entityFactory: (x, y) => new Entity { Text = x.Text, Id = y });
             var observers = SubscribeToRepository(r);
 
-            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == updateSql), entity).Returns(0);
-            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == insertSql), entity).Returns(1);
+            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == updateSql), entity, Arg.Any<CommandType>()).Returns(0);
+            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Is<string>(x => x == insertSql), entity, Arg.Any<CommandType>()).Returns(1);
 
             r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(updateSql);
             r.Db.GetSqlGenerator<Entity>().InsertSql.Returns(insertSql);
@@ -414,7 +414,7 @@ namespace LiteRepository
             var r = GetRepository();
             var observers = SubscribeToRepository(r);
 
-            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(10);
+            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<CommandType>()).Returns(10);
 
             var execResult = await r.DeleteAllAsync();
 
@@ -429,7 +429,7 @@ namespace LiteRepository
             var r = GetRepository();
             var observers = SubscribeToRepository(r);
 
-            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(0);
+            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<CommandType>()).Returns(0);
 
             var execResult = await r.DeleteAllAsync();
 
@@ -453,18 +453,20 @@ namespace LiteRepository
         public async void Insert_Test()
         {
             var sql = "insert sql";
+            var commandType = CommandType.Text;
             var entity = new Entity();
 
             var dbConnection = Substitute.For<IDbConnection>();
 
             var r = GetRepository(dbConnection: dbConnection);
-            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity).Returns(1);
+            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity, Arg.Any<CommandType>()).Returns(1);
             r.Db.GetSqlGenerator<Entity>().InsertSql.Returns(sql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var insertedEntity = await r.InsertAsync(entity);
             Assert.Equal(entity, insertedEntity);
 
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, sql, entity);
+            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, sql, entity, commandType);
         }
 
         [Fact]
@@ -474,7 +476,7 @@ namespace LiteRepository
             var entity = new Entity() { Text = "Hi!", Id = 42 };
 
             var r = GetRepository(entityFactory: (x, y) => new Entity { Text = x.Text, Id = y });
-            r.Db.GetSqlExecutor().QueryScalarAsync<Entity, long>(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity).Returns(newId);
+            r.Db.GetSqlExecutor().QueryScalarAsync<Entity, long>(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity, Arg.Any<CommandType>()).Returns(newId);
 
             var insertedEntity = await r.InsertAsync(entity);
             Assert.NotEqual(entity, insertedEntity);
@@ -510,6 +512,7 @@ namespace LiteRepository
         public async void Update_Test()
         {
             var sql = "update sql";
+            var commandType = CommandType.Text;
             var entity = new Entity();
 
             var dbConnection = Substitute.For<IDbConnection>();
@@ -517,11 +520,12 @@ namespace LiteRepository
             var r = GetRepository(dbConnection: dbConnection);
             SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 1);
             r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(sql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var execResult = await r.UpdateAsync(entity);
             Assert.Equal(entity, execResult);
 
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, sql, entity);
+            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, sql, entity, commandType);
         }
 
         [Fact]
@@ -552,6 +556,7 @@ namespace LiteRepository
             // case when entity already exist (only update)
 
             var updateSql = "update sql";
+            var commandType = CommandType.Text;
             var entity = new Entity();
 
             var dbConnection = Substitute.For<IDbConnection>();
@@ -560,12 +565,13 @@ namespace LiteRepository
             SetExecuteAsyncResult<Entity>(r.Db.GetSqlExecutor(), 1);
 
             r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(updateSql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var execResult = await r.UpdateOrInsertAsync(entity);
             Assert.Equal(entity, execResult);
 
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, updateSql, entity);
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, Arg.Any<string>(), entity);
+            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, updateSql, entity, commandType);
+            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, Arg.Any<string>(), entity, commandType);
         }
 
         [Fact]
@@ -575,17 +581,19 @@ namespace LiteRepository
 
             var updateSql = "update sql";
             var insertSql = "insert sql";
+            var commandType = CommandType.Text;
             var newId = 13;
             var entity = new Entity() { Text = "Hi!", Id = 42 };
 
             var dbConnection = Substitute.For<IDbConnection>();
 
             var r = GetRepository(dbConnection: dbConnection, entityFactory: (x, y) => new Entity { Text = x.Text, Id = y });
-            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity).Returns(0);
-            r.Db.GetSqlExecutor().QueryScalarAsync<Entity, long>(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity).Returns(newId);
-
+            r.Db.GetSqlExecutor().ExecuteAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity, Arg.Any<CommandType>()).Returns(0);
+            r.Db.GetSqlExecutor().QueryScalarAsync<Entity, long>(Arg.Any<IDbConnection>(), Arg.Any<string>(), entity, Arg.Any<CommandType>()).Returns(newId);
+            
             r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(updateSql);
             r.Db.GetSqlGenerator<Entity>().InsertSql.Returns(insertSql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var execResult = await r.UpdateOrInsertAsync(entity);
             Assert.NotEqual(entity, execResult);
@@ -593,8 +601,8 @@ namespace LiteRepository
             Assert.Equal(entity.Text, execResult.Text);
             Assert.Equal(newId, execResult.Id);
 
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, updateSql, entity);
-            await r.Db.GetSqlExecutor().Received(1).QueryScalarAsync<Entity, long>(dbConnection, insertSql, entity);
+            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, updateSql, entity, commandType);
+            await r.Db.GetSqlExecutor().Received(1).QueryScalarAsync<Entity, long>(dbConnection, insertSql, entity, commandType);
         }
 
         [Fact]
@@ -604,6 +612,7 @@ namespace LiteRepository
 
             var updateSql = "update sql";
             var insertSql = "insert sql";
+            var commandType = CommandType.Text;
             var entity = new Entity() { Text = "Hi!", Id = 42 };
 
             var dbConnection = Substitute.For<IDbConnection>();
@@ -613,13 +622,14 @@ namespace LiteRepository
 
             r.Db.GetSqlGenerator<Entity>().UpdateSql.Returns(updateSql);
             r.Db.GetSqlGenerator<Entity>().InsertSql.Returns(insertSql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var execResult = await r.UpdateOrInsertAsync(entity);
             Assert.Null(execResult);
 
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, updateSql, entity);
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, insertSql, entity);
-            await r.Db.GetSqlExecutor().Received(2).ExecuteAsync<Entity>(dbConnection, Arg.Any<string>(), entity);
+            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, updateSql, entity, commandType);
+            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<Entity>(dbConnection, insertSql, entity, commandType);
+            await r.Db.GetSqlExecutor().Received(2).ExecuteAsync<Entity>(dbConnection, Arg.Any<string>(), entity, commandType);
         }
 
         #endregion
@@ -637,6 +647,7 @@ namespace LiteRepository
         public async void Delete_Test()
         {
             var sql = "delete sql";
+            var commandType = CommandType.Text;
             var key = new IdKey();
 
             var dbConnection = Substitute.For<IDbConnection>();
@@ -644,11 +655,12 @@ namespace LiteRepository
             var r = GetRepository(dbConnection: dbConnection);
             SetExecuteAsyncResult<IdKey>(r.Db.GetSqlExecutor(), 1);
             r.Db.GetSqlGenerator<Entity>().DeleteSql.Returns(sql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var execResult = await r.DeleteAsync(key);
             Assert.Equal(key, execResult);
 
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<IdKey>(dbConnection, sql, key);
+            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync<IdKey>(dbConnection, sql, key, commandType);
         }
 
         [Fact]
@@ -670,24 +682,25 @@ namespace LiteRepository
         public async void DeleteAll_Test()
         {
             var sql = "delete all sql";
-
+            var commandType = CommandType.Text;
             var dbConnection = Substitute.For<IDbConnection>();
 
             var r = GetRepository(dbConnection: dbConnection);
-            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(1);
+            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<CommandType>()).Returns(1);
             r.Db.GetSqlGenerator<Entity>().DeleteAllSql.Returns(sql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var execResult = await r.DeleteAllAsync();
             Assert.Equal(1, execResult);
 
-            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync(dbConnection, sql);
+            await r.Db.GetSqlExecutor().Received(1).ExecuteAsync(dbConnection, sql, commandType);
         }
 
         [Fact]
         public async void DeleteAll_NoData_Test()
         {
             var r = GetRepository();
-            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(0);
+            r.Db.GetSqlExecutor().ExecuteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<CommandType>()).Returns(0);
 
             var execResult = await r.DeleteAllAsync();
             Assert.Equal(0, execResult);
@@ -709,19 +722,20 @@ namespace LiteRepository
         {
             var sql = "select sql";
             var key = new IdKey();
-
+            var commandType = CommandType.Text;
             var result = new Entity();
 
             var dbConnection = Substitute.For<IDbConnection>();
 
             var r = GetRepository(dbConnection: dbConnection);
-            r.Db.GetSqlExecutor().QueryAsync<IdKey, Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<IdKey>()).Returns(new Entity[] { result });
+            r.Db.GetSqlExecutor().QueryAsync<IdKey, Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<IdKey>(), Arg.Any<CommandType>()).Returns(new Entity[] { result });
             r.Db.GetSqlGenerator<Entity>().SelectSql.Returns(sql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var execResult = await r.GetAsync(key);
             Assert.Equal(result, execResult);
 
-            await r.Db.GetSqlExecutor().Received(1).QueryAsync<IdKey, Entity>(dbConnection, sql, key);
+            await r.Db.GetSqlExecutor().Received(1).QueryAsync<IdKey, Entity>(dbConnection, sql, key, commandType);
         }
 
         [Fact]
@@ -730,7 +744,7 @@ namespace LiteRepository
             var key = new IdKey();
 
             var r = GetRepository();
-            r.Db.GetSqlExecutor().QueryAsync<IdKey, Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<IdKey>()).Returns(new Entity[0]);
+            r.Db.GetSqlExecutor().QueryAsync<IdKey, Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<IdKey>(), Arg.Any<CommandType>()).Returns(new Entity[0]);
 
             var execResult = await r.GetAsync(key);
             Assert.Null(execResult);
@@ -744,25 +758,27 @@ namespace LiteRepository
         public async void GetAll_Test()
         {
             var sql = "select all sql";
+            var commandType = CommandType.Text;
             var result = new Entity[10];
 
             var dbConnection = Substitute.For<IDbConnection>();
 
             var r = GetRepository(dbConnection: dbConnection);
-            r.Db.GetSqlExecutor().QueryAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(result);
+            r.Db.GetSqlExecutor().QueryAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<CommandType>()).Returns(result);
             r.Db.GetSqlGenerator<Entity>().SelectAllSql.Returns(sql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var execResult = await r.GetAllAsync();
             Assert.Equal(result, execResult);
 
-            await r.Db.GetSqlExecutor().Received(1).QueryAsync<Entity>(dbConnection, sql);
+            await r.Db.GetSqlExecutor().Received(1).QueryAsync<Entity>(dbConnection, sql, commandType);
         }
 
         [Fact]
         public async void GetAll_NoData_Test()
         {
             var r = GetRepository();
-            r.Db.GetSqlExecutor().QueryAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(new Entity[0]);
+            r.Db.GetSqlExecutor().QueryAsync<Entity>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<CommandType>()).Returns(new Entity[0]);
 
             var execResult = await r.GetAllAsync();
             Assert.Equal(0, execResult.Count());
@@ -776,25 +792,27 @@ namespace LiteRepository
         public async void GetCount_Test()
         {
             var sql = "get count sql";
+            var commandType = CommandType.Text;
             var result = 42L;
 
             var dbConnection = Substitute.For<IDbConnection>();
 
             var r = GetRepository(dbConnection: dbConnection);
-            r.Db.GetSqlExecutor().QueryScalarAsync<long>(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(result);
+            r.Db.GetSqlExecutor().QueryScalarAsync<long>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<CommandType>()).Returns(result);
             r.Db.GetSqlGenerator<Entity>().CountSql.Returns(sql);
+            r.Db.GetSqlGenerator<Entity>().CommandType.Returns(commandType);
 
             var execResult = await r.GetCountAsync();
             Assert.Equal(result, execResult);
 
-            await r.Db.GetSqlExecutor().Received(1).QueryScalarAsync<long>(dbConnection, sql);
+            await r.Db.GetSqlExecutor().Received(1).QueryScalarAsync<long>(dbConnection, sql, commandType);
         }
 
         [Fact]
         public async void GetCount_NoData_Test()
         {
             var r = GetRepository();
-            r.Db.GetSqlExecutor().QueryScalarAsync<long>(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(0);
+            r.Db.GetSqlExecutor().QueryScalarAsync<long>(Arg.Any<IDbConnection>(), Arg.Any<string>(), Arg.Any<CommandType>()).Returns(0);
 
             var execResult = await r.GetCountAsync();
             Assert.Equal(0, execResult);

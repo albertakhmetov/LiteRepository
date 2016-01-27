@@ -32,6 +32,8 @@ namespace LiteRepository
         where K : class
     {
         private readonly IDb _db;
+        private readonly ISqlExecutor _sqlExecutor;
+        private readonly ISqlGenerator _sqlGenerator;
         private readonly Func<E, long, E> _entityFactory;
 
         private readonly Subject<E> _insertedSubject;
@@ -79,6 +81,8 @@ namespace LiteRepository
             _deletedSubject = new Subject<K>();
 
             _db = db;
+            _sqlExecutor = _db.GetSqlExecutor();
+            _sqlGenerator = _db.GetSqlGenerator<E>();
             _entityFactory = entityFactory;
         }
 
@@ -101,9 +105,12 @@ namespace LiteRepository
                     IsDisposed = true;
                     GC.SuppressFinalize(this);
 
-                    _insertedSubject.OnCompleted();
-                    _updatedSubject.OnCompleted();
-                    _deletedSubject.OnCompleted();
+                    if (_insertedSubject != null)
+                        _insertedSubject.OnCompleted();
+                    if (_updatedSubject != null)
+                        _updatedSubject.OnCompleted();
+                    if (_deletedSubject != null)
+                        _deletedSubject.OnCompleted();
                 }
             }
         }
@@ -144,18 +151,19 @@ namespace LiteRepository
         {
             CheckDisposed();
 
-            var sql = Db.GetSqlGenerator<E>().InsertSql;
+            var sql = _sqlGenerator.InsertSql;
+            var commandType = _sqlGenerator.CommandType;
             var result = default(E);
 
             if (_entityFactory == null)
             {
-                var execResult = await Db.GetSqlExecutor().ExecuteAsync<E>(connection, sql, entity, cancellationToken);
+                var execResult = await _sqlExecutor.ExecuteAsync<E>(connection, sql, entity, commandType, cancellationToken);
                 if (execResult == 1)
                     result = entity;
             }
             else
             {
-                var insertedRowId = await Db.GetSqlExecutor().QueryScalarAsync<E, long>(connection, sql, entity, cancellationToken);
+                var insertedRowId = await _sqlExecutor.QueryScalarAsync<E, long>(connection, sql, entity, commandType, cancellationToken);
                 result = _entityFactory(entity, insertedRowId);
             }
 
@@ -176,8 +184,9 @@ namespace LiteRepository
         {
             CheckDisposed();
 
-            var sql = Db.GetSqlGenerator<E>().UpdateSql;
-            var execResult = await Db.GetSqlExecutor().ExecuteAsync<E>(connection, sql, entity, cancellationToken);
+            var sql = _sqlGenerator.UpdateSql;
+            var commandType = _sqlGenerator.CommandType;
+            var execResult = await _sqlExecutor.ExecuteAsync<E>(connection, sql, entity, commandType, cancellationToken);
 
             if (execResult == 0)
                 return default(E);
@@ -215,8 +224,9 @@ namespace LiteRepository
         {
             CheckDisposed();
 
-            var sql = Db.GetSqlGenerator<E>().DeleteSql;
-            var execResult = await Db.GetSqlExecutor().ExecuteAsync<K>(connection, sql, key, cancellationToken);
+            var sql = _sqlGenerator.DeleteSql;
+            var commandType = _sqlGenerator.CommandType;
+            var execResult = await _sqlExecutor.ExecuteAsync<K>(connection, sql, key, commandType, cancellationToken);
             if (execResult == 0)
                 return default(K);
             else
@@ -235,8 +245,9 @@ namespace LiteRepository
         {
             CheckDisposed();
 
-            var sql = Db.GetSqlGenerator<E>().DeleteAllSql;
-            var execResult = await Db.GetSqlExecutor().ExecuteAsync(connection, sql, cancellationToken);
+            var sql = _sqlGenerator.DeleteAllSql;
+            var commandType = _sqlGenerator.CommandType;
+            var execResult = await _sqlExecutor.ExecuteAsync(connection, sql, commandType, cancellationToken);
 
             if (execResult > 0)
                 _deletedSubject.OnNext(null);
@@ -256,8 +267,9 @@ namespace LiteRepository
         {
             CheckDisposed();
 
-            var sql = Db.GetSqlGenerator<E>().SelectSql;
-            var execResult = await Db.GetSqlExecutor().QueryAsync<K, E>(connection, sql, key, cancellationToken);
+            var sql = _sqlGenerator.SelectSql;
+            var commandType = _sqlGenerator.CommandType;
+            var execResult = await _sqlExecutor.QueryAsync<K, E>(connection, sql, key, commandType, cancellationToken);
 
             return execResult.FirstOrDefault();
         }
@@ -271,8 +283,9 @@ namespace LiteRepository
         {
             CheckDisposed();
 
-            var sql = Db.GetSqlGenerator<E>().SelectAllSql;
-            var execResult = await Db.GetSqlExecutor().QueryAsync<E>(connection, sql, cancellationToken);
+            var sql = _sqlGenerator.SelectAllSql;
+            var commandType = _sqlGenerator.CommandType;
+            var execResult = await _sqlExecutor.QueryAsync<E>(connection, sql, commandType, cancellationToken);
 
             return execResult;
         }
@@ -286,8 +299,9 @@ namespace LiteRepository
         {
             CheckDisposed();
 
-            var sql = Db.GetSqlGenerator<E>().CountSql;
-            var execResult = await Db.GetSqlExecutor().QueryScalarAsync<long>(connection, sql, cancellationToken);
+            var sql = _sqlGenerator.CountSql;
+            var commandType = _sqlGenerator.CommandType;
+            var execResult = await _sqlExecutor.QueryScalarAsync<long>(connection, sql, commandType, cancellationToken);
 
             return execResult;
         }

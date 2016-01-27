@@ -17,6 +17,7 @@ See the License for the specific
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,5 +35,6 @@ namespace LiteRepository.Database
         string DeleteAllSql { get; }
 
         bool IsIdentity { get; }
+        CommandType CommandType { get; }
     }
 }

@@ -17,6 +17,7 @@ See the License for the specific
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,6 +64,11 @@ namespace LiteRepository.Database
         public bool IsIdentity
         {
             get; private set;
+        }
+
+        public CommandType CommandType
+        {
+            get { return CommandType.Text; }
         }
 
         public SqlServerGenerator(Type entityType)
