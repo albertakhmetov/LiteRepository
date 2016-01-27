@@ -1,6 +1,6 @@
 # LiteRepository
 
-There is a light implementation of [Repository Pattern](http://msdn.microsoft.com/en-us/library/ff649690.aspx) based on [Dapper](https://github.com/StackExchange/dapper-dot-net) ORM.
+There is a lightweight implementation of [Repository Pattern](http://msdn.microsoft.com/en-us/library/ff649690.aspx) based on [Dapper](https://github.com/StackExchange/dapper-dot-net) ORM.
 
 This repository contains 2 components:
 
