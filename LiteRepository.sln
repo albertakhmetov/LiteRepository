@@ -16,6 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BEF1632B-F62E-4D88-86AF-CBD083A4B1F2}"
 	ProjectSection(SolutionItems) = preProject
 		scripts\build.nuget.cmd = scripts\build.nuget.cmd
+		sources\LiteRepository.Database.SqlServer\LiteRepository.Database.SqlServer.nuspec = sources\LiteRepository.Database.SqlServer\LiteRepository.Database.SqlServer.nuspec
+		sources\LiteRepository\LiteRepository.nuspec = sources\LiteRepository\LiteRepository.nuspec
 	EndProjectSection
 EndProject
 Global

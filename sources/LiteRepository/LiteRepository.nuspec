@@ -8,6 +8,10 @@
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
+    <summary>Lightweight implementation of Repository Pattern based on Dapper ORM</summary>
     <copyright>Copyright © 2016, $author$</copyright>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/albertakhmetov/LiteRepository</projectUrl>
+    <tags>Dapper Repository RepositoryPattern .NET</tags>
   </metadata>
 </package>
