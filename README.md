@@ -11,4 +11,4 @@ This repository contains 2 components:
 
 See a sample of using in SqlServerIntegration class
 
-[Install via NuGet](https://www.nuget.org/packages?q=literepository)
+[Install via NuGet](https://www.nuget.org/packages/LiteRepository/)
