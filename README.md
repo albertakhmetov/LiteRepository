@@ -10,3 +10,5 @@ This repository contains 2 components:
 ## Usage
 
 See a sample of using in SqlServerIntegration class
+
+[Install from NuGet](https://www.nuget.org/packages?q=literepository)
