@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("LiteRepository.Database.SqlServer")]
 [assembly: AssemblyDescription("LiteRepository for Sql Server")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Albert Akhmetov")]
 [assembly: AssemblyProduct("LiteRepository.Database.SqlServer")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © 2016, Albert Akhmetov")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
