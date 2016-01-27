@@ -8,7 +8,10 @@
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <summary>Lightweight implementation of Repository Pattern based on Dapper ORM</summary>
+    <summary>
+    There is a lightweight implementation of Repository Pattern based on Dapper ORM.
+    This implementation supports CRUD operations via auto-generated plain SQL (stored procedures haven't been supported yet)
+    </summary>
     <copyright>Copyright © 2016, $author$</copyright>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/albertakhmetov/LiteRepository</projectUrl>
