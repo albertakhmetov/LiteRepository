@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("LiteRepository")]
-[assembly: AssemblyDescription("Lightweight implementation of Repository Pattern based on Dapper ORM")]
+[assembly: AssemblyDescription("Lightweight implementation of Repository Pattern based on Dapper ORM. This implementation supports CRUD operations via auto-generated plain SQL (stored procedures haven't been supported yet)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Albert Akhmetov")]
 [assembly: AssemblyProduct("LiteRepository")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.1.0")]
-[assembly: AssemblyFileVersion("1.0.1.0")]
+[assembly: AssemblyVersion("1.0.2.0")]
+[assembly: AssemblyFileVersion("1.0.2.0")]

@@ -7,4 +7,3 @@ set config=Release
 "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" /p:Configuration=%config% ..\LiteRepository.sln
 
 ..\nuget.exe pack "..\sources\LiteRepository\LiteRepository.csproj" -IncludeReferencedProjects -OutputDirectory ..\binaries -Prop Configuration=%config%
-..\nuget.exe pack "..\sources\LiteRepository.Database.SqlServer\LiteRepository.Database.SqlServer.csproj" -IncludeReferencedProjects -OutputDirectory ..\binaries -Prop Configuration=%config%

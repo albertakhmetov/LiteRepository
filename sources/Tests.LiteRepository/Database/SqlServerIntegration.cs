@@ -25,16 +25,16 @@ using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Configuration;
 
-namespace LiteRepository.Database.SqlServer
+namespace LiteRepository.Database
 {
     public sealed class SqlServerRepositories
     {
-        public DataRepository<Models.Entity, Models.EntityId> EntityRepository
+        public DataRepository<Models.SqlEntity, Models.SqlEntityId> EntityRepository
         {
             get; private set;
         }
 
-        public DataRepository<Models.IdentityEntity, Models.IdentityId> IdentityEntityRepository
+        public DataRepository<Models.SqlIdentityEntity, Models.SqlIdentityId> IdentityEntityRepository
         {
             get; private set;
         }
@@ -45,10 +45,10 @@ namespace LiteRepository.Database.SqlServer
                 new DefaultSqlExecutor(TaskScheduler.Default),
                 t => new SqlServerGenerator(t),
                 () => new SqlConnection(ConfigurationManager.ConnectionStrings["DemoDb"].ConnectionString));
-            EntityRepository = new DataRepository<Models.Entity, Models.EntityId>(db);
-            IdentityEntityRepository = new DataRepository<Models.IdentityEntity, Models.IdentityId>(
+            EntityRepository = new DataRepository<Models.SqlEntity, Models.SqlEntityId>(db);
+            IdentityEntityRepository = new DataRepository<Models.SqlIdentityEntity, Models.SqlIdentityId>(
                 db,
-                (x, y) => new Models.IdentityEntity
+                (x, y) => new Models.SqlIdentityEntity
                 {
                     Id = y,
                     FirstName = x.FirstName,
@@ -76,50 +76,50 @@ namespace LiteRepository.Database.SqlServer
         [Fact]
         public async void Entity_Insert_Test()
         {
-            var entity = new Models.Entity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
+            var entity = new Models.SqlEntity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
 
             var insertedEntity = await _fixture.EntityRepository.InsertAsync(entity);
             Assert.Equal(entity, insertedEntity);
 
-            var actualEntity = await _fixture.EntityRepository.GetAsync(new Models.EntityId { Id = 1, ShopId = 42 });
+            var actualEntity = await _fixture.EntityRepository.GetAsync(new Models.SqlEntityId { Id = 1, ShopId = 42 });
             Assert.Equal(entity, actualEntity);
         }
 
         [Fact]
         public async void Entity_Update_Test()
         {
-            var entity = new Models.Entity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
+            var entity = new Models.SqlEntity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
             await _fixture.EntityRepository.InsertAsync(entity);
 
             var updatedEntity = await _fixture.EntityRepository.UpdateAsync(
-                new Models.Entity { Id = 1, ShopId = 42, Price = 14, Text = "sample entity" });
+                new Models.SqlEntity { Id = 1, ShopId = 42, Price = 14, Text = "sample entity" });
 
-            var actualEntity = await _fixture.EntityRepository.GetAsync(new Models.EntityId { Id = 1, ShopId = 42 });
+            var actualEntity = await _fixture.EntityRepository.GetAsync(new Models.SqlEntityId { Id = 1, ShopId = 42 });
             Assert.Equal(updatedEntity, actualEntity);
         }
 
         [Fact]
         public async void Entity_UpdateOrInsert_Update_Test()
         {
-            var entity = new Models.Entity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
+            var entity = new Models.SqlEntity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
             await _fixture.EntityRepository.InsertAsync(entity);
 
             var updatedEntity = await _fixture.EntityRepository.UpdateOrInsertAsync(
-                new Models.Entity { Id = 1, ShopId = 42, Price = 14, Text = "sample entity" });
+                new Models.SqlEntity { Id = 1, ShopId = 42, Price = 14, Text = "sample entity" });
 
-            var actualEntity = await _fixture.EntityRepository.GetAsync(new Models.EntityId { Id = 1, ShopId = 42 });
+            var actualEntity = await _fixture.EntityRepository.GetAsync(new Models.SqlEntityId { Id = 1, ShopId = 42 });
             Assert.Equal(updatedEntity, actualEntity);
         }
 
         [Fact]
         public async void Entity_UpdateOrInsert_Insert_Test()
         {
-            var entity = new Models.Entity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
+            var entity = new Models.SqlEntity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
 
             var updatedEntity = await _fixture.EntityRepository.UpdateOrInsertAsync(
-                new Models.Entity { Id = 1, ShopId = 42, Price = 14, Text = "sample entity" });
+                new Models.SqlEntity { Id = 1, ShopId = 42, Price = 14, Text = "sample entity" });
 
-            var actualEntity = await _fixture.EntityRepository.GetAsync(new Models.EntityId { Id = 1, ShopId = 42 });
+            var actualEntity = await _fixture.EntityRepository.GetAsync(new Models.SqlEntityId { Id = 1, ShopId = 42 });
             Assert.Equal(updatedEntity, actualEntity);
         }
 
@@ -128,17 +128,17 @@ namespace LiteRepository.Database.SqlServer
         {
             var count = 10;
 
-            var entity = new Models.Entity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
+            var entity = new Models.SqlEntity { Id = 1, ShopId = 42, Price = 10.24m, Text = "sample entity" };
             for (var i = 0; i < count; i++)
             {
                 entity.Id = i;
                 await _fixture.EntityRepository.InsertAsync(entity);
             }
 
-            var deletedKey = await _fixture.EntityRepository.DeleteAsync(new Models.EntityId { Id = 1, ShopId = 42 });
+            var deletedKey = await _fixture.EntityRepository.DeleteAsync(new Models.SqlEntityId { Id = 1, ShopId = 42 });
             Assert.NotNull(deletedKey);
 
-            var deletedEntity = await _fixture.EntityRepository.GetAsync(new Models.EntityId { Id = 1, ShopId = 42 });
+            var deletedEntity = await _fixture.EntityRepository.GetAsync(new Models.SqlEntityId { Id = 1, ShopId = 42 });
             Assert.Null(deletedEntity);
 
             var execResult = await _fixture.EntityRepository.GetCountAsync();
@@ -152,7 +152,7 @@ namespace LiteRepository.Database.SqlServer
         [Fact]
         public async void IdentityEntity_Insert_Test()
         {
-            var entity = new Models.IdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
+            var entity = new Models.SqlIdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
 
             var insertedEntity = await _fixture.IdentityEntityRepository.InsertAsync(entity);
             Assert.NotEqual(entity.Id, insertedEntity.Id);
@@ -161,60 +161,60 @@ namespace LiteRepository.Database.SqlServer
             Assert.Equal(entity.Birthday, insertedEntity.Birthday);
 
 
-            var actualEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.IdentityId { Id = insertedEntity.Id });
+            var actualEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.SqlIdentityId { Id = insertedEntity.Id });
             Assert.Equal(insertedEntity, actualEntity);
         }
 
         [Fact]
         public async void IdentityEntity_Update_Test()
         {
-            var entity = new Models.IdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
+            var entity = new Models.SqlIdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
             var insertedEntity = await _fixture.IdentityEntityRepository.InsertAsync(entity);
 
             var updatedEntity = await _fixture.IdentityEntityRepository.UpdateAsync(
-                new Models.IdentityEntity { Id = insertedEntity.Id, FirstName = "Ivan", SecondName = "Ivanoff", Birthday = new DateTime(1991, 12, 26) });
+                new Models.SqlIdentityEntity { Id = insertedEntity.Id, FirstName = "Ivan", SecondName = "Ivanoff", Birthday = new DateTime(1991, 12, 26) });
 
             Assert.NotEqual(entity.Id, updatedEntity.Id);
             Assert.Equal(entity.FirstName, updatedEntity.FirstName);
             Assert.NotEqual(entity.SecondName, updatedEntity.SecondName);
             Assert.Equal(entity.Birthday, updatedEntity.Birthday);
 
-            var actualEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.IdentityId { Id = updatedEntity.Id });
+            var actualEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.SqlIdentityId { Id = updatedEntity.Id });
             Assert.Equal(updatedEntity, actualEntity);
         }
 
         [Fact]
         public async void IdentityEntity_UpdateOrInsert_Update_Test()
         {
-            var entity = new Models.IdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
+            var entity = new Models.SqlIdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
             var insertedEntity = await _fixture.IdentityEntityRepository.InsertAsync(entity);
 
             var updatedEntity = await _fixture.IdentityEntityRepository.UpdateOrInsertAsync(
-                            new Models.IdentityEntity { Id = insertedEntity.Id, FirstName = "Ivan", SecondName = "Ivanoff", Birthday = new DateTime(1991, 12, 26) });
+                            new Models.SqlIdentityEntity { Id = insertedEntity.Id, FirstName = "Ivan", SecondName = "Ivanoff", Birthday = new DateTime(1991, 12, 26) });
 
             Assert.NotEqual(entity.Id, updatedEntity.Id);
             Assert.Equal(entity.FirstName, updatedEntity.FirstName);
             Assert.NotEqual(entity.SecondName, updatedEntity.SecondName);
             Assert.Equal(entity.Birthday, updatedEntity.Birthday);
 
-            var actualEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.IdentityId { Id = updatedEntity.Id });
+            var actualEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.SqlIdentityId { Id = updatedEntity.Id });
             Assert.Equal(updatedEntity, actualEntity);
         }
 
         [Fact]
         public async void IdentityEntity_UpdateOrInsert_Insert_Test()
         {
-            var entity = new Models.IdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
+            var entity = new Models.SqlIdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
 
             var updatedEntity = await _fixture.IdentityEntityRepository.UpdateOrInsertAsync(
-                            new Models.IdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanoff", Birthday = new DateTime(1991, 12, 26) });
+                            new Models.SqlIdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanoff", Birthday = new DateTime(1991, 12, 26) });
 
             Assert.NotEqual(entity.Id, updatedEntity.Id);
             Assert.Equal(entity.FirstName, updatedEntity.FirstName);
             Assert.NotEqual(entity.SecondName, updatedEntity.SecondName);
             Assert.Equal(entity.Birthday, updatedEntity.Birthday);
 
-            var actualEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.IdentityId { Id = updatedEntity.Id });
+            var actualEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.SqlIdentityId { Id = updatedEntity.Id });
             Assert.Equal(updatedEntity, actualEntity);
         }
 
@@ -223,18 +223,18 @@ namespace LiteRepository.Database.SqlServer
         {
             var count = 10;
 
-            var entity = new Models.IdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
-            var insertedEntities = new Models.IdentityEntity[count];
+            var entity = new Models.SqlIdentityEntity { Id = 0, FirstName = "Ivan", SecondName = "Ivanov", Birthday = new DateTime(1991, 12, 26) };
+            var insertedEntities = new Models.SqlIdentityEntity[count];
             for (var i = 0; i < count; i++)
             {
                 insertedEntities[i] = await _fixture.IdentityEntityRepository.InsertAsync(entity);
             }
             Assert.Equal(count, insertedEntities.Last().Id - insertedEntities.First().Id + 1); // example 1 2 3 4 5 6 => 6 - 1 = 5, but count = 6
 
-            var deletedKey = await _fixture.IdentityEntityRepository.DeleteAsync(new Models.IdentityId { Id = insertedEntities[3].Id });
+            var deletedKey = await _fixture.IdentityEntityRepository.DeleteAsync(new Models.SqlIdentityId { Id = insertedEntities[3].Id });
             Assert.NotNull(deletedKey);
 
-            var deletedEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.IdentityId { Id = insertedEntities[3].Id });
+            var deletedEntity = await _fixture.IdentityEntityRepository.GetAsync(new Models.SqlIdentityId { Id = insertedEntities[3].Id });
             Assert.Null(deletedEntity);
 
             var execResult = await _fixture.IdentityEntityRepository.GetCountAsync();

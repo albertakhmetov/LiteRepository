@@ -69,6 +69,7 @@
     <Compile Include="Database\ISqlExecutor.cs" />
     <Compile Include="Database\ISqlGenerator.cs" />
     <Compile Include="Database\PrimaryKeyAttribute.cs" />
+    <Compile Include="Database\SqlServerGenerator.cs" />
     <Compile Include="Database\StoreAsAttribute.cs" />
     <Compile Include="DataRepository.cs" />
     <Compile Include="DataRepositoryException.cs" />

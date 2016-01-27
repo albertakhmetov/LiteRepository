@@ -21,48 +21,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Database.SqlServer.Models
+namespace LiteRepository.Database.Models
 {
-    [StoreAs("cash_check_item")]
-    public class Entity
+    [StoreAs("people")]
+    public class SqlIdentityEntity
     {
         [StoreAs("id")]
-        [PrimaryKey()]
+        [PrimaryKey(isIdentity: true)]
         public long Id { get; set; }
 
-        [StoreAs("shop_id")]
-        [PrimaryKey()]
-        public long ShopId { get; set; }
+        [StoreAs("first_name")]
+        public string FirstName { get; set; }
 
-        [StoreAs("text")]
-        public string Text { get; set; }
+        [StoreAs("second_name")]
+        public string SecondName { get; set; }
 
-        [StoreAs("price")]
-        public decimal Price { get; set; }
-
-        [Ignore]
-        public bool IsInvalidated { get; set; }
+        [StoreAs("birthday")]
+        public DateTime Birthday { get; set; }
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as Entity);
+            return Equals(obj as SqlIdentityEntity);
         }
 
-        public bool Equals(Entity e)
+        public bool Equals(SqlIdentityEntity e)
         {
-            return Id == e.Id && ShopId == e.ShopId && Text == e.Text && Price == e.Price;
+            return Id == e.Id && FirstName == e.FirstName && SecondName == e.SecondName && Birthday == e.Birthday;
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode() ^ ShopId.GetHashCode() ^ (Text ?? string.Empty).GetHashCode() ^ Price.GetHashCode();
+            return Id.GetHashCode() ^ (FirstName ?? string.Empty).GetHashCode() ^ (SecondName ?? string.Empty).GetHashCode() ^ Birthday.GetHashCode();
         }
     }
 
-    public class EntityId
+    public class SqlIdentityId
     {
         public long Id { get; set; }
-
-        public long ShopId { get; set; }
     }
 }

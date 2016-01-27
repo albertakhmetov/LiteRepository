@@ -240,7 +240,6 @@ namespace LiteRepository
         {
             // case when entity doesn't exist (try update and then insert)
 
-            var newId = 13;
             var entity = new Entity() { Text = "Hi!", Id = 42 };
 
             var r = GetRepository(entityFactory: (x, y) => new Entity { Text = x.Text, Id = y });
@@ -334,7 +333,6 @@ namespace LiteRepository
 
             var updateSql = "update sql";
             var insertSql = "insert sql";
-            var newId = 13;
             var entity = new Entity() { Text = "Hi!", Id = 42 };
 
             var r = GetRepository(entityFactory: (x, y) => new Entity { Text = x.Text, Id = y });

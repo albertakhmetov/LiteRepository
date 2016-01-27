@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Database.SqlServer
+namespace LiteRepository.Database
 {
     public sealed class SqlServerGenerator : ISqlGenerator
     {

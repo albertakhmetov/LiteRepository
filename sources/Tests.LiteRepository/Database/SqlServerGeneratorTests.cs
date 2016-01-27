@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LiteRepository.Database.SqlServer.Models;
+using LiteRepository.Database.Models;
 
-namespace LiteRepository.Database.SqlServer
+namespace LiteRepository.Database
 {
     public class SqlServerGenerators
     {
@@ -39,8 +39,8 @@ namespace LiteRepository.Database.SqlServer
 
         public SqlServerGenerators()
         {
-            IdentityGenerator = new SqlServerGenerator(typeof(IdentityEntity));
-            EntityGenerator = new SqlServerGenerator(typeof(Entity));
+            IdentityGenerator = new SqlServerGenerator(typeof(SqlIdentityEntity));
+            EntityGenerator = new SqlServerGenerator(typeof(SqlEntity));
         }
     }
 

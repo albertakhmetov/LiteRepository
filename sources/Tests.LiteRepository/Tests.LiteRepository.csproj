@@ -43,6 +43,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
@@ -89,10 +90,14 @@
     <Compile Include="Database\EntityMetadataItemTests.cs" />
     <Compile Include="Database\EntityMetadataTests.cs" />
     <Compile Include="Database\PrimaryKeyAttributeTests.cs" />
+    <Compile Include="Database\SqlServerGeneratorTests.cs" />
+    <Compile Include="Database\SqlServerIntegration.cs" />
     <Compile Include="Database\StoreAsAttributeTests.cs" />
     <Compile Include="DataRepositoryTests.cs" />
     <Compile Include="Database\DefaultDbTests.cs" />
     <Compile Include="Models\Entities.cs" />
+    <Compile Include="Models\SqlEntity.cs" />
+    <Compile Include="Models\SqlIdentityEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

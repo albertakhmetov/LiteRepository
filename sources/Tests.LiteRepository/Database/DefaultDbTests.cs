@@ -50,32 +50,32 @@ namespace LiteRepository.Database
         public void SqlGenerator_Connection_Test()
         {
             var g = new Dictionary<Type, ISqlGenerator>();
-            g.Add(typeof(Models.Entity), Substitute.For<ISqlGenerator>());
-            g.Add(typeof(Models.IdKey), Substitute.For<ISqlGenerator>());
+            g.Add(typeof(Models.SqlEntity), Substitute.For<ISqlGenerator>());
+            g.Add(typeof(Models.SqlEntityId), Substitute.For<ISqlGenerator>());
 
-            Assert.NotEqual(g[typeof(Models.Entity)], g[typeof(Models.IdKey)]); // insure that there different mocks
+            Assert.NotEqual(g[typeof(Models.SqlEntity)], g[typeof(Models.SqlEntityId)]); // insure that there different mocks
 
             var db = new DefaultDb(Substitute.For<ISqlExecutor>(), x => g[x], Substitute.For<IDbConnection>());
-            Assert.Equal(g[typeof(Models.Entity)], db.GetSqlGenerator<Models.Entity>());
-            Assert.Equal(g[typeof(Models.IdKey)], db.GetSqlGenerator<Models.IdKey>());
-            Assert.Equal(g[typeof(Models.Entity)], db.GetSqlGenerator<Models.Entity>());
-            Assert.Equal(g[typeof(Models.IdKey)], db.GetSqlGenerator<Models.IdKey>());
+            Assert.Equal(g[typeof(Models.SqlEntity)], db.GetSqlGenerator<Models.SqlEntity>());
+            Assert.Equal(g[typeof(Models.SqlEntityId)], db.GetSqlGenerator<Models.SqlEntityId>());
+            Assert.Equal(g[typeof(Models.SqlEntity)], db.GetSqlGenerator<Models.SqlEntity>());
+            Assert.Equal(g[typeof(Models.SqlEntityId)], db.GetSqlGenerator<Models.SqlEntityId>());
         }
 
         [Fact]
         public void SqlGenerator_ConnectionFactory_Test()
         {
             var g = new Dictionary<Type, ISqlGenerator>();
-            g.Add(typeof(Models.Entity), Substitute.For<ISqlGenerator>());
-            g.Add(typeof(Models.IdKey), Substitute.For<ISqlGenerator>());
+            g.Add(typeof(Models.SqlEntity), Substitute.For<ISqlGenerator>());
+            g.Add(typeof(Models.SqlEntityId), Substitute.For<ISqlGenerator>());
 
-            Assert.NotEqual(g[typeof(Models.Entity)], g[typeof(Models.IdKey)]); // insure that there different mocks
+            Assert.NotEqual(g[typeof(Models.SqlEntity)], g[typeof(Models.SqlEntityId)]); // insure that there different mocks
 
             var db = new DefaultDb(Substitute.For<ISqlExecutor>(), x => g[x], () => Substitute.For<IDbConnection>());
-            Assert.Equal(g[typeof(Models.Entity)], db.GetSqlGenerator<Models.Entity>());
-            Assert.Equal(g[typeof(Models.IdKey)], db.GetSqlGenerator<Models.IdKey>());
-            Assert.Equal(g[typeof(Models.Entity)], db.GetSqlGenerator<Models.Entity>());
-            Assert.Equal(g[typeof(Models.IdKey)], db.GetSqlGenerator<Models.IdKey>());
+            Assert.Equal(g[typeof(Models.SqlEntity)], db.GetSqlGenerator<Models.SqlEntity>());
+            Assert.Equal(g[typeof(Models.SqlEntityId)], db.GetSqlGenerator<Models.SqlEntityId>());
+            Assert.Equal(g[typeof(Models.SqlEntity)], db.GetSqlGenerator<Models.SqlEntity>());
+            Assert.Equal(g[typeof(Models.SqlEntityId)], db.GetSqlGenerator<Models.SqlEntityId>());
         }
 
         [Fact]
