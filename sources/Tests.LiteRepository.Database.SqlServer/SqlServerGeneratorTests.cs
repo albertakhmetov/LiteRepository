@@ -16,20 +16,20 @@ namespace LiteRepository.Database.SqlServer
 {
     public class SqlServerGenerators
     {
-        public SqlServerGenerator<IdentityEntity> IdentityGenerator
+        public SqlServerGenerator IdentityGenerator
         {
             get; private set;
         }
 
-        public SqlServerGenerator<Entity> EntityGenerator
+        public SqlServerGenerator EntityGenerator
         {
             get; private set;
         }
 
         public SqlServerGenerators()
         {
-            IdentityGenerator = new SqlServerGenerator<IdentityEntity>();
-            EntityGenerator = new SqlServerGenerator<Entity>();
+            IdentityGenerator = new SqlServerGenerator(typeof(IdentityEntity));
+            EntityGenerator = new SqlServerGenerator(typeof(Entity));
         }
     }
 

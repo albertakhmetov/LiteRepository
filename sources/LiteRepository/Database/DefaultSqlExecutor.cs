@@ -33,7 +33,7 @@ namespace LiteRepository.Database
 
         public Task<T> QueryScalarAsync<Q, T>(IDbConnection connection, string sql, Q parameters, CancellationToken? cancellationToken = default(CancellationToken?))
         {
-            return _taskFactory.StartNew<T>(() => connection.ExecuteScalar<T>(sql), cancellationToken ?? CancellationToken.None);
+            return _taskFactory.StartNew<T>(() => connection.ExecuteScalar<T>(sql, parameters), cancellationToken ?? CancellationToken.None);
         }
 
         public Task<IEnumerable<T>> QueryAsync<T>(IDbConnection connection, string sql, CancellationToken? cancellationToken = default(CancellationToken?))

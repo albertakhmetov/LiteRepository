@@ -41,6 +41,8 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
@@ -75,6 +77,7 @@
     <Compile Include="Models\IdentityEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerGeneratorTests.cs" />
+    <Compile Include="SqlServerIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LiteRepository.Database.SqlServer\LiteRepository.Database.SqlServer.csproj">

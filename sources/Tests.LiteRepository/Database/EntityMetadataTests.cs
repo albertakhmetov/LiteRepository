@@ -46,7 +46,7 @@ namespace LiteRepository.Database
         [Fact]
         public void Simple_Test()
         {
-            var md = new EntityMetadata<Simple>();
+            var md = new EntityMetadata(typeof(Simple));
 
             Assert.Equal(2, md.Count);
             Assert.Equal("Simple", md.Name);
@@ -66,7 +66,7 @@ namespace LiteRepository.Database
         [Fact]
         public void Complex_Test()
         {
-            var md = new EntityMetadata<Complex>();
+            var md = new EntityMetadata(typeof(Complex));
 
             Assert.Equal(3, md.Count);
             Assert.Equal("Complex", md.Name);

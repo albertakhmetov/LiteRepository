@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Database.SqlServer
 {
-    public sealed class SqlServerGenerator<T> : ISqlGenerator
-        where T : class
+    public sealed class SqlServerGenerator : ISqlGenerator
     {
         public string InsertSql
         {
@@ -55,9 +54,9 @@ namespace LiteRepository.Database.SqlServer
             get; private set;
         }
 
-        public SqlServerGenerator()
+        public SqlServerGenerator(Type entityType)
         {
-            var metadata = new EntityMetadata<T>();
+            var metadata = new EntityMetadata(entityType);
 
             IsIdentity = metadata.FirstOrDefault(x => x.IsIdentity) != null;
 

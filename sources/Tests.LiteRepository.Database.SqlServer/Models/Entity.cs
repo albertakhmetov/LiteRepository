@@ -31,5 +31,27 @@ namespace LiteRepository.Database.SqlServer.Models
 
         [Ignore]
         public bool IsInvalidated { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Entity);
+        }
+
+        public bool Equals(Entity e)
+        {
+            return Id == e.Id && ShopId == e.ShopId && Text == e.Text && Price == e.Price;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode() ^ ShopId.GetHashCode() ^ (Text ?? string.Empty).GetHashCode() ^ Price.GetHashCode();
+        }
+    }
+
+    public class EntityId
+    {
+        public long Id { get; set; }
+
+        public long ShopId { get; set; }
     }
 }

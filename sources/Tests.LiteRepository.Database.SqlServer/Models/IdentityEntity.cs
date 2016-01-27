@@ -27,5 +27,25 @@ namespace LiteRepository.Database.SqlServer.Models
 
         [StoreAs("birthday")]
         public DateTime Birthday { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as IdentityEntity);
+        }
+
+        public bool Equals(IdentityEntity e)
+        {
+            return Id == e.Id && FirstName == e.FirstName && SecondName == e.SecondName && Birthday == e.Birthday;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode() ^ (FirstName ?? string.Empty).GetHashCode() ^ (SecondName ?? string.Empty).GetHashCode() ^ Birthday.GetHashCode();
+        }
+    }
+
+    public class IdentityId
+    {
+        public long Id { get; set; }
     }
 }

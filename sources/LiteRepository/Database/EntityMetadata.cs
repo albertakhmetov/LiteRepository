@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Database
 {
-    public sealed class EntityMetadata<T> : IEnumerable<EntityMetadataItem>
+    public sealed class EntityMetadata : IEnumerable<EntityMetadataItem>
     {
         private readonly IList<EntityMetadataItem> _items;
 
@@ -37,16 +37,17 @@ namespace LiteRepository.Database
             get { return _items.Count; }
         }
 
-        public EntityMetadata()
+        public EntityMetadata(Type entityType)
         {
-            var type = typeof(T);
+            if (entityType == null)
+                throw new ArgumentNullException(nameof(entityType));
 
-            var typeStoreAs = type.GetCustomAttributes(typeof(StoreAsAttribute), true).FirstOrDefault() as StoreAsAttribute;
-            Name = type.Name;
-            DbName = (typeStoreAs == null) ? type.Name : typeStoreAs.DbName;
+            var typeStoreAs = entityType.GetCustomAttributes(typeof(StoreAsAttribute), true).FirstOrDefault() as StoreAsAttribute;
+            Name = entityType.Name;
+            DbName = (typeStoreAs == null) ? entityType.Name : typeStoreAs.DbName;
 
             var fields = new List<EntityMetadataItem>();
-            foreach (var property in type.GetProperties())
+            foreach (var property in entityType.GetProperties())
             {
                 if (property.GetCustomAttributes(typeof(IgnoreAttribute), true).Length != 0)
                     continue;
