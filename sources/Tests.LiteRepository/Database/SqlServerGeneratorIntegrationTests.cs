@@ -41,7 +41,7 @@ namespace LiteRepository.Database
             get; private set;
         }
 
-        protected SqlServerRepositoriesBase()
+        protected void Init()
         {
             var db = new DefaultDb(
                 new DefaultSqlExecutor(TaskScheduler.Default),
@@ -62,10 +62,59 @@ namespace LiteRepository.Database
         protected abstract ISqlGenerator GetGenerator(Type entityType);
     }
 
+    public class SpSqlServerRepositories : SqlServerRepositoriesBase
+    {
+        private readonly StorageProcedureSqlGenerator _entityGenerator, _identityEntityGenerator;
+
+        public SpSqlServerRepositories()
+        {
+            _entityGenerator = new StorageProcedureSqlGenerator(
+                "sci_insert",
+                "sci_update",
+                "sci_delete",
+                "sci_delete_all",
+                "sci_select",
+                "sci_select_all",
+                "sci_count",
+                false);
+
+            _identityEntityGenerator = new StorageProcedureSqlGenerator(
+                "people_insert",
+                "people_update",
+                "people_delete",
+                "people_delete_all",
+                "people_select",
+                "people_select_all",
+                "people_count",
+                false);
+
+            Init();
+        }
+
+        protected override ISqlGenerator GetGenerator(Type entityType)
+        {
+            if (entityType == typeof(SqlEntity))
+                return _entityGenerator;
+            else if (entityType == typeof(SqlIdentityEntity))
+                return _identityEntityGenerator;
+            else
+                throw new NotSupportedException();
+        }
+    }
+
+    [Trait("Integration", "Integration")]
+    public class SpSql : SqlServerGeneratorIntegrationBase, IClassFixture<SpSqlServerRepositories>
+    {
+        public SpSql(SpSqlServerRepositories fixture) : base(fixture)
+        { }
+    }
+
     public class PlainSqlServerRepositories : SqlServerRepositoriesBase
     {
         public PlainSqlServerRepositories()
-        { }
+        {
+            Init();
+        }
 
         protected override ISqlGenerator GetGenerator(Type entityType)
         {
@@ -89,7 +138,7 @@ namespace LiteRepository.Database
         public SqlServerGeneratorIntegrationBase(SqlServerRepositoriesBase fixture)
         {
             _fixture = fixture;
-            _fixture.EntityRepository.DeleteAllAsync().Wait();
+         //   _fixture.EntityRepository.DeleteAllAsync().Wait();
             _fixture.IdentityEntityRepository.DeleteAllAsync().Wait();
         }
 
