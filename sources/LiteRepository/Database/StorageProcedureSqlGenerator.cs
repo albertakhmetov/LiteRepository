@@ -81,7 +81,14 @@ namespace LiteRepository.Database
             string countSql, 
             bool isIdentity)
         {
-
+            InsertSql = insertSql;
+            UpdateSql = updateSql;
+            DeleteSql = deleteSql;
+            DeleteAllSql = deleteAllSql;
+            SelectSql = selectSql;
+            SelectAllSql = selectAllSql;
+            CountSql = countSql;
+            IsIdentity = isIdentity;
         }
     }
 }

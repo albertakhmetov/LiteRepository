@@ -92,6 +92,7 @@
     <Compile Include="Database\PrimaryKeyAttributeTests.cs" />
     <Compile Include="Database\SqlServerGeneratorTests.cs" />
     <Compile Include="Database\SqlServerGeneratorIntegrationTests.cs" />
+    <Compile Include="Database\StorageProcedureSqlGeneratorTests.cs" />
     <Compile Include="Database\StoreAsAttributeTests.cs" />
     <Compile Include="DataRepositoryTests.cs" />
     <Compile Include="Database\DefaultDbTests.cs" />
