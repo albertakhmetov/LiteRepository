@@ -1,5 +1,4 @@
-﻿-- Insert or Update entity
-CREATE PROCEDURE [dbo].[UpdatePeople]
+﻿CREATE PROCEDURE [dbo].[people_update]
 	@Id			INT, 
     @FirstName	NVARCHAR, 
     @SecondName	NVARCHAR, 
