@@ -91,7 +91,7 @@
     <Compile Include="Database\EntityMetadataTests.cs" />
     <Compile Include="Database\PrimaryKeyAttributeTests.cs" />
     <Compile Include="Database\SqlServerGeneratorTests.cs" />
-    <Compile Include="Database\SqlServerIntegration.cs" />
+    <Compile Include="Database\SqlServerGeneratorIntegrationTests.cs" />
     <Compile Include="Database\StoreAsAttributeTests.cs" />
     <Compile Include="DataRepositoryTests.cs" />
     <Compile Include="Database\DefaultDbTests.cs" />
