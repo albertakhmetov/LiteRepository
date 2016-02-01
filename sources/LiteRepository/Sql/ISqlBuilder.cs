@@ -25,5 +25,6 @@ namespace LiteRepository.Sql
 {
     public interface ISqlBuilder
     {
+        string GetInsertSql<E>();
     }
 }

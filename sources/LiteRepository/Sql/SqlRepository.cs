@@ -32,7 +32,7 @@ namespace LiteRepository.Sql
 
         public virtual Task<E> InsertAsync(E entity)
         {
-            return _sqlInsert.ExecuteAsync(entity, _db);
+            throw new NotImplementedException();
         }
 
         public virtual Task<int> UpdateAsync(E entity)

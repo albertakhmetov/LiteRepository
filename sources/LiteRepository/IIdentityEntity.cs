@@ -23,9 +23,9 @@ using System.Threading.Tasks;
 
 namespace LiteRepository
 {
-    public interface IIdentityEntity<E>
+    public interface IIdentityEntity
     {
         long Id { get; }
-        E UpdateId(long id);
+        object UpdateId(long id);
     }
 }

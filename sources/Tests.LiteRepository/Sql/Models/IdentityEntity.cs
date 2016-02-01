@@ -24,17 +24,10 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Models
 {
-    [SqlAlias("students")]
-    public class Entity
+    [SqlAlias("users")]
+    public class IdentityEntity : IIdentityEntity
     {
-        [SqlKey]
-        public long Cource
-        {
-            get; set;
-        }
-
-        [SqlKey]
-        public char Letter
+        public long Id
         {
             get; set;
         }
@@ -62,14 +55,25 @@ namespace LiteRepository.Sql.Models
             get; set;
         }
 
-        public override bool Equals(object obj)
+        public object UpdateId(long id)
         {
-            return Equals(obj as Entity);
+            return new IdentityEntity
+            {
+                Id = id,
+                FirstName = this.FirstName,
+                SecondName = this.SecondName,
+                Birtday = this.Birtday
+            };
         }
 
-        public bool Equals(Entity entity)
+        public override bool Equals(object obj)
         {
-            return entity != null && entity.Cource == Cource && entity.Letter == Letter
+            return Equals(obj as IdentityEntity);
+        }
+
+        public bool Equals(IdentityEntity entity)
+        {
+            return entity != null && entity.Id == Id
                 && entity.FirstName == FirstName
                 && entity.SecondName == SecondName
                 && entity.Birtday == Birtday;
@@ -77,7 +81,7 @@ namespace LiteRepository.Sql.Models
 
         public override int GetHashCode()
         {
-            return Cource.GetHashCode() ^ Letter.GetHashCode() 
+            return Id.GetHashCode() 
                 ^ (FirstName ?? string.Empty).GetHashCode()
                 ^ (SecondName ?? string.Empty).GetHashCode()
                 ^ Birtday.GetHashCode();

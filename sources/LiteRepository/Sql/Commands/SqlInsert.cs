@@ -21,6 +21,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
+using System.Data.Common;
 
 namespace LiteRepository.Sql.Commands
 {
@@ -29,14 +31,40 @@ namespace LiteRepository.Sql.Commands
         public SqlInsert(ISqlBuilder sqlBuilder) : base(sqlBuilder)
         { }
 
-        public E Execute(E entity, IDbConnection dbConnection)
+        public E Execute(E entity, DbConnection dbConnection)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+            if (dbConnection == null)
+                throw new ArgumentNullException(nameof(dbConnection));
+
+            if (entity is IIdentityEntity)
+            {
+                var nextId = dbConnection.ExecuteScalar<long>(SqlBuilder.GetInsertSql<E>(), param: entity);
+                return (E)(entity as IIdentityEntity).UpdateId(nextId);
+            }
+            else
+                dbConnection.Execute(SqlBuilder.GetInsertSql<E>(), param: entity);
+
+            return entity;
         }
 
-        public Task<E> ExecuteAsync(E entity, IDb db)
+        public async Task<E> ExecuteAsync(E entity, DbConnection dbConnection)
         {
-            return db.QuerySingleAsync<E>(dbConnection => Execute(entity, dbConnection));
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+            if (dbConnection == null)
+                throw new ArgumentNullException(nameof(dbConnection));
+
+            if (entity is IIdentityEntity)
+            {
+                var nextId = await dbConnection.ExecuteScalarAsync<long>(SqlBuilder.GetInsertSql<E>(), param: entity);
+                return (E)(entity as IIdentityEntity).UpdateId(nextId);
+            }
+            else
+                await dbConnection.ExecuteAsync(SqlBuilder.GetInsertSql<E>(), param: entity);
+
+            return entity;
         }
     }
 }

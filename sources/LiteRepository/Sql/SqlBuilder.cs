@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Sql
 {
-    public class SqlBuilder : ISqlBuilder
+    public class SqlBuilder 
     {
     }
 }

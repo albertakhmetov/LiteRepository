@@ -36,13 +36,13 @@ namespace LiteRepository.Sql
             public string Text { get; set; }
         }
 
-        private class Identity : IIdentityEntity<Identity>
+        private class Identity : IIdentityEntity
         {
             public long Id { get; set; }
             [SqlKeyAttribute] // must be ignored
             public string Text { get; set; }
 
-            public Identity UpdateId(long id)
+            public object UpdateId(long id)
             {
                 Id = id;
                 return this; // this object is mutable, therefore just changes id and returns itself

@@ -107,7 +107,7 @@ namespace LiteRepository.Sql
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
             Type = type;
-            IsIdentity = type.GetInterfaces().Count(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIdentityEntity<>)) > 0;
+            IsIdentity = type.GetInterfaces().Contains(typeof(IIdentityEntity));
 
             var typeStoreAs = Type.GetCustomAttributes(typeof(SqlAliasAttribute), true).FirstOrDefault() as SqlAliasAttribute;
             Name = Type.Name;
@@ -123,7 +123,7 @@ namespace LiteRepository.Sql
 
                 if (IsIdentity)
                 {
-                    var isPrimaryKey = property.Name == nameof(IIdentityEntity<object>.Id);
+                    var isPrimaryKey = property.Name == nameof(IIdentityEntity.Id);
                     fields.Add(new Property(
                        property.Name,
                        storeAs == null ? property.Name : storeAs.DbName,
