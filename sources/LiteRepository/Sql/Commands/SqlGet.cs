@@ -17,13 +17,26 @@ See the License for the specific
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Commands
 {
-    public class SqlGet
+    public class SqlGet<E, K> : SqlCommandBase<E>
     {
+        public SqlGet(ISqlBuilder sqlBuilder) : base(sqlBuilder)
+        { }
+
+        public E Execute(K key, IDbConnection dbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<E> ExecuteAsync(K key, IDb db)
+        {
+            return db.QuerySingleAsync<E>(dbConnection => Execute(key, dbConnection));
+        }
     }
 }

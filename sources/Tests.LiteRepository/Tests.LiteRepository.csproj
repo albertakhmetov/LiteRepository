@@ -87,19 +87,12 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Database\EntityMetadataItemTests.cs" />
-    <Compile Include="Database\EntityMetadataTests.cs" />
-    <Compile Include="Database\PrimaryKeyAttributeTests.cs" />
-    <Compile Include="Database\SqlServerGeneratorTests.cs" />
-    <Compile Include="Database\SqlServerGeneratorIntegrationTests.cs" />
-    <Compile Include="Database\StorageProcedureSqlGeneratorTests.cs" />
-    <Compile Include="Database\StoreAsAttributeTests.cs" />
-    <Compile Include="DataRepositoryTests.cs" />
-    <Compile Include="Database\DefaultDbTests.cs" />
-    <Compile Include="Models\Entities.cs" />
-    <Compile Include="Models\SqlEntity.cs" />
-    <Compile Include="Models\SqlIdentityEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sql\Attributes\PrimaryKeyAttributeTests.cs" />
+    <Compile Include="Sql\Attributes\StoreAsAttributeTests.cs" />
+    <Compile Include="Sql\Commands\SqlCommandBaseTests.cs" />
+    <Compile Include="Sql\Models\Entity.cs" />
+    <Compile Include="Sql\SqlMetadataTests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -23,7 +23,18 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Attributes
 {
-    public class SqlKey
+    [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
+    public sealed class SqlKey : Attribute
     {
+        public bool IsIdentity
+        {
+            get;
+            private set;
+        }
+
+        public SqlKey(bool isIdentity = false)
+        {
+            IsIdentity = isIdentity;
+        }
     }
 }

@@ -15,28 +15,39 @@ See the License for the specific
 
 */
 
+using LiteRepository.Sql.Commands;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql.Commands
+namespace LiteRepository.Sql
 {
-    public class SqlInsert<E> : SqlCommandBase<E>
+    public class SqlRepository<E, K> : IRepository<E, K>
     {
-        public SqlInsert(ISqlBuilder sqlBuilder) : base(sqlBuilder)
-        { }
+        private readonly IDb _db;
+        private readonly SqlInsert<E> _sqlInsert;
 
-        public E Execute(E entity, IDbConnection dbConnection)
+
+        public virtual Task<E> InsertAsync(E entity)
+        {
+            return _sqlInsert.ExecuteAsync(entity, _db);
+        }
+
+        public virtual Task<int> UpdateAsync(E entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<E> ExecuteAsync(E entity, IDb db)
+        public virtual Task<int> DeleteAsync(K key)
         {
-            return db.QuerySingleAsync<E>(dbConnection => Execute(entity, dbConnection));
+            throw new NotImplementedException();
+        }
+
+        public virtual Task<E> GetAsync(K key)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -16,6 +16,7 @@ See the License for the specific
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,24 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Commands
 {
-    public abstract class SqlCommandBase
+    public abstract class SqlCommandBase<E>
     {
+        public ISqlBuilder SqlBuilder
+        {
+            get; private set;
+        }
+
+        public SqlMetadata SqlMetadata
+        {
+            get; private set;
+        }
+
+        protected SqlCommandBase(ISqlBuilder sqlBuilder)
+        {
+            if (sqlBuilder == null)
+                throw new ArgumentNullException(nameof(sqlBuilder));
+            SqlBuilder = sqlBuilder;
+            SqlMetadata = SqlMetadata.GetSqlMetadata(typeof(E));
+        }
     }
 }

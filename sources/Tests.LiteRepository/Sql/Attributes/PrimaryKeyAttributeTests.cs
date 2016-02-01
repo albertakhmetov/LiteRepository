@@ -15,22 +15,32 @@ See the License for the specific
 
 */
 
+using Xunit;
+using NSubstitute;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Database
+namespace LiteRepository.Sql.Attributes
 {
-    [Obsolete]
-    public interface IDb
+    public class PrimaryKeyAttributeTests
     {
-        IDbConnection OpenConnection();
-        void CloseConnection(IDbConnection dbConnection);
+        [Fact]
+        public void Ctor_Default_Test()
+        {
+            var pk = new SqlKey();
 
-        ISqlGenerator GetSqlGenerator<E>() where E : class;
-        ISqlExecutor GetSqlExecutor();
+            Assert.False(pk.IsIdentity);
+        }
+
+        [Fact]
+        public void Ctor_IsIdentity_True_Test()
+        {
+            var pk = new SqlKey(isIdentity: true);
+
+            Assert.True(pk.IsIdentity);
+        }
     }
 }

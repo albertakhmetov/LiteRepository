@@ -17,13 +17,26 @@ See the License for the specific
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Commands
 {
-    public class SqlDelete
+    public class SqlDelete<E, K> : SqlCommandBase<E>
     {
+        public SqlDelete(ISqlBuilder sqlBuilder) : base(sqlBuilder)
+        { }
+
+        public int Execute(K key, IDbConnection dbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> ExecuteAsync(K key, IDb db)
+        {
+            return db.ExecAsync(dbConnection => Execute(key, dbConnection));
+        }
     }
 }

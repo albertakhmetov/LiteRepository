@@ -17,20 +17,13 @@ See the License for the specific
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Database
+namespace LiteRepository.Sql
 {
-    [Obsolete]
-    public interface IDb
+    public interface ISqlBuilder
     {
-        IDbConnection OpenConnection();
-        void CloseConnection(IDbConnection dbConnection);
-
-        ISqlGenerator GetSqlGenerator<E>() where E : class;
-        ISqlExecutor GetSqlExecutor();
     }
 }

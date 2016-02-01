@@ -23,7 +23,8 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Attributes
 {
-    public class SqlIgnore
+    [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
+    public sealed class SqlIgnore : Attribute
     {
     }
 }

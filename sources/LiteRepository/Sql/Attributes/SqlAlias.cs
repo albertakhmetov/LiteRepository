@@ -23,7 +23,21 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Attributes
 {
-    public class SqlAlias
+    [AttributeUsage(validOn: AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
+    public class SqlAlias : Attribute
     {
+        public string DbName
+        {
+            get;
+            private set;
+        }
+
+        public SqlAlias(string dbName)
+        {
+            if (string.IsNullOrWhiteSpace(dbName))
+                throw new ArgumentException(nameof(dbName));
+
+            DbName = dbName;
+        }
     }
 }

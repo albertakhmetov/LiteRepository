@@ -15,32 +15,20 @@ See the License for the specific
 
 */
 
-using Xunit;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Database
+namespace LiteRepository
 {
-    public class StoreAsAttributeTests
+    public interface IDb
     {
-        [Fact]
-        public void Ctor_NullOrEmpty_Test()
-        {
-            Assert.Throws<ArgumentException>(() => new StoreAsAttribute(null));
-            Assert.Throws<ArgumentException>(() => new StoreAsAttribute(string.Empty));
-            Assert.Throws<ArgumentException>(() => new StoreAsAttribute("   "));
-        }
-
-        [Fact]
-        public void Ctor_Test()
-        {
-            const string dbName = "nameInDb";
-            var sa = new StoreAsAttribute(dbName);
-
-            Assert.Equal(dbName, sa.DbName);
-        }
+        Task<int> ExecAsync(Func<IDbConnection, int> callback);
+        Task<T> QuerySingleAsync<T>(Func<IDbConnection, T> callback);
+        Task<IEnumerable<T>> QueryAsync<T>(Func<IDbConnection, IEnumerable<T>> callback);
     }
+
 }

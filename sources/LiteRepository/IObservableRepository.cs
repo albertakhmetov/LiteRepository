@@ -17,20 +17,27 @@ See the License for the specific
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Database
+namespace LiteRepository
 {
-    [Obsolete]
-    public interface IDb
+    public interface IObservableRepository<E, K> : IRepository<E, K>
     {
-        IDbConnection OpenConnection();
-        void CloseConnection(IDbConnection dbConnection);
+        /// <summary>
+        /// Raises when entity was inserted
+        /// </summary>
+        IObservable<E> InsertedObservable { get; }
 
-        ISqlGenerator GetSqlGenerator<E>() where E : class;
-        ISqlExecutor GetSqlExecutor();
+        /// <summary>
+        /// Raises when entity was updated
+        /// </summary>
+        IObservable<E> UpdatedObservable { get; }
+
+        /// <summary>
+        /// Raises when entity was deleted
+        /// </summary>
+        IObservable<K> DeletedObservable { get; }
     }
 }

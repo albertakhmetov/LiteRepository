@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Database
 {
+    [Obsolete]
     public interface ISqlExecutor
     {
         Task<T> QueryScalarAsync<T>(IDbConnection connection, string sql, CommandType commandType, CancellationToken? cancellationToken = default(CancellationToken?));

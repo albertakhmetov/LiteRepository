@@ -17,13 +17,26 @@ See the License for the specific
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Commands
 {
-    public class SqlUpdate
+    public class SqlUpdate<E> : SqlCommandBase<E>
     {
+        public SqlUpdate(ISqlBuilder sqlBuilder) : base(sqlBuilder)
+        { }
+
+        public int Execute(E entity, IDbConnection dbConnection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> ExecuteAsync(E entity, IDb db)
+        {
+            return db.ExecAsync(dbConnection => Execute(entity, dbConnection));
+        }
     }
 }

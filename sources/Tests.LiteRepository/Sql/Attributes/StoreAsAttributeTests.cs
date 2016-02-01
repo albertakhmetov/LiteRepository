@@ -16,31 +16,31 @@ See the License for the specific
 */
 
 using Xunit;
-using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Database
+namespace LiteRepository.Sql.Attributes
 {
-    public class PrimaryKeyAttributeTests
+    public class SqlAliasAttributeTests
     {
         [Fact]
-        public void Ctor_Default_Test()
+        public void Ctor_NullOrEmpty_Test()
         {
-            var pk = new PrimaryKeyAttribute();
-
-            Assert.False(pk.IsIdentity);
+            Assert.Throws<ArgumentException>(() => new SqlAlias(null));
+            Assert.Throws<ArgumentException>(() => new SqlAlias(string.Empty));
+            Assert.Throws<ArgumentException>(() => new SqlAlias("   "));
         }
 
         [Fact]
-        public void Ctor_IsIdentity_True_Test()
+        public void Ctor_Test()
         {
-            var pk = new PrimaryKeyAttribute(isIdentity: true);
+            const string dbName = "nameInDb";
+            var sa = new SqlAlias(dbName);
 
-            Assert.True(pk.IsIdentity);
+            Assert.Equal(dbName, sa.DbName);
         }
     }
 }

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LiteRepository.Sql.Commands.SqlCommandBase">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Sql\Commands\SqlCommandBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SqlBuilder" />
+      <Property Name="Db" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LiteRepository.Sql.Commands.SqlCount" Collapsed="true">
+    <Position X="7.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sql\Commands\SqlCount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteRepository.Sql.Commands.SqlDelete" Collapsed="true">
+    <Position X="6" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sql\Commands\SqlDelete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteRepository.Sql.Commands.SqlGet" Collapsed="true">
+    <Position X="0.75" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="LiteRepository.Sql.Commands.SqlCommandBase" FixedFromPoint="true">
+      <Path>
+        <Point X="5" Y="1.603" />
+        <Point X="5" Y="3.125" />
+        <Point X="1.5" Y="3.125" />
+        <Point X="1.5" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sql\Commands\SqlGet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteRepository.Sql.Commands.SqlInsert" Collapsed="true">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sql\Commands\SqlInsert.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiteRepository.Sql.Commands.SqlUpdate" Collapsed="true">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sql\Commands\SqlUpdate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="LiteRepository.Sql.ISqlBuilder" Collapsed="true">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sql\ISqlBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="LiteRepository.IDb" Collapsed="true">
+    <Position X="7.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>IDb.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
