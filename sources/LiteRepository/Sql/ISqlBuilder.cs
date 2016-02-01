@@ -29,5 +29,6 @@ namespace LiteRepository.Sql
         string GetUpdateSql();
         string GetDeleteSql();
         string GetSelectSql();
+        string GetSelectCountSql();
     }
 }

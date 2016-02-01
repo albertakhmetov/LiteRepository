@@ -36,7 +36,6 @@ namespace LiteRepository.Sql.Commands
 
             var cmd = Substitute.For<SqlCommandBase<Entity>>(sqlBuilder);
             Assert.Equal(sqlBuilder, cmd.SqlBuilder);
-            Assert.Equal(SqlMetadata.GetSqlMetadata(typeof(Entity)), cmd.SqlMetadata);
         }
 
         [Fact]

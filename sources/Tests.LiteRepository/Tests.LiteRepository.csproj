@@ -92,6 +92,7 @@
     <Compile Include="Sql\Commands\DbMocks.cs" />
     <Compile Include="Sql\Commands\SqlCommandBaseTests.cs" />
     <Compile Include="Sql\Commands\SqlDeleteTests.cs" />
+    <Compile Include="Sql\Commands\SqlGetCountTests.cs" />
     <Compile Include="Sql\Commands\SqlGetTests.cs" />
     <Compile Include="Sql\Commands\SqlInsertTests.cs" />
     <Compile Include="Sql\Commands\SqlUpdateTests.cs" />

@@ -25,13 +25,10 @@ namespace LiteRepository.Sql
 {
     public class SqlBuilder<E> : ISqlBuilder
     {
-        private 
-
         public SqlBuilder()
         {
 
         }
-
 
         public string GetInsertSql()
         {
@@ -49,6 +46,11 @@ namespace LiteRepository.Sql
         }
 
         public string GetSelectSql()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetSelectCountSql()
         {
             throw new NotImplementedException();
         }

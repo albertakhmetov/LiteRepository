@@ -18,26 +18,30 @@ See the License for the specific
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace LiteRepository.Sql.Commands
 {
-    public class SqlCount<E> : SqlCommandBase<E>
+    public class SqlGetCount<E> : SqlCommandBase<E>
         where E : class
     {
-        public SqlCount(ISqlBuilder sqlBuilder) : base(sqlBuilder)
+        public SqlGetCount(ISqlBuilder sqlBuilder) : base(sqlBuilder)
         { }
 
-        public long Execute(IDbConnection dbConnection)
+        public long Execute(DbConnection dbConnection)
         {
-            throw new NotImplementedException();
+            CheckNotNull(dbConnection, nameof(dbConnection));
+            return dbConnection.ExecuteScalar<long>(SqlBuilder.GetSelectCountSql());
         }
 
-        public Task<long> ExecuteAsync(IDb db)
+        public Task<long> ExecuteAsync(DbConnection dbConnection)
         {
-            return db.QuerySingleAsync<long>(dbConnection => Execute(dbConnection));
+            CheckNotNull(dbConnection, nameof(dbConnection));
+            return dbConnection.ExecuteScalarAsync<long>(SqlBuilder.GetSelectCountSql());
         }
     }
 }

@@ -60,18 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\DefaultDb.cs" />
-    <Compile Include="Database\DefaultSqlExecutor.cs" />
-    <Compile Include="Database\EntityMetadata.cs" />
-    <Compile Include="Database\EntityMetadataItem.cs" />
-    <Compile Include="Database\IDb.cs" />
-    <Compile Include="Database\IgnoreAttribute.cs" />
-    <Compile Include="Database\ISqlExecutor.cs" />
-    <Compile Include="Database\ISqlGenerator.cs" />
-    <Compile Include="Database\PrimaryKeyAttribute.cs" />
-    <Compile Include="Database\SqlServerGenerator.cs" />
-    <Compile Include="Database\StorageProcedureSqlGenerator.cs" />
-    <Compile Include="Database\StoreAsAttribute.cs" />
     <Compile Include="IDb.cs" />
     <Compile Include="IIdentityEntity.cs" />
     <Compile Include="IObservableRepository.cs" />
