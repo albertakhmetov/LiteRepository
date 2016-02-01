@@ -18,6 +18,7 @@ See the License for the specific
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,13 +26,9 @@ using System.Threading.Tasks;
 namespace LiteRepository.Sql.Commands
 {
     public abstract class SqlCommandBase<E>
+        where E : class
     {
         public ISqlBuilder SqlBuilder
-        {
-            get; private set;
-        }
-
-        public SqlMetadata SqlMetadata
         {
             get; private set;
         }
@@ -41,7 +38,13 @@ namespace LiteRepository.Sql.Commands
             if (sqlBuilder == null)
                 throw new ArgumentNullException(nameof(sqlBuilder));
             SqlBuilder = sqlBuilder;
-            SqlMetadata = SqlMetadata.GetSqlMetadata(typeof(E));
+        }
+
+        protected void CheckNotNull<T>(T value, string parameterName)
+            where T : class
+        {
+            if (value == null)
+                throw new ArgumentNullException(parameterName);
         }
     }
 }

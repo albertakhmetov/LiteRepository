@@ -50,7 +50,7 @@ namespace LiteRepository.Sql.Models
             get; set;
         }
 
-        public DateTime Birtday
+        public DateTime Birthday
         {
             get; set;
         }
@@ -62,7 +62,7 @@ namespace LiteRepository.Sql.Models
                 Id = id,
                 FirstName = this.FirstName,
                 SecondName = this.SecondName,
-                Birtday = this.Birtday
+                Birthday = this.Birthday
             };
         }
 
@@ -76,7 +76,7 @@ namespace LiteRepository.Sql.Models
             return entity != null && entity.Id == Id
                 && entity.FirstName == FirstName
                 && entity.SecondName == SecondName
-                && entity.Birtday == Birtday;
+                && entity.Birthday == Birthday;
         }
 
         public override int GetHashCode()
@@ -84,7 +84,7 @@ namespace LiteRepository.Sql.Models
             return Id.GetHashCode() 
                 ^ (FirstName ?? string.Empty).GetHashCode()
                 ^ (SecondName ?? string.Empty).GetHashCode()
-                ^ Birtday.GetHashCode();
+                ^ Birthday.GetHashCode();
         }
     }
 }

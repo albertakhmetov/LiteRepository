@@ -18,6 +18,7 @@ See the License for the specific
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,9 +27,9 @@ namespace LiteRepository
 {
     public interface IDb
     {
-        Task<int> ExecAsync(Func<IDbConnection, int> callback);
-        Task<T> QuerySingleAsync<T>(Func<IDbConnection, T> callback);
-        Task<IEnumerable<T>> QueryAsync<T>(Func<IDbConnection, IEnumerable<T>> callback);
+        Task<DbConnection> OpenDbConnectionAsync();
+        DbConnection OpenDbConnection();
+        void CloseDbConnection(DbConnection dbConnection);
     }
 
 }

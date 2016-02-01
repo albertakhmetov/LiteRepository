@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 namespace LiteRepository.Sql.Commands
 {
     public class SqlCount<E> : SqlCommandBase<E>
+        where E : class
     {
         public SqlCount(ISqlBuilder sqlBuilder) : base(sqlBuilder)
         { }

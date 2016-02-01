@@ -18,25 +18,42 @@ See the License for the specific
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace LiteRepository.Sql.Commands
 {
     public class SqlGet<E, K> : SqlCommandBase<E>
+        where E : class
+        where K : class
     {
         public SqlGet(ISqlBuilder sqlBuilder) : base(sqlBuilder)
         { }
 
-        public E Execute(K key, IDbConnection dbConnection)
+        public E Execute(K key, DbConnection dbConnection)
         {
-            throw new NotImplementedException();
+            CheckNotNull(key, nameof(key));
+            CheckNotNull(dbConnection, nameof(dbConnection));
+
+            return dbConnection.Query<E>(SqlBuilder.GetSelectSql(), param: key).FirstOrDefault();
         }
 
-        public Task<E> ExecuteAsync(K key, IDb db)
+        public async Task<E> ExecuteAsync(K key, DbConnection dbConnection)
         {
-            return db.QuerySingleAsync<E>(dbConnection => Execute(key, dbConnection));
+            CheckNotNull(key, nameof(key));
+            CheckNotNull(dbConnection, nameof(dbConnection));
+
+            var task = dbConnection.QueryAsync<E>(SqlBuilder.GetSelectSql(), param: key);
+            if (task != null)
+            {
+                var queryResult = await task;
+                return queryResult.FirstOrDefault();
+            }
+            else
+                return default(E);
         }
     }
 }

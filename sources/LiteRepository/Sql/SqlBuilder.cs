@@ -23,7 +23,34 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Sql
 {
-    public class SqlBuilder 
+    public class SqlBuilder<E> : ISqlBuilder
     {
+        private 
+
+        public SqlBuilder()
+        {
+
+        }
+
+
+        public string GetInsertSql()
+        {
+            throw new NotImplementedException();
+        }
+        
+        public string GetUpdateSql()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetDeleteSql()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetSelectSql()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -27,6 +27,19 @@ namespace LiteRepository.Sql.Models
     [SqlAlias("students")]
     public class Entity
     {
+        public class Key
+        {
+            public long Cource
+            {
+                get; set;
+            }
+
+            public char Letter
+            {
+                get; set;
+            }
+        }
+
         [SqlKey]
         public long Cource
         {
@@ -57,7 +70,7 @@ namespace LiteRepository.Sql.Models
             get; set;
         }
 
-        public DateTime Birtday
+        public DateTime Birthday
         {
             get; set;
         }
@@ -72,7 +85,7 @@ namespace LiteRepository.Sql.Models
             return entity != null && entity.Cource == Cource && entity.Letter == Letter
                 && entity.FirstName == FirstName
                 && entity.SecondName == SecondName
-                && entity.Birtday == Birtday;
+                && entity.Birthday == Birthday;
         }
 
         public override int GetHashCode()
@@ -80,7 +93,7 @@ namespace LiteRepository.Sql.Models
             return Cource.GetHashCode() ^ Letter.GetHashCode() 
                 ^ (FirstName ?? string.Empty).GetHashCode()
                 ^ (SecondName ?? string.Empty).GetHashCode()
-                ^ Birtday.GetHashCode();
+                ^ Birthday.GetHashCode();
         }
     }
 }

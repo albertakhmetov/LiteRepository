@@ -27,42 +27,39 @@ using System.Data.Common;
 namespace LiteRepository.Sql.Commands
 {
     public class SqlInsert<E> : SqlCommandBase<E>
+        where E : class
     {
         public SqlInsert(ISqlBuilder sqlBuilder) : base(sqlBuilder)
         { }
 
         public E Execute(E entity, DbConnection dbConnection)
         {
-            if (entity == null)
-                throw new ArgumentNullException(nameof(entity));
-            if (dbConnection == null)
-                throw new ArgumentNullException(nameof(dbConnection));
+            CheckNotNull(entity, nameof(entity));
+            CheckNotNull(dbConnection, nameof(dbConnection));
 
             if (entity is IIdentityEntity)
             {
-                var nextId = dbConnection.ExecuteScalar<long>(SqlBuilder.GetInsertSql<E>(), param: entity);
+                var nextId = dbConnection.ExecuteScalar<long>(SqlBuilder.GetInsertSql(), param: entity);
                 return (E)(entity as IIdentityEntity).UpdateId(nextId);
             }
             else
-                dbConnection.Execute(SqlBuilder.GetInsertSql<E>(), param: entity);
+                dbConnection.Execute(SqlBuilder.GetInsertSql(), param: entity);
 
             return entity;
         }
 
         public async Task<E> ExecuteAsync(E entity, DbConnection dbConnection)
         {
-            if (entity == null)
-                throw new ArgumentNullException(nameof(entity));
-            if (dbConnection == null)
-                throw new ArgumentNullException(nameof(dbConnection));
+            CheckNotNull(entity, nameof(entity));
+            CheckNotNull(dbConnection, nameof(dbConnection));
 
             if (entity is IIdentityEntity)
             {
-                var nextId = await dbConnection.ExecuteScalarAsync<long>(SqlBuilder.GetInsertSql<E>(), param: entity);
+                var nextId = await dbConnection.ExecuteScalarAsync<long>(SqlBuilder.GetInsertSql(), param: entity);
                 return (E)(entity as IIdentityEntity).UpdateId(nextId);
             }
             else
-                await dbConnection.ExecuteAsync(SqlBuilder.GetInsertSql<E>(), param: entity);
+                await dbConnection.ExecuteAsync(SqlBuilder.GetInsertSql(), param: entity);
 
             return entity;
         }

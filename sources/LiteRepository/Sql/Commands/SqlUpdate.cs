@@ -18,25 +18,34 @@ See the License for the specific
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace LiteRepository.Sql.Commands
 {
     public class SqlUpdate<E> : SqlCommandBase<E>
+        where E : class
     {
         public SqlUpdate(ISqlBuilder sqlBuilder) : base(sqlBuilder)
         { }
 
-        public int Execute(E entity, IDbConnection dbConnection)
+        public int Execute(E entity, DbConnection dbConnection)
         {
-            throw new NotImplementedException();
+            CheckNotNull(entity, nameof(entity));
+            CheckNotNull(dbConnection, nameof(dbConnection));
+
+            return dbConnection.Execute(SqlBuilder.GetUpdateSql(), param: entity);
         }
 
-        public Task<int> ExecuteAsync(E entity, IDb db)
+        public Task<int> ExecuteAsync(E entity, DbConnection dbConnection)
         {
-            return db.ExecAsync(dbConnection => Execute(entity, dbConnection));
+            CheckNotNull(entity, nameof(entity));
+            CheckNotNull(dbConnection, nameof(dbConnection));
+
+            return dbConnection.ExecuteAsync(SqlBuilder.GetUpdateSql(), param: entity);
         }
     }
 }

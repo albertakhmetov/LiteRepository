@@ -18,25 +18,35 @@ See the License for the specific
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace LiteRepository.Sql.Commands
 {
     public class SqlDelete<E, K> : SqlCommandBase<E>
+        where E : class
+        where K : class
     {
         public SqlDelete(ISqlBuilder sqlBuilder) : base(sqlBuilder)
         { }
 
-        public int Execute(K key, IDbConnection dbConnection)
+        public int Execute(K key, DbConnection dbConnection)
         {
-            throw new NotImplementedException();
+            CheckNotNull(key, nameof(key));
+            CheckNotNull(dbConnection, nameof(dbConnection));
+
+            return dbConnection.Execute(SqlBuilder.GetDeleteSql(), param: key);
         }
 
-        public Task<int> ExecuteAsync(K key, IDb db)
+        public Task<int> ExecuteAsync(K key, DbConnection dbConnection)
         {
-            return db.ExecAsync(dbConnection => Execute(key, dbConnection));
+            CheckNotNull(key, nameof(key));
+            CheckNotNull(dbConnection, nameof(dbConnection));
+
+            return dbConnection.ExecuteAsync(SqlBuilder.GetDeleteSql(), param: key);
         }
     }
 }

@@ -89,7 +89,6 @@
     <Compile Include="Sql\ISqlBuilder.cs" />
     <Compile Include="Sql\SqlBuilder.cs" />
     <Compile Include="Sql\SqlMetadata.cs" />
-    <Compile Include="Sql\SqlRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

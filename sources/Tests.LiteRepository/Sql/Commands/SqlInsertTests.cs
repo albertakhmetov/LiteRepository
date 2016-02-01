@@ -59,6 +59,28 @@ namespace LiteRepository.Sql.Commands
             await Assert.ThrowsAsync<ArgumentNullException>(() => cmd.ExecuteAsync(new Entity(), null));
         }
 
+        private static void CheckCommand(Entity entity, string sql, List<DbParameter> dbParameters, IDbCommand dbCommand)
+        {
+            dbCommand.Received(1).CommandText = sql;
+            dbCommand.Received(5).CreateParameter();
+
+            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.Cource) && (long)i.Value == entity.Cource));
+            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.Letter) && (char)i.Value == entity.Letter));
+            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.FirstName) && (string)i.Value == entity.FirstName));
+            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.SecondName) && (string)i.Value == entity.SecondName));
+            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.Birthday) && (DateTime)i.Value == entity.Birthday));
+        }
+
+        private static void CheckIdentityCommand(IdentityEntity entity, string sql, List<DbParameter> dbParameters, IDbCommand dbCommand)
+        {
+            dbCommand.Received(1).CommandText = sql;
+            dbCommand.Received(3).CreateParameter();
+
+            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.FirstName) && (string)i.Value == entity.FirstName));
+            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.SecondName) && (string)i.Value == entity.SecondName));
+            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.Birthday) && (DateTime)i.Value == entity.Birthday));
+        }
+
         private static Entity GetEntity()
         {
             return new Entity
@@ -67,7 +89,7 @@ namespace LiteRepository.Sql.Commands
                 Letter = 'B',
                 FirstName = "Ivan",
                 SecondName = "Petrov",
-                Birtday = new DateTime(1991, 12, 26)
+                Birthday = new DateTime(1991, 12, 26)
             };
         }
 
@@ -78,52 +100,21 @@ namespace LiteRepository.Sql.Commands
                 Id = 0,
                 FirstName = "Ivan",
                 SecondName = "Petrov",
-                Birtday = new DateTime(1991, 12, 26)
+                Birthday = new DateTime(1991, 12, 26)
             };
         }
 
-        private static void CheckCommand(Entity entity, string sql, List<DbParameter> dbParameters, IDbCommand dbCommand)
-        {
-            dbCommand.Received(1).CommandText = sql;
-            dbCommand.Received(5).CreateParameter();
-
-            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.Cource) && (long)i.Value == entity.Cource));
-            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.Letter) && (char)i.Value == entity.Letter));
-            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.FirstName) && (string)i.Value == entity.FirstName));
-            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.SecondName) && (string)i.Value == entity.SecondName));
-            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.Birtday) && (DateTime)i.Value == entity.Birtday));
-        }
-
-        private static void CheckIdentityCommand(IdentityEntity entity, string sql, List<DbParameter> dbParameters, IDbCommand dbCommand)
-        {
-            dbCommand.Received(1).CommandText = sql;
-            dbCommand.Received(3).CreateParameter();
-
-            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.FirstName) && (string)i.Value == entity.FirstName));
-            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.SecondName) && (string)i.Value == entity.SecondName));
-            Assert.Equal(1, dbParameters.Count(i => i.ParameterName == nameof(entity.Birtday) && (DateTime)i.Value == entity.Birtday));
-        }
-
-        private static DbCommand GenerateCommand(List<DbParameter> dbParameters)
-        {
-            var dbCommand = Substitute.For<DbCommand, IDbCommand>();
-            ((IDbCommand)dbCommand)
-                .When(x => x.CreateParameter())
-                .Do(x => dbParameters.Add(Substitute.For<DbParameter>()));
-            ((IDbCommand)dbCommand).CreateParameter().Returns(x => dbParameters.Last());
-            return dbCommand;
-        }
 
         private static string GetSql()
         {
             // cource and birthday (lowercase) - it is not misstyping
-            return "insert into db (cource, letter, first_name, second_name, birthday) values (@cource, @Letter, @FirstName, @SecondName, @birtday)";
+            return "insert into students (cource, letter, first_name, second_name, birthday) values (@cource, @Letter, @FirstName, @SecondName, @birthday)";
         }
 
         private static string GetIdentitySql()
         {
             // cource and birthday (lowercase) - it is not misstyping
-            return "insert into db (first_name, second_name, birthday) values (@FirstName, @SecondName, @birtday)\r\nSELECT SCOPE_IDENTITY()";
+            return "insert into students (first_name, second_name, birthday) values (@FirstName, @SecondName, @birthday)\r\nSELECT SCOPE_IDENTITY()";
         }
 
         [Fact]
@@ -133,20 +124,17 @@ namespace LiteRepository.Sql.Commands
             var sql = GetSql();
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetInsertSql<Entity>().Returns(sql);
+            sqlBuilder.GetInsertSql().Returns(sql);
 
             var dbParameters = new List<DbParameter>();
-            var dbCommand = GenerateCommand(dbParameters);
-
-            var dbConnection = Substitute.For<DbConnection>();
-            dbConnection.State.Returns(ConnectionState.Open);
-            dbConnection.CreateCommand().Returns(dbCommand);
+            var dbCommand = DbMocks.CreateCommand(dbParameters);
 
             var cmd = new SqlInsert<Entity>(sqlBuilder);
-            var execResult = cmd.Execute(entity, dbConnection);
-            Assert.Equal(entity, execResult);
-            CheckCommand(entity, sql, dbParameters, dbCommand);
+            var execResult = cmd.Execute(entity, DbMocks.CreateConnection(dbCommand));
 
+            Assert.Equal(entity, execResult);
+
+            CheckCommand(entity, sql, dbParameters, dbCommand);
             dbCommand.Received(1).ExecuteNonQuery();
         }
 
@@ -157,20 +145,21 @@ namespace LiteRepository.Sql.Commands
             var sql = GetSql();
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetInsertSql<Entity>().Returns(sql);
+            sqlBuilder.GetInsertSql().Returns(sql);
 
             var dbParameters = new List<DbParameter>();
-            var dbCommand = GenerateCommand(dbParameters);
+            var dbCommand = DbMocks.CreateCommand(dbParameters);
 
             var dbConnection = Substitute.For<DbConnection>();
             dbConnection.State.Returns(ConnectionState.Open);
             dbConnection.CreateCommand().Returns(dbCommand);
 
             var cmd = new SqlInsert<Entity>(sqlBuilder);
-            var execResult = await cmd.ExecuteAsync(entity, dbConnection);
-            Assert.Equal(entity, execResult);
-            CheckCommand(entity, sql, dbParameters, dbCommand);
+            var execResult = await cmd.ExecuteAsync(entity, DbMocks.CreateConnection(dbCommand));
 
+            Assert.Equal(entity, execResult);
+
+            CheckCommand(entity, sql, dbParameters, dbCommand);
             await dbCommand.Received(1).ExecuteNonQueryAsync(Arg.Any<CancellationToken>());
         }
 
@@ -182,28 +171,23 @@ namespace LiteRepository.Sql.Commands
             var sql = GetIdentitySql();
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetInsertSql<IdentityEntity>().Returns(sql);
+            sqlBuilder.GetInsertSql().Returns(sql);
 
             var dbParameters = new List<DbParameter>();
-            var dbCommand = GenerateCommand(dbParameters);
+            var dbCommand = DbMocks.CreateCommand(dbParameters);
             dbCommand.ExecuteScalar().Returns(newId);
 
-            var dbConnection = Substitute.For<DbConnection>();
-            dbConnection.State.Returns(ConnectionState.Open);
-            dbConnection.CreateCommand().Returns(dbCommand);
-
             var cmd = new SqlInsert<IdentityEntity>(sqlBuilder);
-            var execResult = cmd.Execute(entity, dbConnection);
+            var execResult = cmd.Execute(entity, DbMocks.CreateConnection(dbCommand));
 
             Assert.NotEqual(entity, execResult);
             Assert.NotEqual(entity.Id, execResult.Id);
             Assert.Equal(entity.FirstName, execResult.FirstName);
             Assert.Equal(entity.SecondName, execResult.SecondName);
-            Assert.Equal(entity.Birtday, execResult.Birtday);
+            Assert.Equal(entity.Birthday, execResult.Birthday);
             Assert.Equal(newId, execResult.Id);
 
             CheckIdentityCommand(entity, sql, dbParameters, dbCommand);
-
             dbCommand.Received(1).ExecuteScalar();
         }
 
@@ -215,31 +199,24 @@ namespace LiteRepository.Sql.Commands
             var sql = GetIdentitySql();
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetInsertSql<IdentityEntity>().Returns(sql);
+            sqlBuilder.GetInsertSql().Returns(sql);
 
             var dbParameters = new List<DbParameter>();
-            var dbCommand = GenerateCommand(dbParameters);
+            var dbCommand = DbMocks.CreateCommand(dbParameters);
             dbCommand.ExecuteScalarAsync().Returns(newId);
 
-            var dbConnection = Substitute.For<DbConnection>();
-            dbConnection.State.Returns(ConnectionState.Open);
-            dbConnection.CreateCommand().Returns(dbCommand);
-
             var cmd = new SqlInsert<IdentityEntity>(sqlBuilder);
-            var execResult = await cmd.ExecuteAsync(entity, dbConnection);
+            var execResult = await cmd.ExecuteAsync(entity, DbMocks.CreateConnection(dbCommand));
 
             Assert.NotEqual(entity, execResult);
             Assert.NotEqual(entity.Id, execResult.Id);
             Assert.Equal(entity.FirstName, execResult.FirstName);
             Assert.Equal(entity.SecondName, execResult.SecondName);
-            Assert.Equal(entity.Birtday, execResult.Birtday);
+            Assert.Equal(entity.Birthday, execResult.Birthday);
             Assert.Equal(newId, execResult.Id);
 
             CheckIdentityCommand(entity, sql, dbParameters, dbCommand);
-
             await dbCommand.Received(1).ExecuteScalarAsync();
         }
-
-
     }
 }
