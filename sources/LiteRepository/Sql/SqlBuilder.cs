@@ -25,65 +25,64 @@ namespace LiteRepository.Sql
 {
     public class SqlBuilder<E> : ISqlBuilder
     {
+
+        private readonly string _insertSql, _updateSql, _deleteSql, _selectSql, _selectCountSql;
+
         public SqlBuilder()
         {
-            //var metadata = new EntityMetadata(entityType);
+            var metadata = new SqlMetadata(typeof(E));
 
-            //IsIdentity = metadata.FirstOrDefault(x => x.IsIdentity) != null;
+            var selectFields = string.Join(", ", metadata.Select(i => $"{i.DbName.ToLower()} AS {i.Name}"));
+            var insertFields = string.Join(", ", metadata.Where(i => !i.IsIdentity).Select(i => i.DbName.ToLower()));
+            var insertValues = string.Join(", ", metadata.Where(i => !i.IsIdentity).Select(i => $"@{i.Name}"));
+            var updatePairs = string.Join(", ", metadata.Where(i => !i.IsPrimaryKey).Select(i => $"{i.DbName.ToLower()} = @{i.Name}"));
+            var whereCondition = string.Join(" AND ", metadata.Where(i => i.IsPrimaryKey).Select(i => $"{i.DbName.ToLower()} = @{i.Name}"));
 
-            //var selectFields = string.Join(", ", metadata.Select(i => $"{i.DbName} AS {i.Name}"));
-            //var insertFields = string.Join(", ", metadata.Where(i => !i.IsIdentity).Select(i => i.DbName));
-            //var insertValues = string.Join(", ", metadata.Where(i => !i.IsIdentity).Select(i => $"@{i.Name}"));
-            //var updatePairs = string.Join(", ", metadata.Where(i => !i.IsPrimaryKey).Select(i => $"{i.DbName} = @{i.Name}"));
-            //var whereCondition = string.Join(" AND ", metadata.Where(i => i.IsPrimaryKey).Select(i => $"{i.DbName} = @{i.Name}"));
+            _selectSql = $"SELECT {selectFields} FROM {metadata.DbName.ToLower()}";
+            if (whereCondition.Length > 0)
+                _selectSql += $" WHERE {whereCondition}";
 
-            //SelectAllSql = $"SELECT {selectFields} FROM {metadata.DbName}";
-            //SelectSql = SelectAllSql;
-            //if (whereCondition.Length > 0)
-            //    SelectSql += $" WHERE {whereCondition}";
+            _insertSql = $"INSERT INTO {metadata.DbName.ToLower()} ({insertFields}) VALUES ({insertValues})";
+            if (metadata.IsIdentity)
+            {
+                _insertSql += Environment.NewLine;
+                _insertSql += "SELECT SCOPE_IDENTITY()";
+            }
 
-            //InsertSql = $"INSERT INTO {metadata.DbName} ({insertFields}) VALUES ({insertValues})";
-            //if (IsIdentity)
-            //{
-            //    InsertSql += Environment.NewLine;
-            //    InsertSql += "SELECT SCOPE_IDENTITY()";
-            //}
+            _updateSql = $"UPDATE {metadata.DbName.ToLower()} SET {updatePairs}";
+            if (whereCondition.Length > 0)
+                _updateSql += $" WHERE {whereCondition}";
 
-            //UpdateSql = $"UPDATE {metadata.DbName} SET {updatePairs}";
-            //if (whereCondition.Length > 0)
-            //    UpdateSql += $" WHERE {whereCondition}";
+            _deleteSql = $"DELETE FROM {metadata.DbName.ToLower()}";
+            if (whereCondition.Length > 0)
+                _deleteSql += $" WHERE {whereCondition}";
 
-            //DeleteAllSql = $"DELETE FROM {metadata.DbName}";
-            //DeleteSql = DeleteAllSql;
-            //if (whereCondition.Length > 0)
-            //    DeleteSql += $" WHERE {whereCondition}";
-
-            //CountSql = $"SELECT COUNT(1) FROM {metadata.DbName}";
+            _selectCountSql = $"SELECT COUNT(1) FROM {metadata.DbName.ToLower()}";
         }
 
         public string GetInsertSql()
         {
-            throw new NotImplementedException();
+            return _insertSql;
         }
         
         public string GetUpdateSql()
         {
-            throw new NotImplementedException();
+            return _updateSql;
         }
 
         public string GetDeleteSql()
         {
-            throw new NotImplementedException();
+            return _deleteSql;
         }
 
         public string GetSelectSql()
         {
-            throw new NotImplementedException();
+            return _selectSql;
         }
 
         public string GetSelectCountSql()
         {
-            throw new NotImplementedException();
+            return _selectCountSql;
         }
     }
 }

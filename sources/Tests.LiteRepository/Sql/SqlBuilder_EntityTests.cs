@@ -51,28 +51,40 @@ namespace LiteRepository.Sql
         [Fact]
         public void GetInsert_Test()
         {
-            var expected = "INSERT INTO cash_check_item (id, shop_id, text, price) VALUES (@Id, @ShopId, @Text, @Price)";
+            var expected = "INSERT INTO students " +
+                "(cource, letter, first_name, second_name, birthday) " +
+                "VALUES (@Cource, @Letter, @FirstName, @SecondName, @Birthday)";
             Assert.Equal(expected, _fixture.SqlBuilder.GetInsertSql());
         }
 
         [Fact]
         public void GetUpdate_Test()
         {
-            var expected = "UPDATE cash_check_item SET text = @Text, price = @Price WHERE id = @Id AND shop_id = @ShopId";
+            var expected = "UPDATE students SET " +
+                "first_name = @FirstName, " +
+                "second_name = @SecondName, " +
+                "birthday = @Birthday " +
+                "WHERE cource = @Cource AND letter = @Letter";
             Assert.Equal(expected, _fixture.SqlBuilder.GetUpdateSql());
         }
 
         [Fact]
         public void GetDelete_Test()
         {
-            var expected = "DELETE FROM cash_check_item WHERE id = @Id AND shop_id = @ShopId";
+            var expected = "DELETE FROM students WHERE cource = @Cource AND letter = @Letter";
             Assert.Equal(expected, _fixture.SqlBuilder.GetDeleteSql());
         }
 
         [Fact]
         public void GetSelect_Test()
         {
-            var expected = "SELECT Cource AS Id, shop_id AS ShopId, text AS Text, price AS Price FROM students WHERE Cource = @Cource AND shop_id = @ShopId";
+            var expected = "SELECT " +
+                "cource AS Cource, "+
+                "letter AS Letter, " +
+                "first_name AS FirstName, " +
+                "second_name AS SecondName, " +
+                "birthday AS Birthday " + 
+                "FROM students WHERE cource = @Cource AND letter = @Letter";
             Assert.Equal(expected, _fixture.SqlBuilder.GetSelectSql());
         }
 
