@@ -76,10 +76,22 @@
     <Compile Include="DataRepositoryException.cs" />
     <Compile Include="IDataRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sql\Attributes\SqlAlias.cs" />
+    <Compile Include="Sql\Attributes\SqlKey.cs" />
+    <Compile Include="Sql\Attributes\SqlIgnore.cs" />
+    <Compile Include="Sql\Commands\SqlCount.cs" />
+    <Compile Include="Sql\Commands\SqlDelete.cs" />
+    <Compile Include="Sql\Commands\SqlGet.cs" />
+    <Compile Include="Sql\Commands\SqlUpdate.cs" />
+    <Compile Include="Sql\Commands\SqlCommandBase.cs" />
+    <Compile Include="Sql\SqlBuilder.cs" />
+    <Compile Include="Sql\Commands\SqlInsert.cs" />
+    <Compile Include="Sql\SqlMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

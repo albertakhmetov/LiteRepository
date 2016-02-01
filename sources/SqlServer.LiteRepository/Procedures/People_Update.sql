@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[people_update]
 	@Id			INT, 
-    @FirstName	NVARCHAR, 
-    @SecondName	NVARCHAR, 
+    @FirstName	NVARCHAR(80), 
+    @SecondName	NVARCHAR(80), 
     @Birthday	DATE 
 AS
 	UPDATE people 

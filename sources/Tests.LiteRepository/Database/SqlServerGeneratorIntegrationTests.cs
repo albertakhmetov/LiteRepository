@@ -73,8 +73,8 @@ namespace LiteRepository.Database
                 "sci_update",
                 "sci_delete",
                 "sci_delete_all",
-                "sci_select",
-                "sci_select_all",
+                "sci_get",
+                "sci_get_all",
                 "sci_count",
                 false);
 
@@ -83,8 +83,8 @@ namespace LiteRepository.Database
                 "people_update",
                 "people_delete",
                 "people_delete_all",
-                "people_select",
-                "people_select_all",
+                "people_get",
+                "people_get_all",
                 "people_count",
                 false);
 
