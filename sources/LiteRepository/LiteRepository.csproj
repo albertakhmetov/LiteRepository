@@ -73,12 +73,13 @@
     <Compile Include="Database\StorageProcedureSqlGenerator.cs" />
     <Compile Include="Database\StoreAsAttribute.cs" />
     <Compile Include="IDb.cs" />
+    <Compile Include="IIdentityEntity.cs" />
     <Compile Include="IObservableRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sql\Attributes\SqlAlias.cs" />
-    <Compile Include="Sql\Attributes\SqlIgnore.cs" />
-    <Compile Include="Sql\Attributes\SqlKey.cs" />
+    <Compile Include="Sql\Attributes\SqlAliasAttribute.cs" />
+    <Compile Include="Sql\Attributes\SqlIgnoreAttribute.cs" />
+    <Compile Include="Sql\Attributes\SqlKeyAttribute.cs" />
     <Compile Include="Sql\Commands\SqlCommandBase.cs" />
     <Compile Include="Sql\Commands\SqlGetCount.cs" />
     <Compile Include="Sql\Commands\SqlDelete.cs" />

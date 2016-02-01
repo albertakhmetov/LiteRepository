@@ -30,27 +30,40 @@ namespace LiteRepository.Sql
     {
         private class Simple
         {
-            [SqlKey(isIdentity: true)]
+            [SqlKeyAttribute()]
             public int Id { get; set; }
 
             public string Text { get; set; }
         }
 
-        [SqlAlias("entity")]
+        private class Identity : IIdentityEntity<Identity>
+        {
+            public long Id { get; set; }
+            [SqlKeyAttribute] // must be ignored
+            public string Text { get; set; }
+
+            public Identity UpdateId(long id)
+            {
+                Id = id;
+                return this; // this object is mutable, therefore just changes id and returns itself
+            }
+        }
+
+        [SqlAliasAttribute("entity")]
         private class Complex
         {
-            [SqlKey()]
-            [SqlAlias("id")]
+            [SqlKeyAttribute()]
+            [SqlAliasAttribute("id")]
             public int Id { get; set; }
 
-            [SqlKey()]
-            [SqlAlias("dept_id")]
+            [SqlKeyAttribute()]
+            [SqlAliasAttribute("dept_id")]
             public int DeptId { get; set; }
 
-            [SqlIgnore]
+            [SqlIgnoreAttribute]
             public string Num { get; set; }
 
-            [SqlAlias("full_name")]
+            [SqlAliasAttribute("full_name")]
             public string FullName { get; set; }
         }
 
@@ -90,10 +103,33 @@ namespace LiteRepository.Sql
         public void Simple_Test()
         {
             var md = new SqlMetadata(typeof(Simple));
+            Assert.False(md.IsIdentity);
 
             Assert.Equal(2, md.Count);
             Assert.Equal("Simple", md.Name);
             Assert.Equal("Simple", md.DbName);
+
+            Assert.Equal("Id", md[0].Name);
+            Assert.Equal("Id", md[0].DbName);
+            Assert.True(md[0].IsPrimaryKey);
+            Assert.False(md[0].IsIdentity);
+
+            Assert.Equal("Text", md[1].Name);
+            Assert.Equal("Text", md[1].DbName);
+            Assert.False(md[1].IsPrimaryKey);
+            Assert.False(md[1].IsIdentity);
+        }
+
+
+        [Fact]
+        public void Identity_Test()
+        {
+            var md = new SqlMetadata(typeof(Identity));
+            Assert.True(md.IsIdentity);
+
+            Assert.Equal(2, md.Count);
+            Assert.Equal("Identity", md.Name);
+            Assert.Equal("Identity", md.DbName);
 
             Assert.Equal("Id", md[0].Name);
             Assert.Equal("Id", md[0].DbName);
@@ -110,6 +146,7 @@ namespace LiteRepository.Sql
         public void Complex_Test()
         {
             var md = new SqlMetadata(typeof(Complex));
+            Assert.False(md.IsIdentity);
 
             Assert.Equal(3, md.Count);
             Assert.Equal("Complex", md.Name);

@@ -87,6 +87,11 @@ namespace LiteRepository.Sql
             get; private set;
         }
 
+        public bool IsIdentity
+        {
+            get; private set;
+        }
+
         public Property this[int index]
         {
             get { return _properties[index]; }
@@ -102,25 +107,38 @@ namespace LiteRepository.Sql
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
             Type = type;
+            IsIdentity = type.GetInterfaces().Count(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIdentityEntity<>)) > 0;
 
-            var typeStoreAs = Type.GetCustomAttributes(typeof(SqlAlias), true).FirstOrDefault() as SqlAlias;
+            var typeStoreAs = Type.GetCustomAttributes(typeof(SqlAliasAttribute), true).FirstOrDefault() as SqlAliasAttribute;
             Name = Type.Name;
             DbName = (typeStoreAs == null) ? Type.Name : typeStoreAs.DbName;
 
             var fields = new List<Property>();
             foreach (var property in Type.GetProperties())
             {
-                if (property.GetCustomAttributes(typeof(SqlIgnore), true).Length != 0)
+                if (property.GetCustomAttributes(typeof(SqlIgnoreAttribute), true).Length != 0)
                     continue;
 
-                var storeAs = property.GetCustomAttributes(typeof(SqlAlias), true).FirstOrDefault() as SqlAlias;
-                var primaryKey = property.GetCustomAttributes(typeof(SqlKey), true).FirstOrDefault() as SqlKey;
+                var storeAs = property.GetCustomAttributes(typeof(SqlAliasAttribute), true).FirstOrDefault() as SqlAliasAttribute;
 
-                fields.Add(new Property(
-                    property.Name,
-                    storeAs == null ? property.Name : storeAs.DbName,
-                    primaryKey != null,
-                    primaryKey == null ? false : primaryKey.IsIdentity));
+                if (IsIdentity)
+                {
+                    var isPrimaryKey = property.Name == nameof(IIdentityEntity<object>.Id);
+                    fields.Add(new Property(
+                       property.Name,
+                       storeAs == null ? property.Name : storeAs.DbName,
+                       isPrimaryKey,
+                       isPrimaryKey));
+                }
+                else
+                {
+                    var primaryKey = property.GetCustomAttributes(typeof(SqlKeyAttribute), true).FirstOrDefault() as SqlKeyAttribute;
+                    fields.Add(new Property(
+                        property.Name,
+                        storeAs == null ? property.Name : storeAs.DbName,
+                        primaryKey != null,
+                        false));
+                }
             }
 
             _properties = fields;

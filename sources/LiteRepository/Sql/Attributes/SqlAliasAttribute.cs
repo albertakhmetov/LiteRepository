@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 namespace LiteRepository.Sql.Attributes
 {
     [AttributeUsage(validOn: AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
-    public class SqlAlias : Attribute
+    public sealed class SqlAliasAttribute : Attribute
     {
         public string DbName
         {
@@ -32,7 +32,7 @@ namespace LiteRepository.Sql.Attributes
             private set;
         }
 
-        public SqlAlias(string dbName)
+        public SqlAliasAttribute(string dbName)
         {
             if (string.IsNullOrWhiteSpace(dbName))
                 throw new ArgumentException(nameof(dbName));

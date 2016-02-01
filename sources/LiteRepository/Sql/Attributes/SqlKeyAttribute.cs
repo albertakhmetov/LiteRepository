@@ -15,8 +15,6 @@ See the License for the specific
 
 */
 
-using Xunit;
-using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,22 +23,8 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Attributes
 {
-    public class PrimaryKeyAttributeTests
+    [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
+    public sealed class SqlKeyAttribute : Attribute
     {
-        [Fact]
-        public void Ctor_Default_Test()
-        {
-            var pk = new SqlKey();
-
-            Assert.False(pk.IsIdentity);
-        }
-
-        [Fact]
-        public void Ctor_IsIdentity_True_Test()
-        {
-            var pk = new SqlKey(isIdentity: true);
-
-            Assert.True(pk.IsIdentity);
-        }
     }
 }

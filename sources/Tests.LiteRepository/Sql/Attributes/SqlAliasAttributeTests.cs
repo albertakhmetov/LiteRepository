@@ -15,6 +15,7 @@ See the License for the specific
 
 */
 
+using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,23 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Sql.Attributes
 {
-    [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
-    public sealed class SqlIgnore : Attribute
+    public class SqlAliasAttributeTests
     {
+        [Fact]
+        public void Ctor_NullOrEmpty_Test()
+        {
+            Assert.Throws<ArgumentException>(() => new SqlAliasAttribute(null));
+            Assert.Throws<ArgumentException>(() => new SqlAliasAttribute(string.Empty));
+            Assert.Throws<ArgumentException>(() => new SqlAliasAttribute("   "));
+        }
+
+        [Fact]
+        public void Ctor_Test()
+        {
+            const string dbName = "nameInDb";
+            var sa = new SqlAliasAttribute(dbName);
+
+            Assert.Equal(dbName, sa.DbName);
+        }
     }
 }
