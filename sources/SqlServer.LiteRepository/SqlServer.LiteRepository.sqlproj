@@ -58,27 +58,13 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Publish\" />
-    <Folder Include="Procedures" />
     <Folder Include="Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\cash_check_item.sql" />
-    <Build Include="Procedures\people_update.sql" />
-    <Build Include="Procedures\people_get.sql" />
-    <Build Include="Procedures\people_delete.sql" />
-    <Build Include="Procedures\people_delete_all.sql" />
-    <Build Include="Procedures\people_get_all.sql" />
-    <Build Include="Procedures\people_insert.sql" />
-    <Build Include="Procedures\people_count.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="SqlServer.LiteRepository.refactorlog" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SqlServer.LiteRepository.publish.xml" />
     <None Include="Publish\SqlServer.LiteRepository.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\people.sql" />
+    <Build Include="Tables\students.sql" />
+    <Build Include="Tables\users.sql" />
   </ItemGroup>
 </Project>

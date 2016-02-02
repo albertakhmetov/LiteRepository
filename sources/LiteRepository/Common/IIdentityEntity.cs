@@ -28,4 +28,17 @@ namespace LiteRepository.Common
         long Id { get; }
         object UpdateId(long id);
     }
+
+    public sealed class IdentityKey
+    {
+        public long Id
+        {
+            get; private set;
+        }
+
+        public IdentityKey(long id)
+        {
+            Id = id;
+        }
+    }
 }
