@@ -15,21 +15,23 @@ See the License for the specific
 
 */
 
-using LiteRepository.Sql;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LiteRepository.Common
 {
-    public interface IDb
+    public interface IRepository<E, K>
+        where E : class
+        where K : class
     {
-        Task<DbConnection> OpenDbConnectionAsync();
-        DbConnection OpenDbConnection();
-        void CloseDbConnection(DbConnection dbConnection);
+        Task<E> InsertAsync(E entity);
+        Task<int> UpdateAsync(E entity);
+        Task<int> DeleteAsync(K key);
+
+        Task<E> GetAsync(K key);
+        Task<long> GetCountAsync();
     }
 }
