@@ -21,13 +21,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository
+namespace LiteRepository.Common
 {
-    public interface IRepository<E, K>
+    public interface IIdentityEntity
     {
-        Task<E> InsertAsync(E entity);
-        Task<int> UpdateAsync(E entity);
-        Task<int> DeleteAsync(K key);
-        Task<E> GetAsync(K key);
+        long Id { get; }
+        object UpdateId(long id);
     }
 }

@@ -61,7 +61,7 @@ namespace LiteRepository.Sql.Commands
             var sql = GetSql();
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetSelectCountSql().Returns(sql);
+            sqlBuilder.GetCountSql().Returns(sql);
 
             var dbParameters = new List<DbParameter>();
             var dbCommand = DbMocks.CreateCommand(dbParameters);
@@ -79,7 +79,7 @@ namespace LiteRepository.Sql.Commands
             var sql = GetSql();
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetSelectCountSql().Returns(sql);
+            sqlBuilder.GetCountSql().Returns(sql);
 
             var dbParameters = new List<DbParameter>();
             var dbCommand = DbMocks.CreateCommand(dbParameters);

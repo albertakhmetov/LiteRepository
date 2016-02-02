@@ -28,7 +28,7 @@ namespace LiteRepository.Common.Commands
         where E : class
         where K : class
     {
-        E ExecuteSingle(K key, DbConnection connection);
-        Task<E> ExecuteSingleAsync(K key, DbConnection connection);
+        E Execute(K key, DbConnection connection);
+        Task<E> ExecuteAsync(K key, DbConnection connection);
     }
 }

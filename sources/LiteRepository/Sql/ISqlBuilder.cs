@@ -27,8 +27,12 @@ namespace LiteRepository.Sql
     {
         string GetInsertSql();
         string GetUpdateSql();
-        string GetDeleteSql();
-        string GetSelectSql();
-        string GetSelectCountSql();
+        string GetDeleteAllSql();
+        string GetDeleteByKeySql();
+        //string GetDeleteByExpressionSql(..);
+        string GetSelectByKeySql();
+        //string GetSelectByExpressionSql(..);
+        string GetCountSql();
+        //string GetCountByExpressionSql(..);
     }
 }

@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using Dapper;
 using System.Data.Common;
 using LiteRepository.Common.Commands;
+using LiteRepository.Common;
 
 namespace LiteRepository.Sql.Commands
 {

@@ -34,20 +34,20 @@ namespace LiteRepository.Sql.Commands
         public SqlGet(ISqlBuilder sqlBuilder) : base(sqlBuilder)
         { }
 
-        public E ExecuteSingle(K key, DbConnection dbConnection)
+        public E Execute(K key, DbConnection dbConnection)
         {
             CheckNotNull(key, nameof(key));
             CheckNotNull(dbConnection, nameof(dbConnection));
 
-            return dbConnection.Query<E>(SqlBuilder.GetSelectSql(), param: key).FirstOrDefault();
+            return dbConnection.Query<E>(SqlBuilder.GetSelectByKeySql(), param: key).FirstOrDefault();
         }
 
-        public async Task<E> ExecuteSingleAsync(K key, DbConnection dbConnection)
+        public async Task<E> ExecuteAsync(K key, DbConnection dbConnection)
         {
             CheckNotNull(key, nameof(key));
             CheckNotNull(dbConnection, nameof(dbConnection));
 
-            var task = dbConnection.QueryAsync<E>(SqlBuilder.GetSelectSql(), param: key);
+            var task = dbConnection.QueryAsync<E>(SqlBuilder.GetSelectByKeySql(), param: key);
             if (task != null)
             {
                 var queryResult = await task;

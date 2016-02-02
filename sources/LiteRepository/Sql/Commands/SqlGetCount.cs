@@ -36,13 +36,13 @@ namespace LiteRepository.Sql.Commands
         public long Execute(DbConnection dbConnection)
         {
             CheckNotNull(dbConnection, nameof(dbConnection));
-            return dbConnection.ExecuteScalar<long>(SqlBuilder.GetSelectCountSql());
+            return dbConnection.ExecuteScalar<long>(SqlBuilder.GetCountSql());
         }
 
         public Task<long> ExecuteAsync(DbConnection dbConnection)
         {
             CheckNotNull(dbConnection, nameof(dbConnection));
-            return dbConnection.ExecuteScalarAsync<long>(SqlBuilder.GetSelectCountSql());
+            return dbConnection.ExecuteScalarAsync<long>(SqlBuilder.GetCountSql());
         }
     }
 }

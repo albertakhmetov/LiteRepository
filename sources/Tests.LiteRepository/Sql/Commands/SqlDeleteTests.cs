@@ -90,7 +90,7 @@ namespace LiteRepository.Sql.Commands
             var affectedRows = 1;
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetDeleteSql().Returns(sql);
+            sqlBuilder.GetDeleteByKeySql().Returns(sql);
 
             var dbParameters = new List<DbParameter>();
             var dbCommand = DbMocks.CreateCommand(dbParameters);
@@ -113,7 +113,7 @@ namespace LiteRepository.Sql.Commands
             var affectedRows = 1;
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetDeleteSql().Returns(sql);
+            sqlBuilder.GetDeleteByKeySql().Returns(sql);
 
             var dbParameters = new List<DbParameter>();
             var dbCommand = DbMocks.CreateCommand(dbParameters);

@@ -17,15 +17,18 @@ See the License for the specific
 
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository
+namespace LiteRepository.Common
 {
-    public interface IIdentityEntity
+    public interface IDb
     {
-        long Id { get; }
-        object UpdateId(long id);
+        Task<DbConnection> OpenDbConnectionAsync();
+        DbConnection OpenDbConnection();
+        void CloseDbConnection(DbConnection dbConnection);
     }
 }

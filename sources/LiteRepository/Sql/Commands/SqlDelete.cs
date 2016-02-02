@@ -39,7 +39,7 @@ namespace LiteRepository.Sql.Commands
             CheckNotNull(key, nameof(key));
             CheckNotNull(dbConnection, nameof(dbConnection));
 
-            return dbConnection.Execute(SqlBuilder.GetDeleteSql(), param: key);
+            return dbConnection.Execute(SqlBuilder.GetDeleteByKeySql(), param: key);
         }
 
         public Task<int> ExecuteAsync(K key, DbConnection dbConnection)
@@ -47,7 +47,7 @@ namespace LiteRepository.Sql.Commands
             CheckNotNull(key, nameof(key));
             CheckNotNull(dbConnection, nameof(dbConnection));
 
-            return dbConnection.ExecuteAsync(SqlBuilder.GetDeleteSql(), param: key);
+            return dbConnection.ExecuteAsync(SqlBuilder.GetDeleteByKeySql(), param: key);
         }
     }
 }

@@ -72,27 +72,27 @@ namespace LiteRepository.Sql
         public void GetDelete_Test()
         {
             var expected = "DELETE FROM students WHERE cource = @Cource AND letter = @Letter";
-            Assert.Equal(expected, _fixture.SqlBuilder.GetDeleteSql());
+            Assert.Equal(expected, _fixture.SqlBuilder.GetDeleteByKeySql());
         }
 
         [Fact]
         public void GetSelect_Test()
         {
             var expected = "SELECT " +
-                "cource AS Cource, "+
+                "cource AS Cource, " +
                 "letter AS Letter, " +
                 "first_name AS FirstName, " +
                 "second_name AS SecondName, " +
-                "birthday AS Birthday " + 
+                "birthday AS Birthday " +
                 "FROM students WHERE cource = @Cource AND letter = @Letter";
-            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectSql());
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByKeySql());
         }
 
         [Fact]
         public void GetCount_Test()
         {
             var expected = "SELECT COUNT(1) FROM students";
-            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectCountSql());
+            Assert.Equal(expected, _fixture.SqlBuilder.GetCountSql());
         }
     }
 }

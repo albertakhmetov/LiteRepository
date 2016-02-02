@@ -34,28 +34,28 @@ namespace LiteRepository.Sql.Commands
         public void Execute_NullEntity_Test()
         {
             var cmd = new SqlGet<Entity, Entity.Key>(Substitute.For<ISqlBuilder>());
-            Assert.Throws<ArgumentNullException>(() => cmd.ExecuteSingle(null, Substitute.For<DbConnection>()));
+            Assert.Throws<ArgumentNullException>(() => cmd.Execute(null, Substitute.For<DbConnection>()));
         }
 
         [Fact]
         public void Execute_NullDbConnection_Test()
         {
             var cmd = new SqlGet<Entity, Entity.Key>(Substitute.For<ISqlBuilder>());
-            Assert.Throws<ArgumentNullException>(() => cmd.ExecuteSingle(new Entity.Key(), null));
+            Assert.Throws<ArgumentNullException>(() => cmd.Execute(new Entity.Key(), null));
         }
 
         [Fact]
         public async void ExecuteAsync_NullEntity_Test()
         {
             var cmd = new SqlGet<Entity, Entity.Key>(Substitute.For<ISqlBuilder>());
-            await Assert.ThrowsAsync<ArgumentNullException>(() => cmd.ExecuteSingleAsync(null, Substitute.For<DbConnection>()));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => cmd.ExecuteAsync(null, Substitute.For<DbConnection>()));
         }
 
         [Fact]
         public async void ExecuteAsync_NullDbConnection_Test()
         {
             var cmd = new SqlGet<Entity, Entity.Key>(Substitute.For<ISqlBuilder>());
-            await Assert.ThrowsAsync<ArgumentNullException>(() => cmd.ExecuteSingleAsync(new Entity.Key(), null));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => cmd.ExecuteAsync(new Entity.Key(), null));
         }
 
         private static void CheckCommand(Entity.Key key, string sql, List<DbParameter> dbParameters, IDbCommand dbCommand)
@@ -107,13 +107,13 @@ namespace LiteRepository.Sql.Commands
             var sql = GetSql();
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetSelectSql().Returns(sql);
+            sqlBuilder.GetSelectByKeySql().Returns(sql);
 
             var dbParameters = new List<DbParameter>();
             var dbCommand = DbMocks.CreateCommand(dbParameters);
 
             var cmd = new SqlGet<Entity, Entity.Key>(sqlBuilder);
-            var execResult = cmd.ExecuteSingle(key, DbMocks.CreateConnection(dbCommand));
+            var execResult = cmd.Execute(key, DbMocks.CreateConnection(dbCommand));
 
             CheckCommand(key, sql, dbParameters, dbCommand);
             ((IDbCommand)dbCommand).Received(1).ExecuteReader(Arg.Any<CommandBehavior>());
@@ -126,7 +126,7 @@ namespace LiteRepository.Sql.Commands
             var sql = GetSql();
 
             var sqlBuilder = Substitute.For<ISqlBuilder>();
-            sqlBuilder.GetSelectSql().Returns(sql);
+            sqlBuilder.GetSelectByKeySql().Returns(sql);
 
             var dbDataReader = Substitute.For<DbDataReader>();
             dbDataReader.FieldCount.Returns(5);
@@ -136,7 +136,7 @@ namespace LiteRepository.Sql.Commands
             dbCommand.ExecuteReaderAsync(Arg.Any<CommandBehavior>()).Returns(dbDataReader);
             
             var cmd = new SqlGet<Entity, Entity.Key>(sqlBuilder);
-            var execResult = await cmd.ExecuteSingleAsync(key, DbMocks.CreateConnection(dbCommand));
+            var execResult = await cmd.ExecuteAsync(key, DbMocks.CreateConnection(dbCommand));
 
             CheckCommand(key, sql, dbParameters, dbCommand);
             await dbCommand.Received(1).ExecuteReaderAsync(Arg.Any<CommandBehavior>());
