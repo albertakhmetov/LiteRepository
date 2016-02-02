@@ -23,17 +23,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using LiteRepository.Common.Commands;
 
 namespace LiteRepository.Sql.Commands
 {
-    public class SqlGet<E, K> : SqlCommandBase<E>
+    public class SqlGet<E, K> : SqlCommandBase<E>, IGetCommand<E, K>
         where E : class
         where K : class
     {
         public SqlGet(ISqlBuilder sqlBuilder) : base(sqlBuilder)
         { }
 
-        public E Execute(K key, DbConnection dbConnection)
+        public E ExecuteSingle(K key, DbConnection dbConnection)
         {
             CheckNotNull(key, nameof(key));
             CheckNotNull(dbConnection, nameof(dbConnection));
@@ -41,7 +42,7 @@ namespace LiteRepository.Sql.Commands
             return dbConnection.Query<E>(SqlBuilder.GetSelectSql(), param: key).FirstOrDefault();
         }
 
-        public async Task<E> ExecuteAsync(K key, DbConnection dbConnection)
+        public async Task<E> ExecuteSingleAsync(K key, DbConnection dbConnection)
         {
             CheckNotNull(key, nameof(key));
             CheckNotNull(dbConnection, nameof(dbConnection));

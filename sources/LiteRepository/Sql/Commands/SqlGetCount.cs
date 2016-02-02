@@ -23,10 +23,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using LiteRepository.Common.Commands;
 
 namespace LiteRepository.Sql.Commands
 {
-    public class SqlGetCount<E> : SqlCommandBase<E>
+    public class SqlGetCount<E> : SqlCommandBase<E>, IGetCountCommand
         where E : class
     {
         public SqlGetCount(ISqlBuilder sqlBuilder) : base(sqlBuilder)

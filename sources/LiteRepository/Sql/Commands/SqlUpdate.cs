@@ -23,10 +23,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using LiteRepository.Common.Commands;
 
 namespace LiteRepository.Sql.Commands
 {
-    public class SqlUpdate<E> : SqlCommandBase<E>
+    public class SqlUpdate<E> : SqlCommandBase<E>, IUpdateCommand<E>
         where E : class
     {
         public SqlUpdate(ISqlBuilder sqlBuilder) : base(sqlBuilder)

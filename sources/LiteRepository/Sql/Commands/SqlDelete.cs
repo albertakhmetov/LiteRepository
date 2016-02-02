@@ -23,10 +23,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using LiteRepository.Common.Commands;
 
 namespace LiteRepository.Sql.Commands
 {
-    public class SqlDelete<E, K> : SqlCommandBase<E>
+    public class SqlDelete<E, K> : SqlCommandBase<E>, IDeleteCommand<K>
         where E : class
         where K : class
     {

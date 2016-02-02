@@ -60,6 +60,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Commands\IDeleteCommand.cs" />
+    <Compile Include="Common\Commands\IGetCommand.cs" />
+    <Compile Include="Common\Commands\IGetCountCommand.cs" />
+    <Compile Include="Common\Commands\IInsertCommand.cs" />
+    <Compile Include="Common\Commands\IUpdateCommand.cs" />
     <Compile Include="IDb.cs" />
     <Compile Include="IIdentityEntity.cs" />
     <Compile Include="IObservableRepository.cs" />

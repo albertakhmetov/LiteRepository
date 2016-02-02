@@ -17,18 +17,17 @@ See the License for the specific
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository
+namespace LiteRepository.Common.Commands
 {
-    public interface IDb
+    public interface IDeleteCommand<K>
+        where K : class
     {
-        Task<DbConnection> OpenDbConnectionAsync();
-        DbConnection OpenDbConnection();
-        void CloseDbConnection(DbConnection dbConnection);
+        int Execute(K key, DbConnection connection);
+        Task<int> ExecuteAsync(K key, DbConnection connection);
     }
 }

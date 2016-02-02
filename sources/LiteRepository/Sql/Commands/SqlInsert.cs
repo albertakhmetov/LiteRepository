@@ -23,10 +23,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using System.Data.Common;
+using LiteRepository.Common.Commands;
 
 namespace LiteRepository.Sql.Commands
 {
-    public class SqlInsert<E> : SqlCommandBase<E>
+    public class SqlInsert<E> : SqlCommandBase<E>, IInsertCommand<E>
         where E : class
     {
         public SqlInsert(ISqlBuilder sqlBuilder) : base(sqlBuilder)
