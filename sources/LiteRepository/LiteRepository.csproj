@@ -84,6 +84,7 @@
     <Compile Include="Sql\SqlBuilder.cs" />
     <Compile Include="Sql\SqlExpression.cs" />
     <Compile Include="Sql\SqlMetadata.cs" />
+    <Compile Include="Sql\SqlOrder.cs" />
     <Compile Include="Sql\SqlRepository.cs" />
   </ItemGroup>
   <ItemGroup>
