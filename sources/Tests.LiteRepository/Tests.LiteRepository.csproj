@@ -106,6 +106,7 @@
     <Compile Include="Sql\Models\IdentityEntity.cs" />
     <Compile Include="Sql\SqlBuilder_EntityTests.cs" />
     <Compile Include="Sql\SqlBuilder_IdentityEntityTests.cs" />
+    <Compile Include="Sql\SqlExpressionTests.cs" />
     <Compile Include="Sql\SqlMetadataTests.cs" />
     <Compile Include="Sql\SqlRepository_EntityTests.cs" />
   </ItemGroup>
