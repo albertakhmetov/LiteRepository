@@ -24,6 +24,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LiteRepository.Sql.Attributes;
 using LiteRepository.Common;
+using System.Diagnostics;
 
 namespace LiteRepository.Sql
 {
@@ -31,7 +32,7 @@ namespace LiteRepository.Sql
     {
         private class Simple
         {
-            [SqlKeyAttribute()]
+            [SqlKey()]
             public int Id { get; set; }
 
             public string Text { get; set; }
@@ -40,7 +41,7 @@ namespace LiteRepository.Sql
         private class Identity : IIdentityEntity
         {
             public long Id { get; set; }
-            [SqlKeyAttribute] // must be ignored
+            [SqlKey] // must be ignored
             public string Text { get; set; }
 
             public object UpdateId(long id)
@@ -50,21 +51,21 @@ namespace LiteRepository.Sql
             }
         }
 
-        [SqlAliasAttribute("entity")]
+        [SqlAlias("entity")]
         private class Complex
         {
-            [SqlKeyAttribute()]
-            [SqlAliasAttribute("id")]
+            [SqlKey()]
+            [SqlAlias("id")]
             public int Id { get; set; }
 
-            [SqlKeyAttribute()]
-            [SqlAliasAttribute("dept_id")]
+            [SqlKey()]
+            [SqlAlias("dept_id")]
             public int DeptId { get; set; }
 
-            [SqlIgnoreAttribute]
+            [SqlIgnore]
             public string Num { get; set; }
 
-            [SqlAliasAttribute("full_name")]
+            [SqlAlias("full_name")]
             public string FullName { get; set; }
         }
 
@@ -97,7 +98,30 @@ namespace LiteRepository.Sql
         [Fact]
         public void Ctor_Null_Test()
         {
-            Assert.Throws<ArgumentNullException>(()=>new SqlMetadata(null));
+            Assert.Throws<ArgumentNullException>(() => new SqlMetadata(null));
+        }
+
+        [Fact]
+        public void Cache_Performance_Test()
+        {
+            var sw = new Stopwatch();
+
+            sw.Start();
+            SqlMetadata.GetSqlMetadata(typeof(Complex));
+            sw.Stop();
+            var cold = sw.ElapsedTicks;
+
+            sw.Restart();
+            SqlMetadata.GetSqlMetadata(typeof(Complex));
+            sw.Stop();
+            var cache = sw.ElapsedTicks;
+
+            sw.Restart();
+            new SqlMetadata(typeof(Complex));
+            sw.Stop();
+            var ctor = sw.ElapsedTicks;
+
+            Assert.True(ctor / cache > 2); // not less than two times
         }
 
         [Fact]
@@ -169,5 +193,35 @@ namespace LiteRepository.Sql
             Assert.False(md[2].IsIdentity);
         }
 
+        [Fact]
+        public void Subset_Null_Test()
+        {
+            var md = new SqlMetadata(typeof(Complex));
+            Assert.Throws<ArgumentNullException>(() => md.GetSubsetForType(null));
+        }
+
+        [Fact]
+        public void Subset_Test()
+        {
+            var md = new SqlMetadata(typeof(Complex));
+            var p = new { FullName = "Alex", Num = "42" };
+
+            var subset = md.GetSubsetForType(p.GetType());
+            Assert.Collection(subset, t =>
+            {
+                Assert.Equal(nameof(Complex.FullName), t.Name);
+                Assert.Equal("full_name", t.DbName);
+            });
+        }
+
+        [Fact]
+        public void Subset_NoIntersect_Test()
+        {
+            var md = new SqlMetadata(typeof(Complex));
+            var p = new { Answer = "42" };
+
+            var subset = md.GetSubsetForType(p.GetType());
+            Assert.Equal(0, subset.Count());
+        }
     }
 }

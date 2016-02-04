@@ -69,6 +69,11 @@ namespace LiteRepository.Sql
             return _updateSql;
         }
 
+        public string GetUpdateByExpressionSql(object parameters, Func<E, bool> conditions)
+        {
+            return string.Empty;
+        }
+
         public string GetDeleteAllSql()
         {
             return _deleteAllSql;
@@ -79,20 +84,29 @@ namespace LiteRepository.Sql
             return _deleteByKeySql;
         }
 
-        //string GetDeleteByExpressionSql(..);
+        public string GetDeleteByExpressionSql(Func<E, bool> conditions)
+        {
+            return string.Empty;
+        }
 
         public string GetSelectByKeySql()
         {
             return _selectByKeySql;
         }
 
-        //string GetSelectByExpressionSql(..);
+        public string GetSelectByExpressionSql(Func<E, bool> conditions, params SqlOrder[] orderByParams)
+        {
+            return string.Empty;
+        }
 
         public string GetCountSql()
         {
             return _countSql;
         }
 
-        //string GetCountByExpressionSql(..);
+        public string GetCountByExpressionSql(Func<E, bool> conditions)
+        {
+            return string.Empty;
+        }
     }
 }

@@ -38,6 +38,11 @@ namespace LiteRepository.Sql
             return _cache.GetOrAdd(type, t => new SqlMetadata(t));
         }
 
+        public static void ClearCache()
+        {
+            _cache.Clear();
+        }
+
         #endregion
 
         public sealed class Property
@@ -143,6 +148,15 @@ namespace LiteRepository.Sql
             }
 
             _properties = fields;
+        }
+
+        public IEnumerable<Property> GetSubsetForType(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+        
+            var typeProperties = type.GetProperties().Select(i => i.Name);
+            return _properties.Where(i => typeProperties.Contains(i.Name));
         }
 
         public IEnumerator<Property> GetEnumerator()
