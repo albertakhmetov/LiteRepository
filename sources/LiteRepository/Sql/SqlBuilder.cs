@@ -37,36 +37,36 @@ namespace LiteRepository.Sql
             _sqlMetadata = new SqlMetadata(typeof(E));
             _sqlExpression = new SqlExpression<E>();
 
-            var selectFields = string.Join(", ", _sqlMetadata.Select(i => $"{i.DbName.ToLower()} AS {i.Name}"));
-            var insertFields = string.Join(", ", _sqlMetadata.Where(i => !i.IsIdentity).Select(i => i.DbName.ToLower()));
+            var selectFields = string.Join(", ", _sqlMetadata.Select(i => $"{i.DbName} AS {i.Name}"));
+            var insertFields = string.Join(", ", _sqlMetadata.Where(i => !i.IsIdentity).Select(i => i.DbName));
             var insertValues = string.Join(", ", _sqlMetadata.Where(i => !i.IsIdentity).Select(i => $"@{i.Name}"));
 
-            var whereCondition = string.Join(" AND ", _sqlMetadata.Where(i => i.IsPrimaryKey).Select(i => $"{i.DbName.ToLower()} = @{i.Name}"));
+            var whereCondition = string.Join(" AND ", _sqlMetadata.Where(i => i.IsPrimaryKey).Select(i => $"{i.DbName} = @{i.Name}"));
 
             var byKey = $" WHERE {whereCondition}";
 
-            _insertSql = $"INSERT INTO {_sqlMetadata.DbName.ToLower()} ({insertFields}) VALUES ({insertValues})";
+            _insertSql = $"INSERT INTO {_sqlMetadata.DbName} ({insertFields}) VALUES ({insertValues})";
             if (_sqlMetadata.IsIdentity)
             {
                 _insertSql += Environment.NewLine;
                 _insertSql += "SELECT SCOPE_IDENTITY()";
             }
 
-            _updateSql = $"UPDATE {_sqlMetadata.DbName.ToLower()} SET {GetUpdatePairs(_sqlMetadata.Where(i => !i.IsPrimaryKey))}{byKey}";
+            _updateSql = $"UPDATE {_sqlMetadata.DbName} SET {GetUpdatePairs(_sqlMetadata.Where(i => !i.IsPrimaryKey))}{byKey}";
 
-            _deleteSql = $"DELETE FROM {_sqlMetadata.DbName.ToLower()}";
-            _deleteAllSql = $"TRUNCATE TABLE {_sqlMetadata.DbName.ToLower()}";
+            _deleteSql = $"DELETE FROM {_sqlMetadata.DbName}";
+            _deleteAllSql = $"TRUNCATE TABLE {_sqlMetadata.DbName}";
             _deleteByKeySql = _deleteSql + byKey;
 
-            _selectSql = $"SELECT {selectFields} FROM {_sqlMetadata.DbName.ToLower()}";
+            _selectSql = $"SELECT {selectFields} FROM {_sqlMetadata.DbName}";
             _selectByKeySql = _selectSql + byKey;
 
-            _countSql = $"SELECT COUNT(1) FROM {_sqlMetadata.DbName.ToLower()}";
+            _countSql = $"SELECT COUNT(1) FROM {_sqlMetadata.DbName}";
         }
 
         private string GetUpdatePairs(IEnumerable<SqlMetadata.Property> properties)
         {
-            return string.Join(", ", properties.Select(i => $"{i.DbName.ToLower()} = @{i.Name}"));
+            return string.Join(", ", properties.Select(i => $"{i.DbName} = @{i.Name}"));
         }
 
         public string GetInsertSql()
@@ -112,7 +112,30 @@ namespace LiteRepository.Sql
 
         public string GetSelectByExpressionSql(Expression<Func<E, bool>> conditions, params SqlOrder[] orderByParams)
         {
-            return string.Empty;
+            var whereConditions = _sqlExpression.GetSql(conditions);
+            if (whereConditions.Length > 0)
+                return $"{_selectSql} WHERE {whereConditions}{GetOrder(orderByParams)}";
+            else
+                return $"{_selectSql}{GetOrder(orderByParams)}";
+        }
+
+        private string GetOrder(SqlOrder[] orderByParams)
+        {
+            if (orderByParams == null || orderByParams.Length == 0)
+                return string.Empty;
+
+            var sb = new StringBuilder();
+            foreach (var o in orderByParams)
+            {
+                if (sb.Length > 0)
+                    sb.Append(", ");
+                sb.Append(_sqlMetadata[o.Name]);
+                if (o.Direction == SqlOrder.SqlDirection.Desc)
+                    sb.Append(" DESC");
+            }
+            if (sb.Length > 0)
+                sb.Insert(0, " ORDER BY ");
+            return sb.ToString();                 
         }
 
         public string GetCountSql()
@@ -120,9 +143,13 @@ namespace LiteRepository.Sql
             return _countSql;
         }
 
-        public string GetCountByExpressionSql(Expression<Func<E, bool>> conditions)
+        public string GetCountSql(Expression<Func<E, bool>> conditions = null)
         {
-            return string.Empty;
+            var whereConditions = _sqlExpression.GetSql(conditions);
+            if (whereConditions.Length > 0)
+                return $"{_countSql} WHERE {whereConditions}";
+            else
+                return _countSql;
         }
     }
 }

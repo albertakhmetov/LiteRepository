@@ -118,10 +118,84 @@ namespace LiteRepository.Sql
         }
 
         [Fact]
+        public void GetSelectByExpression_Test()
+        {
+            var expected = "SELECT " +
+                "cource AS Cource, " +
+                "letter AS Letter, " +
+                "first_name AS FirstName, " +
+                "second_name AS SecondName, " +
+                "birthday AS Birthday " +
+                "FROM students WHERE first_name like 'Iv%'";
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i=>i.FirstName.StartsWith("Iv")));
+        }
+
+        [Fact]
+        public void GetSelectByExpression_NoWhere_Test()
+        {
+            var expected = "SELECT " +
+                "cource AS Cource, " +
+                "letter AS Letter, " +
+                "first_name AS FirstName, " +
+                "second_name AS SecondName, " +
+                "birthday AS Birthday " +
+                "FROM students";
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(null));
+        }
+
+        [Fact]
+        public void GetSelectByExpression_Order_Test()
+        {
+            var expected = "SELECT " +
+                "cource AS Cource, " +
+                "letter AS Letter, " +
+                "first_name AS FirstName, " +
+                "second_name AS SecondName, " +
+                "birthday AS Birthday " +
+                "FROM students WHERE first_name like 'Iv%' ORDER BY letter";
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i => i.FirstName.StartsWith("Iv"), new SqlOrder(nameof(Entity.Letter))));
+        }
+
+        [Fact]
+        public void GetSelectByExpression_Order_Complex_Test()
+        {
+            var expected = "SELECT " +
+                "cource AS Cource, " +
+                "letter AS Letter, " +
+                "first_name AS FirstName, " +
+                "second_name AS SecondName, " +
+                "birthday AS Birthday " +
+                "FROM students WHERE first_name like 'Iv%' ORDER BY letter DESC, birthday";
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i => i.FirstName.StartsWith("Iv"), 
+                new SqlOrder(nameof(Entity.Letter), SqlOrder.SqlDirection.Desc), new SqlOrder(nameof(Entity.Birthday))));
+        }
+
+        [Fact]
+        public void GetSelectByExpression_Order_NoWhere_Test()
+        {
+            var expected = "SELECT " +
+                "cource AS Cource, " +
+                "letter AS Letter, " +
+                "first_name AS FirstName, " +
+                "second_name AS SecondName, " +
+                "birthday AS Birthday " +
+                "FROM students ORDER BY letter";
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(null, new SqlOrder(nameof(Entity.Letter))));
+        }
+
+        [Fact]
         public void GetCount_Test()
         {
             var expected = "SELECT COUNT(1) FROM students";
             Assert.Equal(expected, _fixture.SqlBuilder.GetCountSql());
+        }
+
+        [Fact]
+        public void GetCount_Expression_Test()
+        {
+            var expected = "SELECT COUNT(1) FROM students WHERE cource = @Cource";
+            var q = new { Cource = 3 };
+            Assert.Equal(expected, _fixture.SqlBuilder.GetCountSql(i => i.Cource == q.Cource));
         }
     }
 }

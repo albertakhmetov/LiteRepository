@@ -32,7 +32,7 @@ namespace LiteRepository.Sql
         {
             var dbName = "age";
             var order = new SqlOrder(dbName);
-            Assert.Equal(dbName, order.DbName);
+            Assert.Equal(dbName, order.Name);
             Assert.Equal(SqlOrder.SqlDirection.Asc, order.Direction);
         }
 
@@ -42,7 +42,7 @@ namespace LiteRepository.Sql
             var dbName = "age";
             var direction = SqlOrder.SqlDirection.Desc;
             var order = new SqlOrder(dbName, direction);
-            Assert.Equal(dbName, order.DbName);
+            Assert.Equal(dbName, order.Name);
             Assert.Equal(direction, order.Direction);
         }
 

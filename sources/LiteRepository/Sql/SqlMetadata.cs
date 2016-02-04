@@ -70,13 +70,14 @@ namespace LiteRepository.Sql
             public Property(string name, string dbName, bool isPrimaryKey, bool isIdentity)
             {
                 Name = name;
-                DbName = dbName;
+                DbName = dbName.ToLower();
                 IsPrimaryKey = isPrimaryKey;
                 IsIdentity = isIdentity;
             }
         }
 
         private readonly IList<Property> _properties;
+        private readonly Dictionary<string, string> _nameToDbNameDictionary;
 
         public Type Type
         {
@@ -103,6 +104,11 @@ namespace LiteRepository.Sql
             get { return _properties[index]; }
         }
 
+        public string this[string name]
+        {
+            get { return _nameToDbNameDictionary[name]; }
+        }
+
         public int Count
         {
             get { return _properties.Count; }
@@ -117,7 +123,7 @@ namespace LiteRepository.Sql
 
             var typeStoreAs = Type.GetCustomAttributes(typeof(SqlAliasAttribute), true).FirstOrDefault() as SqlAliasAttribute;
             Name = Type.Name;
-            DbName = (typeStoreAs == null) ? Type.Name : typeStoreAs.DbName;
+            DbName = ((typeStoreAs == null) ? Type.Name : typeStoreAs.DbName).ToLower();
 
             var fields = new List<Property>();
             foreach (var property in Type.GetProperties())
@@ -148,6 +154,7 @@ namespace LiteRepository.Sql
             }
 
             _properties = fields;
+            _nameToDbNameDictionary = _properties.ToDictionary(i => i.Name, i => i.DbName);
         }
 
         public IEnumerable<Property> GetSubsetForType(Type type)

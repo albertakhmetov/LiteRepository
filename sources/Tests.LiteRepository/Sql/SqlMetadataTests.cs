@@ -73,7 +73,7 @@ namespace LiteRepository.Sql
         public void Item_Ctor_Test()
         {
             const string name = "Entity";
-            const string dbName = "DbEntity";
+            const string dbName = "entity";
 
             var md1 = new SqlMetadata.Property(name, dbName, true, false);
             Assert.Equal(name, md1.Name);
@@ -132,15 +132,15 @@ namespace LiteRepository.Sql
 
             Assert.Equal(2, md.Count);
             Assert.Equal("Simple", md.Name);
-            Assert.Equal("Simple", md.DbName);
+            Assert.Equal("simple", md.DbName);
 
             Assert.Equal("Id", md[0].Name);
-            Assert.Equal("Id", md[0].DbName);
+            Assert.Equal("id", md[0].DbName);
             Assert.True(md[0].IsPrimaryKey);
             Assert.False(md[0].IsIdentity);
 
             Assert.Equal("Text", md[1].Name);
-            Assert.Equal("Text", md[1].DbName);
+            Assert.Equal("text", md[1].DbName);
             Assert.False(md[1].IsPrimaryKey);
             Assert.False(md[1].IsIdentity);
         }
@@ -154,15 +154,15 @@ namespace LiteRepository.Sql
 
             Assert.Equal(2, md.Count);
             Assert.Equal("Identity", md.Name);
-            Assert.Equal("Identity", md.DbName);
+            Assert.Equal("identity", md.DbName);
 
             Assert.Equal("Id", md[0].Name);
-            Assert.Equal("Id", md[0].DbName);
+            Assert.Equal("id", md[0].DbName);
             Assert.True(md[0].IsPrimaryKey);
             Assert.True(md[0].IsIdentity);
 
             Assert.Equal("Text", md[1].Name);
-            Assert.Equal("Text", md[1].DbName);
+            Assert.Equal("text", md[1].DbName);
             Assert.False(md[1].IsPrimaryKey);
             Assert.False(md[1].IsIdentity);
         }

@@ -31,7 +31,7 @@ namespace LiteRepository.Sql
             Desc
         }
 
-        public string DbName
+        public string Name
         {
             get; private set;
         }
@@ -41,11 +41,11 @@ namespace LiteRepository.Sql
             get; private set;
         }
 
-        public SqlOrder(string dbName, SqlDirection direction = SqlDirection.Asc)
+        public SqlOrder(string name, SqlDirection direction = SqlDirection.Asc)
         {
-            if (string.IsNullOrWhiteSpace(dbName))
-                throw new ArgumentException("", nameof(dbName));
-            DbName = dbName;
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("", nameof(name));
+            Name = name;
             Direction = direction;
         }
     }
