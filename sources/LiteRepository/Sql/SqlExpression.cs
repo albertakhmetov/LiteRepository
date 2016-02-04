@@ -37,7 +37,7 @@ namespace LiteRepository.Sql
             _typeToDbDictionary = metadata.ToDictionary(i => i.Name, i => i.DbName.ToLower());
         }
 
-        public string GetSql(Expression<Func<E, bool>> expression)
+        public string GetSql(System.Linq.Expressions.Expression<Func<E, bool>> expression)
         {
             if (expression == null)
                 return "";

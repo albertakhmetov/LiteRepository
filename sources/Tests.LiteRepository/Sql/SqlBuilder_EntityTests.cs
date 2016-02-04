@@ -69,6 +69,35 @@ namespace LiteRepository.Sql
         }
 
         [Fact]
+        public void GetUpdateByExpressionSql_Test()
+        {
+            var expected = "UPDATE students SET " +
+                "first_name = @FirstName, " +
+                "second_name = @SecondName " +
+                "WHERE birthday = @Birthday";
+
+            var Birthday = new DateTime(2001, 1, 1);
+
+            var sql = _fixture.SqlBuilder.GetUpdateByExpressionSql(
+                new { FirstName = "N/A", SecondName = "N/A" },
+                i => i.Birthday == Birthday);
+
+            Assert.Equal(expected, sql);
+        }
+
+        [Fact]
+        public void GetUpdateByExpressionSql_NoWhere_Test()
+        {
+            var expected = "UPDATE students SET " +
+                "first_name = @FirstName, " +
+                "second_name = @SecondName";
+            var sql = _fixture.SqlBuilder.GetUpdateByExpressionSql(
+                new { FirstName = "N/A", SecondName = "N/A" }, null);
+
+            Assert.Equal(expected, sql);
+        }
+
+        [Fact]
         public void GetDelete_Test()
         {
             var expected = "DELETE FROM students WHERE cource = @Cource AND letter = @Letter";
