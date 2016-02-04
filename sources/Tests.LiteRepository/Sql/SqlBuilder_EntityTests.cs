@@ -98,10 +98,31 @@ namespace LiteRepository.Sql
         }
 
         [Fact]
-        public void GetDelete_Test()
+        public void GetDeleteByKey_Test()
         {
             var expected = "DELETE FROM students WHERE cource = @Cource AND letter = @Letter";
             Assert.Equal(expected, _fixture.SqlBuilder.GetDeleteByKeySql());
+        }
+
+        [Fact]
+        public void GetDeleteByExpressionSql_Test()
+        {
+            var expected = "DELETE FROM students WHERE birthday = @Birthday";
+
+            var q = new { Birthday = new DateTime(2000, 1, 1) };
+
+            var sql = _fixture.SqlBuilder.GetDeleteByExpressionSql(i => i.Birthday == q.Birthday);
+
+            Assert.Equal(expected, sql);
+        }
+
+        [Fact]
+        public void GetDeleteByExpressionSql_NoWhere_Test()
+        {
+            var expected = "TRUNCATE TABLE students";
+            var sql = _fixture.SqlBuilder.GetDeleteByExpressionSql(null);
+
+            Assert.Equal(expected, sql);
         }
 
         [Fact]
@@ -127,7 +148,7 @@ namespace LiteRepository.Sql
                 "second_name AS SecondName, " +
                 "birthday AS Birthday " +
                 "FROM students WHERE first_name like 'Iv%'";
-            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i=>i.FirstName.StartsWith("Iv")));
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i => i.FirstName.StartsWith("Iv")));
         }
 
         [Fact]
@@ -166,7 +187,7 @@ namespace LiteRepository.Sql
                 "second_name AS SecondName, " +
                 "birthday AS Birthday " +
                 "FROM students WHERE first_name like 'Iv%' ORDER BY letter DESC, birthday";
-            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i => i.FirstName.StartsWith("Iv"), 
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i => i.FirstName.StartsWith("Iv"),
                 new SqlOrder(nameof(Entity.Letter), SqlOrder.SqlDirection.Desc), new SqlOrder(nameof(Entity.Birthday))));
         }
 

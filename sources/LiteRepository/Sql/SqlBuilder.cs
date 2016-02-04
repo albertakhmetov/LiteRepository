@@ -102,7 +102,11 @@ namespace LiteRepository.Sql
 
         public string GetDeleteByExpressionSql(Expression<Func<E, bool>> conditions)
         {
-            return string.Empty;
+            var whereConditions = _sqlExpression.GetSql(conditions);
+            if (whereConditions.Length > 0)
+                return $"{_deleteSql} WHERE {whereConditions}";
+            else
+                return _deleteAllSql;
         }
 
         public string GetSelectByKeySql()
