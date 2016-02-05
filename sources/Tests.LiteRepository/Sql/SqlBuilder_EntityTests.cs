@@ -174,7 +174,7 @@ namespace LiteRepository.Sql
                 "second_name AS SecondName, " +
                 "birthday AS Birthday " +
                 "FROM students WHERE first_name like 'Iv%' ORDER BY letter";
-            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i => i.FirstName.StartsWith("Iv"), new SqlOrder(nameof(Entity.Letter))));
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i => i.FirstName.StartsWith("Iv"), i => i.OrderBy(x => x.Letter)));
         }
 
         [Fact]
@@ -187,8 +187,10 @@ namespace LiteRepository.Sql
                 "second_name AS SecondName, " +
                 "birthday AS Birthday " +
                 "FROM students WHERE first_name like 'Iv%' ORDER BY letter DESC, birthday";
-            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(i => i.FirstName.StartsWith("Iv"),
-                new SqlOrder(nameof(Entity.Letter), SqlOrder.SqlDirection.Desc), new SqlOrder(nameof(Entity.Birthday))));
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(
+                i => i.FirstName.StartsWith("Iv"),
+                i => i.OrderByDescending(x => x.Letter).OrderBy(x => x.Birthday))
+                );
         }
 
         [Fact]
@@ -201,7 +203,7 @@ namespace LiteRepository.Sql
                 "second_name AS SecondName, " +
                 "birthday AS Birthday " +
                 "FROM students ORDER BY letter";
-            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(null, new SqlOrder(nameof(Entity.Letter))));
+            Assert.Equal(expected, _fixture.SqlBuilder.GetSelectByExpressionSql(null, i => i.OrderBy(x => x.Letter)));
         }
 
         [Fact]

@@ -114,33 +114,14 @@ namespace LiteRepository.Sql
             return _selectByKeySql;
         }
 
-        public string GetSelectByExpressionSql(Expression<Func<E, bool>> conditions, params SqlOrder[] orderByParams)
+        public string GetSelectByExpressionSql(Expression<Func<E, bool>> conditions, Expression<Func<IEnumerable<E>, IEnumerable<E>>> order = null)
         {
             var whereConditions = _sqlExpression.GetWhereSql(conditions);
-            if (whereConditions.Length > 0)
-                return $"{_selectSql} WHERE {whereConditions}{GetOrder(orderByParams)}";
-            else
-                return $"{_selectSql}{GetOrder(orderByParams)}";
+            var orderSql = _sqlExpression.GetOrderSql(order);
+
+            return $"{_selectSql}{(whereConditions.Length > 0 ? " WHERE " : "")}{whereConditions}{(orderSql.Length > 0 ? " " : "")}{orderSql}";
         }
 
-        private string GetOrder(SqlOrder[] orderByParams)
-        {
-            if (orderByParams == null || orderByParams.Length == 0)
-                return string.Empty;
-
-            var sb = new StringBuilder();
-            foreach (var o in orderByParams)
-            {
-                if (sb.Length > 0)
-                    sb.Append(", ");
-                sb.Append(_sqlMetadata[o.Name]);
-                if (o.Direction == SqlOrder.SqlDirection.Desc)
-                    sb.Append(" DESC");
-            }
-            if (sb.Length > 0)
-                sb.Insert(0, " ORDER BY ");
-            return sb.ToString();                 
-        }
 
         public string GetCountSql()
         {
