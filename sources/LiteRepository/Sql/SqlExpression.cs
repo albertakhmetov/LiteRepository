@@ -37,12 +37,40 @@ namespace LiteRepository.Sql
             _typeToDbDictionary = metadata.ToDictionary(i => i.Name, i => i.DbName.ToLower());
         }
 
-        public string GetSql(System.Linq.Expressions.Expression<Func<E, bool>> expression)
+        public string GetWhereSql(Expression<Func<E, bool>> expression)
         {
             if (expression == null)
                 return "";
 
             return Process(expression.Body);
+        }
+
+        public string GetScalarSql<T>(Expression<Func<IEnumerable<E>, T>> expression)
+        {
+            if (expression == null)
+                return "";
+
+            if (expression.Body is MethodCallExpression)
+                return ProcessScalarMethodCall(expression.Body as MethodCallExpression);
+            else
+                throw new NotSupportedException();
+        }
+
+        public string GetOrderSql(Expression<Func<IEnumerable<E>, IEnumerable<E>>> expression)
+        {
+            if (expression == null)
+                return "";
+
+            if (expression.Body is MethodCallExpression)
+            {
+                var sql = ProcessOrderMethodCall(expression.Body as MethodCallExpression);
+                if (sql.Length > 0)
+                    return $"ORDER BY {sql}";
+                else
+                    return string.Empty;
+            }
+            else
+                throw new NotSupportedException();
         }
 
         private string NodeType(Expression expression)
@@ -133,8 +161,8 @@ namespace LiteRepository.Sql
                 : Process(expression.Right);
 
             var result = $"{left} {NodeType(expression)} {right}";
-            if (parentExpression != null 
-                && expression.NodeType.In(ExpressionType.AndAlso, ExpressionType.OrElse) 
+            if (parentExpression != null
+                && expression.NodeType.In(ExpressionType.AndAlso, ExpressionType.OrElse)
                 && expression.NodeType != parentExpression.NodeType)
                 return $"({result})";
             else
@@ -171,25 +199,77 @@ namespace LiteRepository.Sql
 
         private string ProcessMethodCall(MethodCallExpression expression)
         {
-            var member = Process(expression.Object);
-            switch (expression.Method.Name)
+            if (expression.Method.DeclaringType == typeof(string))
             {
-                case nameof(string.StartsWith):
-                    return $"{member} like {ProcessStringMethodArg(expression, postfix: "%")}";
-                case nameof(string.EndsWith):
-                    return $"{member} like {ProcessStringMethodArg(expression, prefix: "%")}";
-                case nameof(string.Contains):
-                    return $"{member} like {ProcessStringMethodArg(expression, prefix: "%", postfix: "%")}";
+                var member = Process(expression.Object);
+                switch (expression.Method.Name)
+                {
+                    case nameof(string.StartsWith):
+                        return $"{member} like {ProcessStringMethodArg(expression, postfix: "%")}";
+                    case nameof(string.EndsWith):
+                        return $"{member} like {ProcessStringMethodArg(expression, prefix: "%")}";
+                    case nameof(string.Contains):
+                        return $"{member} like {ProcessStringMethodArg(expression, prefix: "%", postfix: "%")}";
 
-                case nameof(string.ToLower):
-                    return $"lower({member})";
+                    case nameof(string.ToLower):
+                        return $"lower({member})";
 
-                case nameof(string.ToUpper):
-                    return $"upper({member})";
-
-                default:
-                    throw new NotSupportedException();
+                    case nameof(string.ToUpper):
+                        return $"upper({member})";
+                }
             }
+
+            throw new NotSupportedException();
+        }
+
+        private string ProcessScalarMethodCall(MethodCallExpression expression)
+        {
+            if (expression.Method.DeclaringType == typeof(Enumerable))
+            {
+                switch (expression.Method.Name)
+                {
+                    case nameof(Enumerable.Count):
+                        return "COUNT(1)";
+                    case nameof(Enumerable.Average):
+                        if (expression.Arguments.LastOrDefault() is LambdaExpression == false)
+                            throw new NotSupportedException();
+                        return $"AVG({ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression)})";
+                    case nameof(Enumerable.Sum):
+                        if (expression.Arguments.LastOrDefault() is LambdaExpression == false)
+                            throw new NotSupportedException();
+                        return $"SUM({ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression)})";
+                }
+            }
+
+            throw new NotSupportedException();
+        }
+
+        private string ProcessOrderMethodCall(MethodCallExpression expression)
+        {
+            if (expression.Method.DeclaringType == typeof(Enumerable))
+            {
+                if (expression.Method.Name.In(nameof(Enumerable.OrderBy), nameof(Enumerable.OrderByDescending)))
+                {
+                    if (expression.Arguments.LastOrDefault() is LambdaExpression == false)
+                        throw new NotSupportedException();
+                    var dbName = ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression);
+                    if (expression.Method.Name == nameof(Enumerable.OrderByDescending))
+                        dbName += " DESC";
+
+                    var innerSql = string.Empty;
+                    if (expression.Arguments.FirstOrDefault() is MethodCallExpression)
+                        innerSql = ProcessOrderMethodCall(expression.Arguments.FirstOrDefault() as MethodCallExpression);
+                    else if (expression.Arguments.FirstOrDefault() is ParameterExpression == false)
+                        throw new NotSupportedException();
+
+                    if (innerSql.Length > 0)
+                        return $"{innerSql}, {dbName}";
+                    else
+                        return dbName;
+                }
+            }
+
+            throw new NotSupportedException();
         }
 
         private string ProcessStringMethodArg(MethodCallExpression expression, string prefix = null, string postfix = null)
@@ -214,6 +294,11 @@ namespace LiteRepository.Sql
 
 
             return $"'{ToString(obj)}'";
+        }
+
+        private string ProcessLambda(LambdaExpression expression)
+        {
+            return Process(expression.Body);
         }
     }
 }

@@ -81,7 +81,7 @@ namespace LiteRepository.Sql
 
         public string GetUpdateByExpressionSql(object parameters, Expression<Func<E, bool>> conditions = null)
         {
-            var whereConditions = _sqlExpression.GetSql(conditions);
+            var whereConditions = _sqlExpression.GetWhereSql(conditions);
             var updatePairs = GetUpdatePairs(_sqlMetadata.GetSubsetForType(parameters.GetType()));
 
             if (whereConditions.Length > 0)
@@ -102,7 +102,7 @@ namespace LiteRepository.Sql
 
         public string GetDeleteByExpressionSql(Expression<Func<E, bool>> conditions)
         {
-            var whereConditions = _sqlExpression.GetSql(conditions);
+            var whereConditions = _sqlExpression.GetWhereSql(conditions);
             if (whereConditions.Length > 0)
                 return $"{_deleteSql} WHERE {whereConditions}";
             else
@@ -116,7 +116,7 @@ namespace LiteRepository.Sql
 
         public string GetSelectByExpressionSql(Expression<Func<E, bool>> conditions, params SqlOrder[] orderByParams)
         {
-            var whereConditions = _sqlExpression.GetSql(conditions);
+            var whereConditions = _sqlExpression.GetWhereSql(conditions);
             if (whereConditions.Length > 0)
                 return $"{_selectSql} WHERE {whereConditions}{GetOrder(orderByParams)}";
             else
@@ -149,7 +149,7 @@ namespace LiteRepository.Sql
 
         public string GetCountSql(Expression<Func<E, bool>> conditions = null)
         {
-            var whereConditions = _sqlExpression.GetSql(conditions);
+            var whereConditions = _sqlExpression.GetWhereSql(conditions);
             if (whereConditions.Length > 0)
                 return $"{_countSql} WHERE {whereConditions}";
             else

@@ -27,13 +27,13 @@ using LiteRepository.Sql.Models;
 
 namespace LiteRepository.Sql
 {
-    public class SqlExpressionTests
+    public class SqlExpression_WhereTests
     {
         [Fact]
         public void NullExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(null);
+            var sql = exp.GetWhereSql(null);
             Assert.Equal(string.Empty, sql);
         }
 
@@ -41,7 +41,7 @@ namespace LiteRepository.Sql
         public void String_EqExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName == "Ivan");
+            var sql = exp.GetWhereSql(e => e.FirstName == "Ivan");
             Assert.Equal("first_name = 'Ivan'", sql);
         }
 
@@ -49,7 +49,7 @@ namespace LiteRepository.Sql
         public void String_NotEqExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName != "Ivan");
+            var sql = exp.GetWhereSql(e => e.FirstName != "Ivan");
             Assert.Equal("first_name <> 'Ivan'", sql);
         }
 
@@ -57,7 +57,7 @@ namespace LiteRepository.Sql
         public void String_ToLowerExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName.ToLower() == "ivan");
+            var sql = exp.GetWhereSql(e => e.FirstName.ToLower() == "ivan");
             Assert.Equal("lower(first_name) = 'ivan'", sql);
         }
 
@@ -65,7 +65,7 @@ namespace LiteRepository.Sql
         public void String_ToUpperExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName.ToUpper() == "IVAN");
+            var sql = exp.GetWhereSql(e => e.FirstName.ToUpper() == "IVAN");
             Assert.Equal("upper(first_name) = 'IVAN'", sql);
         }
 
@@ -73,7 +73,7 @@ namespace LiteRepository.Sql
         public void String_StartsExpression_Constant_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName.StartsWith("Iv"));
+            var sql = exp.GetWhereSql(e => e.FirstName.StartsWith("Iv"));
             Assert.Equal("first_name like 'Iv%'", sql);
         }
 
@@ -83,7 +83,7 @@ namespace LiteRepository.Sql
             var name = "Ivan";
 
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName.StartsWith(name));
+            var sql = exp.GetWhereSql(e => e.FirstName.StartsWith(name));
             Assert.Equal("first_name like @name", sql);
         }
 
@@ -91,7 +91,7 @@ namespace LiteRepository.Sql
         public void String_EndsExpression_Constant_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName.EndsWith("ov"));
+            var sql = exp.GetWhereSql(e => e.FirstName.EndsWith("ov"));
             Assert.Equal("first_name like '%ov'", sql);
         }
 
@@ -101,7 +101,7 @@ namespace LiteRepository.Sql
             var name = "Ivan";
 
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName.EndsWith(name));
+            var sql = exp.GetWhereSql(e => e.FirstName.EndsWith(name));
             Assert.Equal("first_name like @name", sql);
         }
 
@@ -109,7 +109,7 @@ namespace LiteRepository.Sql
         public void String_ContainsExpression_Constant_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName.Contains("van"));
+            var sql = exp.GetWhereSql(e => e.FirstName.Contains("van"));
             Assert.Equal("first_name like '%van%'", sql);
         }
 
@@ -119,7 +119,7 @@ namespace LiteRepository.Sql
             var name = "Ivan";
 
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.FirstName.Contains(name));
+            var sql = exp.GetWhereSql(e => e.FirstName.Contains(name));
             Assert.Equal("first_name like @name", sql);
         }
 
@@ -127,7 +127,7 @@ namespace LiteRepository.Sql
         public void DateTime_EqExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Birthday == new DateTime(1991, 12, 3));
+            var sql = exp.GetWhereSql(e => e.Birthday == new DateTime(1991, 12, 3));
             Assert.Equal("birthday = '1991-12-03 00:00:00'", sql);
         }
 
@@ -137,7 +137,7 @@ namespace LiteRepository.Sql
             var date = new DateTime(1991, 12, 3);
 
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Birthday == date);
+            var sql = exp.GetWhereSql(e => e.Birthday == date);
             Assert.Equal("birthday = @date", sql);
         }
 
@@ -147,7 +147,7 @@ namespace LiteRepository.Sql
             var cr = 4L;
 
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == cr);
+            var sql = exp.GetWhereSql(e => e.Cource == cr);
             Assert.Equal("cource = @cr", sql);
         }
 
@@ -157,7 +157,7 @@ namespace LiteRepository.Sql
             var cr = 4;
 
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == cr);
+            var sql = exp.GetWhereSql(e => e.Cource == cr);
             Assert.Equal("cource = @cr", sql);
         }
 
@@ -165,7 +165,7 @@ namespace LiteRepository.Sql
         public void Int_EqExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == 3);
+            var sql = exp.GetWhereSql(e => e.Cource == 3);
             Assert.Equal("cource = 3", sql);
         }
 
@@ -173,7 +173,7 @@ namespace LiteRepository.Sql
         public void Int_NotEqExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource != 3);
+            var sql = exp.GetWhereSql(e => e.Cource != 3);
             Assert.Equal("cource <> 3", sql);
         }
 
@@ -181,7 +181,7 @@ namespace LiteRepository.Sql
         public void Int_LessExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource < 3);
+            var sql = exp.GetWhereSql(e => e.Cource < 3);
             Assert.Equal("cource < 3", sql);
         }
 
@@ -189,7 +189,7 @@ namespace LiteRepository.Sql
         public void Int_LessOrEqExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource <= 3);
+            var sql = exp.GetWhereSql(e => e.Cource <= 3);
             Assert.Equal("cource <= 3", sql);
         }
 
@@ -197,7 +197,7 @@ namespace LiteRepository.Sql
         public void Int_GreaterExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource > 3);
+            var sql = exp.GetWhereSql(e => e.Cource > 3);
             Assert.Equal("cource > 3", sql);
         }
 
@@ -205,7 +205,7 @@ namespace LiteRepository.Sql
         public void Int_GreaterOrEqExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource >= 3);
+            var sql = exp.GetWhereSql(e => e.Cource >= 3);
             Assert.Equal("cource >= 3", sql);
         }
 
@@ -213,7 +213,7 @@ namespace LiteRepository.Sql
         public void Decimal_EqExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == 12.2m);
+            var sql = exp.GetWhereSql(e => e.Cource == 12.2m);
             Assert.Equal("cource = 12.2", sql);
         }
 
@@ -221,7 +221,7 @@ namespace LiteRepository.Sql
         public void Int_NotExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => !(e.Cource == 12));
+            var sql = exp.GetWhereSql(e => !(e.Cource == 12));
             Assert.Equal("NOT cource = 12", sql);
         }
 
@@ -229,7 +229,7 @@ namespace LiteRepository.Sql
         public void Int_EqExpression_Reverse_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => 12 == e.Cource);
+            var sql = exp.GetWhereSql(e => 12 == e.Cource);
             Assert.Equal("12 = cource", sql);
         }
 
@@ -237,7 +237,7 @@ namespace LiteRepository.Sql
         public void Char_EqExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Letter == 'A');
+            var sql = exp.GetWhereSql(e => e.Letter == 'A');
             Assert.Equal("letter = 'A'", sql);
         }
 
@@ -245,7 +245,7 @@ namespace LiteRepository.Sql
         public void Char_EqExpression_Reverse_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => 'A' == e.Letter);
+            var sql = exp.GetWhereSql(e => 'A' == e.Letter);
             Assert.Equal("'A' = letter", sql);
         }
 
@@ -253,7 +253,7 @@ namespace LiteRepository.Sql
         public void Group_AndExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == 1 && e.Letter == 'A');
+            var sql = exp.GetWhereSql(e => e.Cource == 1 && e.Letter == 'A');
             Assert.Equal("cource = 1 AND letter = 'A'", sql);
         }
 
@@ -261,7 +261,7 @@ namespace LiteRepository.Sql
         public void Group_OrExpression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == 1 || e.Letter == 'A');
+            var sql = exp.GetWhereSql(e => e.Cource == 1 || e.Letter == 'A');
             Assert.Equal("cource = 1 OR letter = 'A'", sql);
         }
 
@@ -269,7 +269,7 @@ namespace LiteRepository.Sql
         public void Group_TwoAnd_Expression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == 1 && e.Letter == 'A' && e.SecondName == "Ivan");
+            var sql = exp.GetWhereSql(e => e.Cource == 1 && e.Letter == 'A' && e.SecondName == "Ivan");
             Assert.Equal("cource = 1 AND letter = 'A' AND second_name = 'Ivan'", sql);
         }
 
@@ -277,7 +277,7 @@ namespace LiteRepository.Sql
         public void Group_TwoOr_Expression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == 1 || e.Letter == 'A' || e.SecondName == "Ivan");
+            var sql = exp.GetWhereSql(e => e.Cource == 1 || e.Letter == 'A' || e.SecondName == "Ivan");
             Assert.Equal("cource = 1 OR letter = 'A' OR second_name = 'Ivan'", sql);
         }
 
@@ -285,7 +285,7 @@ namespace LiteRepository.Sql
         public void Group_ExpOrAndGroup_Expression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == 1 || (e.Letter == 'A' && e.SecondName == "Ivan"));
+            var sql = exp.GetWhereSql(e => e.Cource == 1 || (e.Letter == 'A' && e.SecondName == "Ivan"));
             Assert.Equal("cource = 1 OR (letter = 'A' AND second_name = 'Ivan')", sql);
         }
 
@@ -293,7 +293,7 @@ namespace LiteRepository.Sql
         public void Group_ExpAndOrGroup_Expression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => e.Cource == 1 && (e.Letter == 'A' || e.SecondName == "Ivan"));
+            var sql = exp.GetWhereSql(e => e.Cource == 1 && (e.Letter == 'A' || e.SecondName == "Ivan"));
             Assert.Equal("cource = 1 AND (letter = 'A' OR second_name = 'Ivan')", sql);
         }
 
@@ -301,7 +301,7 @@ namespace LiteRepository.Sql
         public void Group_AndGroupOrExp_Expression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => (e.Cource == 1 && e.Letter == 'A') || e.SecondName == "Ivan");
+            var sql = exp.GetWhereSql(e => (e.Cource == 1 && e.Letter == 'A') || e.SecondName == "Ivan");
             Assert.Equal("(cource = 1 AND letter = 'A') OR second_name = 'Ivan'", sql);
         }
 
@@ -309,7 +309,7 @@ namespace LiteRepository.Sql
         public void Group_OrGroupAndExp_Expression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => (e.Cource == 1 || e.Letter == 'A') && e.SecondName == "Ivan");
+            var sql = exp.GetWhereSql(e => (e.Cource == 1 || e.Letter == 'A') && e.SecondName == "Ivan");
             Assert.Equal("(cource = 1 OR letter = 'A') AND second_name = 'Ivan'", sql);
         }
 
@@ -317,7 +317,7 @@ namespace LiteRepository.Sql
         public void Group_Complex_Expression_Test()
         {
             var exp = new SqlExpression<Entity>();
-            var sql = exp.GetSql(e => ((e.Cource == 1 || e.Cource == 2) || e.Letter == 'A') && (e.SecondName == "Ivan" || (e.SecondName == "Petrov" && e.FirstName.StartsWith("P"))));
+            var sql = exp.GetWhereSql(e => ((e.Cource == 1 || e.Cource == 2) || e.Letter == 'A') && (e.SecondName == "Ivan" || (e.SecondName == "Petrov" && e.FirstName.StartsWith("P"))));
             Assert.Equal("(cource = 1 OR cource = 2 OR letter = 'A') AND (second_name = 'Ivan' OR (second_name = 'Petrov' AND first_name like 'P%'))", sql);
         }
     }
