@@ -111,7 +111,6 @@
     <Compile Include="Sql\SqlExpression_ScalarTests.cs" />
     <Compile Include="Sql\SqlExpression_WhereTests.cs" />
     <Compile Include="Sql\SqlMetadataTests.cs" />
-    <Compile Include="Sql\SqlOrderTests.cs" />
     <Compile Include="Sql\SqlRepository_EntityTests.cs" />
   </ItemGroup>
   <ItemGroup />
