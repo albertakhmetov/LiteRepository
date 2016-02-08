@@ -107,11 +107,11 @@
     <Compile Include="Sql\Models\IdentityEntity.cs" />
     <Compile Include="Sql\SqlBuilder_EntityTests.cs" />
     <Compile Include="Sql\SqlBuilder_IdentityEntityTests.cs" />
-    <Compile Include="Sql\SqlExpression_OrderTests.cs" />
-    <Compile Include="Sql\SqlExpression_ScalarTests.cs" />
-    <Compile Include="Sql\SqlExpression_WhereTests.cs" />
+    <Compile Include="Sql\SqlExpression_Part_Order_Tests.cs" />
+    <Compile Include="Sql\SqlExpression_SelectScalar_Tests.cs" />
+    <Compile Include="Sql\SqlExpression_Select_Tests.cs" />
+    <Compile Include="Sql\SqlExpression_Part_Where_Tests.cs" />
     <Compile Include="Sql\SqlMetadataTests.cs" />
-    <Compile Include="Sql\SqlRepository_EntityTests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

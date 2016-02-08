@@ -26,40 +26,44 @@ using LiteRepository.Sql.Models;
 
 namespace LiteRepository.Sql
 {
-    public class SqlExpression_ScalarTests
+    public class SqlExpression_SelectScalar_Tests
     {
         [Fact]
         public void NullExpression_Test()
         {
-            var exp = new SqlExpression<Entity>();
-            var sql = exp.GetScalarSql<object>(null);
+            var dialect = Substitute.For<ISqlDialect>();
+            var exp = new SqlExpression<Entity>(dialect);
+            var sql = exp.GetSelectScalarPartSql<object>(null);
             Assert.Equal(string.Empty, sql);
         }
 
         [Fact]
         public void Count_Test()
         {
-            var exp = new SqlExpression<Entity>();
+            var dialect = Substitute.For<ISqlDialect>();
+            var exp = new SqlExpression<Entity>(dialect);
             var expected = "COUNT(1)";
-            var sql = exp.GetScalarSql(i => i.Count());
+            var sql = exp.GetSelectScalarPartSql(i => i.Count());
             Assert.Equal(expected, sql);
         }
 
         [Fact]
         public void Avg_Test()
         {
-            var exp = new SqlExpression<Entity>();
+            var dialect = Substitute.For<ISqlDialect>();
+            var exp = new SqlExpression<Entity>(dialect);
             var expected = "AVG(cource)";
-            var sql = exp.GetScalarSql(i => i.Average(x => x.Cource));
+            var sql = exp.GetSelectScalarPartSql(i => i.Average(x => x.Cource));
             Assert.Equal(expected, sql);
         }
 
         [Fact]
         public void Sum_Test()
         {
-            var exp = new SqlExpression<Entity>();
+            var dialect = Substitute.For<ISqlDialect>();
+            var exp = new SqlExpression<Entity>(dialect);
             var expected = "SUM(cource)";
-            var sql = exp.GetScalarSql(i => i.Sum(x => x.Cource));
+            var sql = exp.GetSelectScalarPartSql(i => i.Sum(x => x.Cource));
             Assert.Equal(expected, sql);
         }
     }

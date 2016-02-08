@@ -26,29 +26,83 @@ using LiteRepository.Common.Extensions;
 
 namespace LiteRepository.Sql
 {
-    public class SqlExpression<E>
+    public sealed class SqlExpression<E>
         where E : class
     {
-        private readonly Dictionary<string, string> _typeToDbDictionary;
+        public ISqlDialect Dialect
+        {
+            get; private set;
+        }
 
+        public SqlMetadata Metadata
+        {
+            get; private set;
+        }
+
+        [Obsolete]
         public SqlExpression()
         {
-            var metadata = SqlMetadata.GetSqlMetadata(typeof(E));
-            _typeToDbDictionary = metadata.ToDictionary(i => i.Name, i => i.DbName.ToLower());
+            Metadata = SqlMetadata.GetSqlMetadata(typeof(E));
         }
 
-        public string GetWhereSql(Expression<Func<E, bool>> expression)
+        public SqlExpression(ISqlDialect dialect)
         {
-            if (expression == null)
-                return "";
-
-            return Process(expression.Body);
+            Metadata = SqlMetadata.GetSqlMetadata(typeof(E));
+            Dialect = dialect;
         }
 
-        public string GetScalarSql<T>(Expression<Func<IEnumerable<E>, T>> expression)
+        // Sql dialect related:
+
+        public string GetSelectSql(Type type = null, Expression<Func<E, bool>> where = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null)
+        {
+            return Dialect.Select(Metadata.DbName, GetSelectPartSql(type), GetWherePartSql(where), GetOrderPartSql(orderBy));
+        }
+
+        public string GetSelectByKeySql(Type type = null)
+        {
+            return string.Empty;
+        }
+
+        public string GetSelectScalarSql<T>(Expression<Func<IEnumerable<T>, T>> expression, Expression<Func<E, bool>> where = null)
+        {
+            return string.Empty; // SELECT TOP 1 part FROM metadata.DbName[WHERE]
+        }
+
+        public string GetInsertSql(Type type = null)
+        {
+            return string.Empty; // INSERT INTO metadata.DbName (part_f) VALUES (part_v) / SELECT ...
+        }
+
+        public string GetUpdateSql(Type type = null, Expression<Func<E, bool>> where = null)
+        {
+            return string.Empty; // UPDATE metadata.DbName SET [part][WHERE]
+        }
+
+        public string GetUpdateByKeySql(Type type = null)
+        {
+            return string.Empty;
+        }
+
+        public string GetDeleteSql(Expression<Func<E, bool>> where = null)
+        {
+            return string.Empty; // DELETE FROM metadata.DbName[WHERE] -- TRUNCATE TABLE metadata.DbName
+        }
+
+        public string GetDeleteByKeySql()
+        {
+            return string.Empty;
+        }
+
+        public string GetSelectPartSql(Type type = null)
+        {
+            var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
+            return string.Join(", ", properties.Select(i => $"{i.DbName} AS {i.Name}"));
+        }
+
+        public string GetSelectScalarPartSql<T>(Expression<Func<IEnumerable<E>, T>> expression)
         {
             if (expression == null)
-                return "";
+                return string.Empty;
 
             if (expression.Body is MethodCallExpression)
                 return ProcessScalarMethodCall(expression.Body as MethodCallExpression);
@@ -56,19 +110,36 @@ namespace LiteRepository.Sql
                 throw new NotSupportedException();
         }
 
-        public string GetOrderSql(Expression<Func<IEnumerable<E>, IEnumerable<E>>> expression)
+        public string GetInsertFieldsPartSql(Type type = null)
+        {
+            return string.Empty;
+        }
+
+        public string GetInsertValuesPartSql(Type type = null)
+        {
+            return string.Empty;
+        }
+
+        public string GetUpdatePartSql(Type type = null)
+        {
+            return string.Empty;
+        }
+
+        public string GetWherePartSql(Expression<Func<E, bool>> expression)
         {
             if (expression == null)
-                return "";
+                return string.Empty;
+
+            return Process(expression.Body);
+        }
+
+        public string GetOrderPartSql(Expression<Func<IEnumerable<E>, IEnumerable<E>>> expression)
+        {
+            if (expression == null)
+                return string.Empty;
 
             if (expression.Body is MethodCallExpression)
-            {
-                var sql = ProcessOrderMethodCall(expression.Body as MethodCallExpression);
-                if (sql.Length > 0)
-                    return $"ORDER BY {sql}";
-                else
-                    return string.Empty;
-            }
+                return ProcessOrderMethodCall(expression.Body as MethodCallExpression);
             else
                 throw new NotSupportedException();
         }
@@ -97,11 +168,6 @@ namespace LiteRepository.Sql
                 default:
                     throw new NotSupportedException();
             }
-        }
-
-        private string DbName(string propertyName)
-        {
-            return _typeToDbDictionary[propertyName];
         }
 
         private string ToString(object value)
@@ -184,7 +250,7 @@ namespace LiteRepository.Sql
         private string ProcessMember(MemberExpression expression)
         {
             if (expression.Member.ReflectedType == typeof(E))
-                return DbName(expression.Member.Name); // this is db field
+                return Metadata[expression.Member.Name]; // this is db field
             else
                 return $"@{expression.Member.Name}"; // this is property of the parameter's object
         }

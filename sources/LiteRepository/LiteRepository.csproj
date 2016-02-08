@@ -81,14 +81,14 @@
     <Compile Include="Sql\Commands\SqlInsert.cs" />
     <Compile Include="Sql\Commands\SqlUpdate.cs" />
     <Compile Include="Sql\ISqlBuilder.cs" />
+    <Compile Include="Sql\ISqlDialect.cs" />
     <Compile Include="Sql\SqlBuilder.cs" />
     <Compile Include="Sql\SqlExpression.cs" />
     <Compile Include="Sql\SqlMetadata.cs" />
-    <Compile Include="Sql\SqlRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Sql\SqlClassDiagram.cd" />
+    <None Include="Sql\SqlDiagram.cd" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

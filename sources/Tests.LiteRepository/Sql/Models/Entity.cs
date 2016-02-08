@@ -51,6 +51,13 @@ namespace LiteRepository.Sql.Models
         {
             get; set;
         }
+        
+        [SqlKey]
+        [SqlAlias("local_id")]
+        public int LocalId
+        {
+            get; set;
+        }
 
         [SqlAlias("first_name")]
         public string FirstName

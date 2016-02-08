@@ -26,31 +26,34 @@ using LiteRepository.Sql.Models;
 
 namespace LiteRepository.Sql
 {
-    public class SqlExpression_OrderTests
+    public class SqlExpression_Part_Order_Tests
     {
         [Fact]
         public void NullExpression_Test()
         {
-            var exp = new SqlExpression<Entity>();
-            var sql = exp.GetOrderSql(null);
+            var dialect = Substitute.For<ISqlDialect>();
+            var exp = new SqlExpression<Entity>(dialect);
+            var sql = exp.GetOrderPartSql(null);
             Assert.Equal(string.Empty, sql);
         }
 
         [Fact]
         public void Order_Test()
         {
-            var exp = new SqlExpression<Entity>();
-            var expected = "ORDER BY birthday";
-            var sql = exp.GetOrderSql(i => i.OrderBy(x => x.Birthday));
+            var dialect = Substitute.For<ISqlDialect>();
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = " ORDER BY birthday";
+            var sql = exp.GetOrderPartSql(i => i.OrderBy(x => x.Birthday));
             Assert.Equal(expected, sql);
         }
 
         [Fact]
         public void OrderOrderByDesc_Test()
         {
-            var exp = new SqlExpression<Entity>();
-            var expected = "ORDER BY birthday, second_name DESC";
-            var sql = exp.GetOrderSql(i => i.OrderBy(x => x.Birthday).OrderByDescending(x=>x.SecondName));
+            var dialect = Substitute.For<ISqlDialect>();
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = " ORDER BY birthday, second_name DESC";
+            var sql = exp.GetOrderPartSql(i => i.OrderBy(x => x.Birthday).OrderByDescending(x=>x.SecondName));
             Assert.Equal(expected, sql);
         }
     }

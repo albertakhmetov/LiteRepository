@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LiteRepository.Sql.SqlExpression&lt;E&gt;">
+    <Position X="2.25" Y="2.25" Width="2.25" />
+    <Members>
+      <Field Name="_typeToDbDictionary" Hidden="true" />
+      <Method Name="DbName" Hidden="true" />
+      <Method Name="GetInsertFieldsPartSql" Hidden="true" />
+      <Method Name="GetInsertValuesPartSql" Hidden="true" />
+      <Method Name="GetOrderPartSql" Hidden="true" />
+      <Method Name="GetSelectPartSql" Hidden="true" />
+      <Method Name="GetSelectScalarPartSql" Hidden="true" />
+      <Method Name="GetUpdatePartSql" Hidden="true" />
+      <Method Name="GetWherePartSql" Hidden="true" />
+      <Method Name="NodeType" Hidden="true" />
+      <Method Name="Process" Hidden="true" />
+      <Method Name="ProcessBinary" Hidden="true" />
+      <Method Name="ProcessConstant" Hidden="true" />
+      <Method Name="ProcessLambda" Hidden="true" />
+      <Method Name="ProcessMember" Hidden="true" />
+      <Method Name="ProcessMethodCall" Hidden="true" />
+      <Method Name="ProcessNew" Hidden="true" />
+      <Method Name="ProcessOrderMethodCall" Hidden="true" />
+      <Method Name="ProcessScalarMethodCall" Hidden="true" />
+      <Method Name="ProcessStringMethodArg" Hidden="true" />
+      <Method Name="ProcessUnary" Hidden="true" />
+      <Method Name="SqlExpression" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAQEACAAAAAAoAAEQhAEAAAiAwIECIBMAQAgCAAGAKA=</HashCode>
+      <FileName>Sql\SqlExpression.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Dialect" />
+      <Property Name="Metadata" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="LiteRepository.Sql.SqlMetadata" Collapsed="true">
+    <Position X="5.75" Y="2.25" Width="1.5" />
+    <Members>
+      <Field Name="_cache" Hidden="true" />
+      <Field Name="_nameToDbNameDictionary" Hidden="true" />
+      <Field Name="_properties" Hidden="true" />
+      <Method Name="ClearCache" Hidden="true" />
+      <Property Name="Count" Hidden="true" />
+      <Property Name="DbName" Hidden="true" />
+      <Method Name="Equals" Hidden="true" />
+      <Method Name="GetEnumerator" Hidden="true" />
+      <Method Name="GetHashCode" Hidden="true" />
+      <Method Name="GetSqlMetadata" Hidden="true" />
+      <Method Name="GetSubsetForType" Hidden="true" />
+      <Method Name="IEnumerable.GetEnumerator" Hidden="true" />
+      <Property Name="IsIdentity" Hidden="true" />
+      <Property Name="Name" Hidden="true" />
+      <Method Name="SqlMetadata" Hidden="true" />
+      <Property Name="this" Hidden="true" />
+      <Property Name="Type" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="LiteRepository.Sql.SqlMetadata.Property" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Sql\SqlMetadata.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAIAAEBAAiACAAAQgAAIAAIAEAQAACAAAAEA=</HashCode>
+      <FileName>Sql\SqlMetadata.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="LiteRepository.Sql.ISqlDialect">
+    <Position X="5.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEAAAAAAAAAAAAACAAAAAAEQAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Sql\ISqlDialect.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
