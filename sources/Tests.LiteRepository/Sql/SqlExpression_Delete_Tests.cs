@@ -26,38 +26,36 @@ using LiteRepository.Sql.Models;
 
 namespace LiteRepository.Sql
 {
-    public class SqlExpression_Part_Order_Tests
+    public class SqlExpression_Delete_Tests
     {
         [Fact]
-        public void NullExpression_Test()
+        public void Null_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            var exp = new SqlExpression<Entity>(dialect);
+            dialect.Parameter("Cource").Returns("@Cource");
+            dialect.Parameter("Letter").Returns("@Letter");
+            dialect.Parameter("LocalId").Returns("@LocalId");
 
-            exp.GetSelectSql();
-            dialect.Received(1).Select(exp.Metadata.DbName, Arg.Any<string>(), string.Empty, string.Empty);
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = "cource = @Cource AND letter = @Letter AND local_id = @LocalId";
+
+            exp.GetDeleteSql();
+            dialect.Received(1).Delete(exp.Metadata.DbName, expected);
         }
 
         [Fact]
-        public void Order_Test()
+        public void Where_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("Birthday").Returns("@Birthday");
+
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "birthday";
+            var expected = "birthday = @Birthday";
 
-            exp.GetSelectSql(orderBy: i => i.OrderBy(x => x.Birthday));
-            dialect.Received(1).Select(exp.Metadata.DbName, Arg.Any<string>(), string.Empty, expected);
-        }
+            var p = new { Birthday = new DateTime(2000, 1, 1) };
 
-        [Fact]
-        public void OrderOrderByDesc_Test()
-        {
-            var dialect = Substitute.For<ISqlDialect>();
-            var exp = new SqlExpression<Entity>(dialect);
-            var expected = "birthday, second_name DESC";
-
-            exp.GetSelectSql(orderBy: i => i.OrderBy(x => x.Birthday).OrderByDescending(x => x.SecondName));
-            dialect.Received(1).Select(exp.Metadata.DbName, Arg.Any<string>(), string.Empty, expected);
+            exp.GetDeleteSql(where: i => i.Birthday == p.Birthday);
+            dialect.Received(1).Delete(exp.Metadata.DbName, expected);
         }
     }
 }

@@ -80,22 +80,20 @@ namespace LiteRepository.Sql
 
         public string GetUpdateSql(Type type = null, Expression<Func<E, bool>> where = null)
         {
-            return string.Empty; // UPDATE metadata.DbName SET [part][WHERE]
-        }
+            var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
+            properties = properties.Where(i => !i.IsPrimaryKey);
+            if (properties.Count() == 0)
+                throw new InvalidOperationException("There are not fields to update");
 
-        public string GetUpdateByKeySql(Type type = null)
-        {
-            return string.Empty;
+            return Dialect.Update(Metadata.DbName,
+                GetUpdatePartSql(properties),
+                where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where));
         }
 
         public string GetDeleteSql(Expression<Func<E, bool>> where = null)
         {
-            return string.Empty; // DELETE FROM metadata.DbName[WHERE] -- TRUNCATE TABLE metadata.DbName
-        }
-
-        public string GetDeleteByKeySql()
-        {
-            return string.Empty;
+            return Dialect.Delete(Metadata.DbName,
+                where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where));
         }
 
         public string GetSelectPartSql(Type type = null)
@@ -125,9 +123,9 @@ namespace LiteRepository.Sql
             return string.Join(", ", properties.Where(i => !i.IsIdentity).Select(i => Dialect.Parameter(i.Name)));
         }
 
-        public string GetUpdatePartSql(Type type = null)
+        public string GetUpdatePartSql(IEnumerable<SqlMetadata.Property> properties)
         {
-            return string.Empty;
+            return string.Join(", ", properties.Where(i => !i.IsPrimaryKey).Select(i => $"{i.DbName} = {Dialect.Parameter(i.Name)}"));
         }
 
         public string GetWherePartSql(Expression<Func<E, bool>> expression)
@@ -262,7 +260,7 @@ namespace LiteRepository.Sql
             if (expression.Member.ReflectedType == typeof(E))
                 return Metadata[expression.Member.Name]; // this is db field
             else
-                return $"@{expression.Member.Name}"; // this is property of the parameter's object
+                return Dialect.Parameter(expression.Member.Name); // this is property of the parameter's object
         }
 
         private string ProcessConstant(ConstantExpression expression)

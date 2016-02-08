@@ -41,6 +41,8 @@ namespace LiteRepository.Sql
         public void Where_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("Cource").Returns("@Cource");
+
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = @Cource";
             var p = new { Cource = 123 };

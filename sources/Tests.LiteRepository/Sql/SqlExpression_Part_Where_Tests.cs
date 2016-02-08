@@ -34,8 +34,9 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(null);
-            Assert.Equal(string.Empty, sql);
+
+            exp.GetSelectSql(where: null);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), string.Empty, string.Empty);
         }
 
         [Fact]
@@ -43,8 +44,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName == "Ivan");
-            Assert.Equal(" WHERE first_name = 'Ivan'", sql);
+            var expected = "first_name = 'Ivan'";
+
+            exp.GetSelectSql(where: e => e.FirstName == "Ivan");
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -52,8 +55,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName != "Ivan");
-            Assert.Equal(" WHERE first_name <> 'Ivan'", sql);
+            var expected = "first_name <> 'Ivan'";
+
+            exp.GetSelectSql(where: e => e.FirstName != "Ivan");
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -61,8 +66,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName.ToLower() == "ivan");
-            Assert.Equal(" WHERE lower(first_name) = 'ivan'", sql);
+            var expected = "lower(first_name) = 'ivan'";
+
+            exp.GetSelectSql(where: e => e.FirstName.ToLower() == "ivan");
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -70,8 +77,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName.ToUpper() == "IVAN");
-            Assert.Equal(" WHERE upper(first_name) = 'IVAN'", sql);
+            var expected = "upper(first_name) = 'IVAN'";
+
+            exp.GetSelectSql(where: e => e.FirstName.ToUpper() == "IVAN");
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -79,8 +88,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName.StartsWith("Iv"));
-            Assert.Equal(" WHERE first_name like 'Iv%'", sql);
+            var expected = "first_name like 'Iv%'";
+
+            exp.GetSelectSql(where: e => e.FirstName.StartsWith("Iv"));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -89,9 +100,13 @@ namespace LiteRepository.Sql
             var name = "Ivan";
 
             var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("name").Returns("@name");
+
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName.StartsWith(name));
-            Assert.Equal(" WHERE first_name like @name", sql);
+            var expected = "first_name like @name";
+
+            exp.GetSelectSql(where: e => e.FirstName.StartsWith(name));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -99,8 +114,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName.EndsWith("ov"));
-            Assert.Equal(" WHERE first_name like '%ov'", sql);
+            var expected = "first_name like '%ov'";
+
+            exp.GetSelectSql(where: e => e.FirstName.EndsWith("ov"));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -109,9 +126,13 @@ namespace LiteRepository.Sql
             var name = "Ivan";
 
             var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("name").Returns("@name");
+
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName.EndsWith(name));
-            Assert.Equal(" WHERE first_name like @name", sql);
+            var expected = "first_name like @name";
+
+            exp.GetSelectSql(where: e => e.FirstName.EndsWith(name));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -119,8 +140,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName.Contains("van"));
-            Assert.Equal(" WHERE first_name like '%van%'", sql);
+            var expected = "first_name like '%van%'";
+
+            exp.GetSelectSql(where: e => e.FirstName.Contains("van"));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -129,9 +152,13 @@ namespace LiteRepository.Sql
             var name = "Ivan";
 
             var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("name").Returns("@name");
+
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.FirstName.Contains(name));
-            Assert.Equal(" WHERE first_name like @name", sql);
+            var expected = "first_name like @name";
+
+            exp.GetSelectSql(where: e => e.FirstName.Contains(name));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -139,8 +166,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Birthday == new DateTime(1991, 12, 3));
-            Assert.Equal(" WHERE birthday = '1991-12-03 00:00:00'", sql);
+            var expected = "birthday = '1991-12-03 00:00:00'";
+
+            exp.GetSelectSql(where: e => e.Birthday == new DateTime(1991, 12, 3));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -149,9 +178,13 @@ namespace LiteRepository.Sql
             var date = new DateTime(1991, 12, 3);
 
             var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("date").Returns("@date");
+
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Birthday == date);
-            Assert.Equal(" WHERE birthday = @date", sql);
+            var expected = "birthday = @date";
+
+            exp.GetSelectSql(where: e => e.Birthday == date);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -160,9 +193,13 @@ namespace LiteRepository.Sql
             var cr = 4L;
 
             var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("cr").Returns("@cr");
+
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == cr);
-            Assert.Equal(" WHERE cource = @cr", sql);
+            var expected = "cource = @cr";
+
+            exp.GetSelectSql(where: e => e.Cource == cr);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -171,9 +208,13 @@ namespace LiteRepository.Sql
             var cr = 4;
 
             var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("cr").Returns("@cr");
+
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == cr);
-            Assert.Equal(" WHERE cource = @cr", sql);
+            var expected = "cource = @cr";
+
+            exp.GetSelectSql(where: e => e.Cource == cr);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -181,8 +222,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == 3);
-            Assert.Equal(" WHERE cource = 3", sql);
+            var expected = "cource = 3";
+
+            exp.GetSelectSql(where: e => e.Cource == 3);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -190,8 +233,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource != 3);
-            Assert.Equal(" WHERE cource <> 3", sql);
+            var expected = "cource <> 3";
+
+            exp.GetSelectSql(where: e => e.Cource != 3);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -199,8 +244,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource < 3);
-            Assert.Equal(" WHERE cource < 3", sql);
+            var expected = "cource < 3";
+
+            exp.GetSelectSql(where: e => e.Cource < 3);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -208,8 +255,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource <= 3);
-            Assert.Equal(" WHERE cource <= 3", sql);
+            var expected = "cource <= 3";
+
+            exp.GetSelectSql(where: e => e.Cource <= 3);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -217,8 +266,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource > 3);
-            Assert.Equal(" WHERE cource > 3", sql);
+            var expected = "cource > 3";
+
+            exp.GetSelectSql(where: e => e.Cource > 3);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -226,8 +277,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource >= 3);
-            Assert.Equal(" WHERE cource >= 3", sql);
+            var expected = "cource >= 3";
+
+            exp.GetSelectSql(where: e => e.Cource >= 3);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -235,8 +288,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == 12.2m);
-            Assert.Equal(" WHERE cource = 12.2", sql);
+            var expected = "cource = 12.2";
+
+            exp.GetSelectSql(where: e => e.Cource == 12.2m);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -244,8 +299,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => !(e.Cource == 12));
-            Assert.Equal(" WHERE NOT cource = 12", sql);
+            var expected = "NOT cource = 12";
+
+            exp.GetSelectSql(where: e => !(e.Cource == 12));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -253,8 +310,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => 12 == e.Cource);
-            Assert.Equal(" WHERE 12 = cource", sql);
+            var expected = "12 = cource";
+
+            exp.GetSelectSql(where: e => 12 == e.Cource);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -262,8 +321,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Letter == 'A');
-            Assert.Equal(" WHERE letter = 'A'", sql);
+            var expected = "letter = 'A'";
+
+            exp.GetSelectSql(where: e => e.Letter == 'A');
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -271,8 +332,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => 'A' == e.Letter);
-            Assert.Equal(" WHERE 'A' = letter", sql);
+            var expected = "'A' = letter";
+
+            exp.GetSelectSql(where: e => 'A' == e.Letter);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -280,8 +343,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == 1 && e.Letter == 'A');
-            Assert.Equal(" WHERE cource = 1 AND letter = 'A'", sql);
+            var expected = "cource = 1 AND letter = 'A'";
+
+            exp.GetSelectSql(where: e => e.Cource == 1 && e.Letter == 'A');
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -289,8 +354,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == 1 || e.Letter == 'A');
-            Assert.Equal(" WHERE cource = 1 OR letter = 'A'", sql);
+            var expected = "cource = 1 OR letter = 'A'";
+
+            exp.GetSelectSql(where: e => e.Cource == 1 || e.Letter == 'A');
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -298,8 +365,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == 1 && e.Letter == 'A' && e.SecondName == "Ivan");
-            Assert.Equal(" WHERE cource = 1 AND letter = 'A' AND second_name = 'Ivan'", sql);
+            var expected = "cource = 1 AND letter = 'A' AND second_name = 'Ivan'";
+
+            exp.GetSelectSql(where: e => e.Cource == 1 && e.Letter == 'A' && e.SecondName == "Ivan");
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -307,8 +376,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == 1 || e.Letter == 'A' || e.SecondName == "Ivan");
-            Assert.Equal(" WHERE cource = 1 OR letter = 'A' OR second_name = 'Ivan'", sql);
+            var expected = "cource = 1 OR letter = 'A' OR second_name = 'Ivan'";
+
+            exp.GetSelectSql(where: e => e.Cource == 1 || e.Letter == 'A' || e.SecondName == "Ivan");
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -316,8 +387,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == 1 || (e.Letter == 'A' && e.SecondName == "Ivan"));
-            Assert.Equal(" WHERE cource = 1 OR (letter = 'A' AND second_name = 'Ivan')", sql);
+            var expected = "cource = 1 OR (letter = 'A' AND second_name = 'Ivan')";
+
+            exp.GetSelectSql(where: e => e.Cource == 1 || (e.Letter == 'A' && e.SecondName == "Ivan"));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -325,8 +398,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => e.Cource == 1 && (e.Letter == 'A' || e.SecondName == "Ivan"));
-            Assert.Equal(" WHERE cource = 1 AND (letter = 'A' OR second_name = 'Ivan')", sql);
+            var expected = "cource = 1 AND (letter = 'A' OR second_name = 'Ivan')";
+
+            exp.GetSelectSql(where: e => e.Cource == 1 && (e.Letter == 'A' || e.SecondName == "Ivan"));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -334,8 +409,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => (e.Cource == 1 && e.Letter == 'A') || e.SecondName == "Ivan");
-            Assert.Equal(" WHERE (cource = 1 AND letter = 'A') OR second_name = 'Ivan'", sql);
+            var expected = "(cource = 1 AND letter = 'A') OR second_name = 'Ivan'";
+
+            exp.GetSelectSql(where: e => (e.Cource == 1 && e.Letter == 'A') || e.SecondName == "Ivan");
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -343,8 +420,10 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => (e.Cource == 1 || e.Letter == 'A') && e.SecondName == "Ivan");
-            Assert.Equal(" WHERE (cource = 1 OR letter = 'A') AND second_name = 'Ivan'", sql);
+            var expected = "(cource = 1 OR letter = 'A') AND second_name = 'Ivan'";
+
+            exp.GetSelectSql(where: e => (e.Cource == 1 || e.Letter == 'A') && e.SecondName == "Ivan");
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
@@ -352,8 +431,13 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetWherePartSql(e => ((e.Cource == 1 || e.Cource == 2) || e.Letter == 'A') && (e.SecondName == "Ivan" || (e.SecondName == "Petrov" && e.FirstName.StartsWith("P"))));
-            Assert.Equal(" WHERE (cource = 1 OR cource = 2 OR letter = 'A') AND (second_name = 'Ivan' OR (second_name = 'Petrov' AND first_name like 'P%'))", sql);
+            var expected = "(cource = 1 OR cource = 2 OR letter = 'A') AND (second_name = 'Ivan' OR (second_name = 'Petrov' AND first_name like 'P%'))";
+
+            exp.GetSelectSql(where: e => (
+                (e.Cource == 1 || e.Cource == 2) || e.Letter == 'A') &&
+                (e.SecondName == "Ivan" || (e.SecondName == "Petrov" && e.FirstName.StartsWith("P"))
+                ));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
     }
 }
