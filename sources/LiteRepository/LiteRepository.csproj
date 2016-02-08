@@ -82,7 +82,6 @@
     <Compile Include="Sql\Commands\SqlUpdate.cs" />
     <Compile Include="Sql\ISqlBuilder.cs" />
     <Compile Include="Sql\ISqlDialect.cs" />
-    <Compile Include="Sql\SqlBuilder.cs" />
     <Compile Include="Sql\SqlExpression.cs" />
     <Compile Include="Sql\SqlMetadata.cs" />
   </ItemGroup>

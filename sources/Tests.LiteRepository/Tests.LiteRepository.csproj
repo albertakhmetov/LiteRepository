@@ -105,8 +105,6 @@
     <Compile Include="Sql\Commands\SqlUpdateTests.cs" />
     <Compile Include="Sql\Models\Entity.cs" />
     <Compile Include="Sql\Models\IdentityEntity.cs" />
-    <Compile Include="Sql\SqlBuilder_EntityTests.cs" />
-    <Compile Include="Sql\SqlBuilder_IdentityEntityTests.cs" />
     <Compile Include="Sql\SqlExpression_Delete_Tests.cs" />
     <Compile Include="Sql\SqlExpression_Insert_Tests.cs" />
     <Compile Include="Sql\SqlExpression_Part_Order_Tests.cs" />
