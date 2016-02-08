@@ -51,8 +51,6 @@ namespace LiteRepository.Sql
             Dialect = dialect;
         }
 
-        // Sql dialect related:
-
         public string GetSelectSql(Type type = null, Expression<Func<E, bool>> where = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null)
         {
             return Dialect.Select(Metadata.DbName, GetSelectPartSql(type), GetWherePartSql(where), GetOrderPartSql(orderBy));
@@ -60,12 +58,15 @@ namespace LiteRepository.Sql
 
         public string GetSelectByKeySql(Type type = null)
         {
-            return string.Empty;
+            return Dialect.Select(Metadata.DbName, GetSelectPartSql(type), GetWhereByKeyPartSql(), string.Empty);
         }
 
-        public string GetSelectScalarSql<T>(Expression<Func<IEnumerable<T>, T>> expression, Expression<Func<E, bool>> where = null)
+        public string GetSelectScalarSql<T>(Expression<Func<IEnumerable<E>, T>> expression, Expression<Func<E, bool>> where = null)
         {
-            return string.Empty; // SELECT TOP 1 part FROM metadata.DbName[WHERE]
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            return Dialect.SelectScalar(Metadata.DbName, GetSelectScalarPartSql(expression), GetWherePartSql(where));
         }
 
         public string GetInsertSql(Type type = null)
@@ -131,6 +132,11 @@ namespace LiteRepository.Sql
                 return string.Empty;
 
             return Process(expression.Body);
+        }
+
+        public string GetWhereByKeyPartSql()
+        {
+            return string.Join(" AND ", Metadata.Where(i => i.IsPrimaryKey).Select(i => $"{i.DbName} = {Dialect.Parameter(i.Name)}"));
         }
 
         public string GetOrderPartSql(Expression<Func<IEnumerable<E>, IEnumerable<E>>> expression)

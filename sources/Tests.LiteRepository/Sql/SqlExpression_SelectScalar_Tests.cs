@@ -33,8 +33,20 @@ namespace LiteRepository.Sql
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var sql = exp.GetSelectScalarPartSql<object>(null);
-            Assert.Equal(string.Empty, sql);
+
+            Assert.Throws<ArgumentNullException>(() => exp.GetSelectScalarSql<int>(null));
+        }
+
+        [Fact]
+        public void Where_Test()
+        {
+            var dialect = Substitute.For<ISqlDialect>();
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = "cource = @Cource";
+            var p = new { Cource = 123 };
+
+            exp.GetSelectScalarSql<int>(i => i.Count(), where: i => i.Cource == p.Cource);
+            dialect.Received(1).SelectScalar(exp.Metadata.DbName, Arg.Any<string>(), expected);
         }
 
         [Fact]
@@ -43,8 +55,9 @@ namespace LiteRepository.Sql
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "COUNT(1)";
-            var sql = exp.GetSelectScalarPartSql(i => i.Count());
-            Assert.Equal(expected, sql);
+
+            exp.GetSelectScalarSql<int>(i => i.Count());
+            dialect.Received(1).SelectScalar(exp.Metadata.DbName, expected, string.Empty);
         }
 
         [Fact]
@@ -53,8 +66,9 @@ namespace LiteRepository.Sql
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "AVG(cource)";
-            var sql = exp.GetSelectScalarPartSql(i => i.Average(x => x.Cource));
-            Assert.Equal(expected, sql);
+
+            exp.GetSelectScalarSql<double>(i => i.Average(x => x.Cource));
+            dialect.Received(1).SelectScalar(exp.Metadata.DbName, expected, string.Empty);
         }
 
         [Fact]
@@ -63,8 +77,9 @@ namespace LiteRepository.Sql
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "SUM(cource)";
-            var sql = exp.GetSelectScalarPartSql(i => i.Sum(x => x.Cource));
-            Assert.Equal(expected, sql);
+
+            exp.GetSelectScalarSql<long>(i => i.Sum(x => x.Cource));
+            dialect.Received(1).SelectScalar(exp.Metadata.DbName, expected, string.Empty);
         }
     }
 }
