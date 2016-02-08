@@ -71,7 +71,11 @@ namespace LiteRepository.Sql
 
         public string GetInsertSql(Type type = null)
         {
-            return string.Empty; // INSERT INTO metadata.DbName (part_f) VALUES (part_v) / SELECT ...
+            var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
+            if (properties.Count() == 0)
+                throw new InvalidOperationException("There are not fields to insert");
+
+            return Dialect.Insert(Metadata.DbName, GetInsertFieldsPartSql(properties), GetInsertValuesPartSql(properties));
         }
 
         public string GetUpdateSql(Type type = null, Expression<Func<E, bool>> where = null)
@@ -111,14 +115,14 @@ namespace LiteRepository.Sql
                 throw new NotSupportedException();
         }
 
-        public string GetInsertFieldsPartSql(Type type = null)
+        public string GetInsertFieldsPartSql(IEnumerable<SqlMetadata.Property> properties)
         {
-            return string.Empty;
+            return string.Join(", ", properties.Where(i => !i.IsIdentity).Select(i => i.DbName));
         }
 
-        public string GetInsertValuesPartSql(Type type = null)
+        public string GetInsertValuesPartSql(IEnumerable<SqlMetadata.Property> properties)
         {
-            return string.Empty;
+            return string.Join(", ", properties.Where(i => !i.IsIdentity).Select(i => Dialect.Parameter(i.Name)));
         }
 
         public string GetUpdatePartSql(Type type = null)

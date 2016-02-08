@@ -107,6 +107,7 @@
     <Compile Include="Sql\Models\IdentityEntity.cs" />
     <Compile Include="Sql\SqlBuilder_EntityTests.cs" />
     <Compile Include="Sql\SqlBuilder_IdentityEntityTests.cs" />
+    <Compile Include="Sql\SqlExpression_Insert_Tests.cs" />
     <Compile Include="Sql\SqlExpression_Part_Order_Tests.cs" />
     <Compile Include="Sql\SqlExpression_SelectByKey_Tests.cs" />
     <Compile Include="Sql\SqlExpression_SelectScalar_Tests.cs" />
