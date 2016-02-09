@@ -173,7 +173,6 @@ namespace LiteRepository
             var sqlExpression = GetSqlExpression<E>();
             var sql = sqlExpression.GetUpdateSql(subEntity.GetType(), where);
             return Exec(dbConnection => dbConnection.Execute(sql, subEntity));
-
         }
 
         public Task<int> UpdateAsync<E>(object subEntity, Expression<Func<E, bool>> where) where E : class
@@ -188,24 +187,44 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.ExecuteAsync(sql, subEntity));
         }
 
-        public int Delete<E, K>(K key) where E : K where K : class
+        public int Delete<E, K>(K key) where E : class, K where K : class
         {
-            throw new NotImplementedException();
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetDeleteSql();
+            return Exec(dbConnection => dbConnection.Execute(sql, key));
         }
 
-        public Task<int> DeleteAsync<E, K>(K key) where E : K where K : class
+        public Task<int> DeleteAsync<E, K>(K key) where E : class, K where K : class
         {
-            throw new NotImplementedException();
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetDeleteSql();
+            return Exec(dbConnection => dbConnection.ExecuteAsync(sql, key));
         }
 
         public int Delete<E>(Expression<Func<E, bool>> where, object param = null) where E : class
         {
-            throw new NotImplementedException();
+            if (where == null)
+                throw new ArgumentNullException(nameof(where));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetDeleteSql(where);
+            return Exec(dbConnection => dbConnection.Execute(sql, param));
         }
 
         public Task<int> DeleteAsync<E>(Expression<Func<E, bool>> where, object param = null) where E : class
         {
-            throw new NotImplementedException();
+            if (where == null)
+                throw new ArgumentNullException(nameof(where));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetDeleteSql(where);
+            return Exec(dbConnection => dbConnection.ExecuteAsync(sql, param));
         }
 
         public E GetByKey<E, K>(K key, Type type = null) where E : K where K : class

@@ -52,6 +52,13 @@ namespace LiteRepository
         }
 
         [Fact]
+        public void UpdateAsync_NullSubEntity_Test()
+        {
+            var db = GetDb();
+            Assert.Throws<ArgumentNullException>(() => db.Update<Entity>(null, i => i.FirstName != null));
+        }
+
+        [Fact]
         public async void UpdateAsync_NullEntity_Test()
         {
             var db = GetDb();
