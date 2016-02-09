@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Common.Extensions
+namespace LiteRepository
 {
     public static class InExtension
     {
