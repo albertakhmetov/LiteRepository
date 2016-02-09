@@ -28,7 +28,7 @@ using System.Diagnostics;
 
 namespace LiteRepository.Sql
 {
-    public class SqlMetadataTests
+    public class SqlMetadata_Tests
     {
         private class Simple
         {

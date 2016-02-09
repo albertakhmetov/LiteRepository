@@ -100,10 +100,10 @@ namespace LiteRepository.Sql
             var name = "Ivan";
 
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("name").Returns("@name");
+            dialect.Parameter("name").Returns("%name");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "first_name like @name";
+            var expected = "first_name like %name";
 
             exp.GetSelectSql(where: e => e.FirstName.StartsWith(name));
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
@@ -126,10 +126,10 @@ namespace LiteRepository.Sql
             var name = "Ivan";
 
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("name").Returns("@name");
+            dialect.Parameter("name").Returns("%name");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "first_name like @name";
+            var expected = "first_name like %name";
 
             exp.GetSelectSql(where: e => e.FirstName.EndsWith(name));
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
@@ -152,10 +152,10 @@ namespace LiteRepository.Sql
             var name = "Ivan";
 
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("name").Returns("@name");
+            dialect.Parameter("name").Returns("%name");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "first_name like @name";
+            var expected = "first_name like %name";
 
             exp.GetSelectSql(where: e => e.FirstName.Contains(name));
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
@@ -178,10 +178,10 @@ namespace LiteRepository.Sql
             var date = new DateTime(1991, 12, 3);
 
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("date").Returns("@date");
+            dialect.Parameter("date").Returns("%date");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "birthday = @date";
+            var expected = "birthday = %date";
 
             exp.GetSelectSql(where: e => e.Birthday == date);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
@@ -193,10 +193,10 @@ namespace LiteRepository.Sql
             var cr = 4L;
 
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("cr").Returns("@cr");
+            dialect.Parameter("cr").Returns("%cr");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "cource = @cr";
+            var expected = "cource = %cr";
 
             exp.GetSelectSql(where: e => e.Cource == cr);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
@@ -208,10 +208,10 @@ namespace LiteRepository.Sql
             var cr = 4;
 
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("cr").Returns("@cr");
+            dialect.Parameter("cr").Returns("%cr");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "cource = @cr";
+            var expected = "cource = %cr";
 
             exp.GetSelectSql(where: e => e.Cource == cr);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);

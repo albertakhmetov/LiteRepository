@@ -43,9 +43,9 @@ namespace LiteRepository.Sql
         public void Where_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Cource").Returns("@Cource");
+            dialect.Parameter("Cource").Returns("%Cource");
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "cource = @Cource";
+            var expected = "cource = %Cource";
             var p = new { Cource = 123 };
 
             exp.GetSelectSql(where: i => i.Cource == p.Cource);
@@ -95,8 +95,7 @@ namespace LiteRepository.Sql
             var expected = string.Empty;
             var p = new { Salary = 100m, IsStudent = false };
 
-            exp.GetSelectSql(p.GetType());
-            dialect.Received(1).Select(exp.Metadata.DbName, expected, string.Empty, string.Empty);
+            Assert.Throws<InvalidOperationException>(() => exp.GetSelectSql(p.GetType()));
         }
     }
 }

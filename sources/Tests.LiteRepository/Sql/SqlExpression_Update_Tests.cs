@@ -32,16 +32,16 @@ namespace LiteRepository.Sql
         public void Null_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Cource").Returns("@Cource");
-            dialect.Parameter("Letter").Returns("@Letter");
-            dialect.Parameter("LocalId").Returns("@LocalId");
-            dialect.Parameter("FirstName").Returns("@FirstName");
-            dialect.Parameter("SecondName").Returns("@SecondName");
-            dialect.Parameter("Birthday").Returns("@Birthday");
+            dialect.Parameter("Cource").Returns("%Cource");
+            dialect.Parameter("Letter").Returns("%Letter");
+            dialect.Parameter("LocalId").Returns("%LocalId");
+            dialect.Parameter("FirstName").Returns("%FirstName");
+            dialect.Parameter("SecondName").Returns("%SecondName");
+            dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expectedSet = "first_name = @FirstName, second_name = @SecondName, birthday = @Birthday";
-            var expectedWhere = "cource = @Cource AND letter = @Letter AND local_id = @LocalId";
+            var expectedSet = "first_name = %FirstName, second_name = %SecondName, birthday = %Birthday";
+            var expectedWhere = "cource = %Cource AND letter = %Letter AND local_id = %LocalId";
 
             exp.GetUpdateSql();
             dialect.Received(1).Update(exp.Metadata.DbName, expectedSet, expectedWhere);
@@ -51,10 +51,10 @@ namespace LiteRepository.Sql
         public void Where_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Birthday").Returns("@Birthday");
+            dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "birthday = @Birthday";
+            var expected = "birthday = %Birthday";
 
             var p = new { Birthday = new DateTime(2000, 1, 1) };
 
@@ -66,11 +66,11 @@ namespace LiteRepository.Sql
         public void UpdateSub_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("FirstName").Returns("@FirstName");
-            dialect.Parameter("SecondName").Returns("@SecondName");
+            dialect.Parameter("FirstName").Returns("%FirstName");
+            dialect.Parameter("SecondName").Returns("%SecondName");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "first_name = @FirstName, second_name = @SecondName";
+            var expected = "first_name = %FirstName, second_name = %SecondName";
 
             var p = new { FirstName = "A", SecondName = "I" };
 
@@ -82,11 +82,11 @@ namespace LiteRepository.Sql
         public void UpdateIntersect_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("FirstName").Returns("@FirstName");
-            dialect.Parameter("SecondName").Returns("@SecondName");
+            dialect.Parameter("FirstName").Returns("%FirstName");
+            dialect.Parameter("SecondName").Returns("%SecondName");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "first_name = @FirstName, second_name = @SecondName";
+            var expected = "first_name = %FirstName, second_name = %SecondName";
 
             var p = new { FirstName = "A", SecondName = "I", IsStudent = false };
 
@@ -118,13 +118,13 @@ namespace LiteRepository.Sql
         public void UpdateIdentity_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Id").Returns("@Id");
-            dialect.Parameter("FirstName").Returns("@FirstName");
-            dialect.Parameter("SecondName").Returns("@SecondName");
-            dialect.Parameter("Birthday").Returns("@Birthday");
+            dialect.Parameter("Id").Returns("%Id");
+            dialect.Parameter("FirstName").Returns("%FirstName");
+            dialect.Parameter("SecondName").Returns("%SecondName");
+            dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<IdentityEntity>(dialect);
-            var expected = "first_name = @FirstName, second_name = @SecondName, birthday = @Birthday";
+            var expected = "first_name = %FirstName, second_name = %SecondName, birthday = %Birthday";
 
             exp.GetUpdateSql();
             dialect.Received(1).Update(exp.Metadata.DbName, expected, Arg.Any<string>());

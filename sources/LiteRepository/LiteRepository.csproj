@@ -88,6 +88,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Sql\SqlDiagram.cd" />
+    <Compile Include="Sql\SqlExpression.Expressions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

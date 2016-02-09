@@ -32,12 +32,12 @@ namespace LiteRepository.Sql
         public void Null_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Cource").Returns("@Cource");
-            dialect.Parameter("Letter").Returns("@Letter");
-            dialect.Parameter("LocalId").Returns("@LocalId");
+            dialect.Parameter("Cource").Returns("%Cource");
+            dialect.Parameter("Letter").Returns("%Letter");
+            dialect.Parameter("LocalId").Returns("%LocalId");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "cource = @Cource AND letter = @Letter AND local_id = @LocalId";
+            var expected = "cource = %Cource AND letter = %Letter AND local_id = %LocalId";
 
             exp.GetDeleteSql();
             dialect.Received(1).Delete(exp.Metadata.DbName, expected);
@@ -47,10 +47,10 @@ namespace LiteRepository.Sql
         public void Where_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Birthday").Returns("@Birthday");
+            dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "birthday = @Birthday";
+            var expected = "birthday = %Birthday";
 
             var p = new { Birthday = new DateTime(2000, 1, 1) };
 

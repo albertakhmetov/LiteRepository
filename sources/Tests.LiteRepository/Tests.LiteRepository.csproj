@@ -113,7 +113,7 @@
     <Compile Include="Sql\SqlExpression_Select_Tests.cs" />
     <Compile Include="Sql\SqlExpression_Part_Where_Tests.cs" />
     <Compile Include="Sql\SqlExpression_Update_Tests.cs" />
-    <Compile Include="Sql\SqlMetadataTests.cs" />
+    <Compile Include="Sql\SqlMetadata_Tests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

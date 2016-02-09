@@ -32,16 +32,16 @@ namespace LiteRepository.Sql
         public void Null_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Cource").Returns("@Cource");
-            dialect.Parameter("Letter").Returns("@Letter");
-            dialect.Parameter("LocalId").Returns("@LocalId");
-            dialect.Parameter("FirstName").Returns("@FirstName");
-            dialect.Parameter("SecondName").Returns("@SecondName");
-            dialect.Parameter("Birthday").Returns("@Birthday");
+            dialect.Parameter("Cource").Returns("%Cource");
+            dialect.Parameter("Letter").Returns("%Letter");
+            dialect.Parameter("LocalId").Returns("%LocalId");
+            dialect.Parameter("FirstName").Returns("%FirstName");
+            dialect.Parameter("SecondName").Returns("%SecondName");
+            dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<Entity>(dialect);
             var expectedFields = "cource, letter, local_id, first_name, second_name, birthday";
-            var expectedValues = "@Cource, @Letter, @LocalId, @FirstName, @SecondName, @Birthday";
+            var expectedValues = "%Cource, %Letter, %LocalId, %FirstName, %SecondName, %Birthday";
 
             exp.GetInsertSql();
             dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);
@@ -51,12 +51,12 @@ namespace LiteRepository.Sql
         public void InsertSub_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("FirstName").Returns("@FirstName");
-            dialect.Parameter("SecondName").Returns("@SecondName");
+            dialect.Parameter("FirstName").Returns("%FirstName");
+            dialect.Parameter("SecondName").Returns("%SecondName");
 
             var exp = new SqlExpression<Entity>(dialect);
             var expectedFields = "first_name, second_name";
-            var expectedValues = "@FirstName, @SecondName";
+            var expectedValues = "%FirstName, %SecondName";
 
             var p = new { FirstName = "A", SecondName = "I" };
 
@@ -68,12 +68,12 @@ namespace LiteRepository.Sql
         public void InsertIntersect_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("FirstName").Returns("@FirstName");
-            dialect.Parameter("SecondName").Returns("@SecondName");
+            dialect.Parameter("FirstName").Returns("%FirstName");
+            dialect.Parameter("SecondName").Returns("%SecondName");
 
             var exp = new SqlExpression<Entity>(dialect);
             var expectedFields = "first_name, second_name";
-            var expectedValues = "@FirstName, @SecondName";
+            var expectedValues = "%FirstName, %SecondName";
 
             var p = new { FirstName = "A", SecondName = "I", IsStudent = false };
 
@@ -95,14 +95,14 @@ namespace LiteRepository.Sql
         public void InsertIdentity_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Id").Returns("@Id");
-            dialect.Parameter("FirstName").Returns("@FirstName");
-            dialect.Parameter("SecondName").Returns("@SecondName");
-            dialect.Parameter("Birthday").Returns("@Birthday");
+            dialect.Parameter("Id").Returns("%Id");
+            dialect.Parameter("FirstName").Returns("%FirstName");
+            dialect.Parameter("SecondName").Returns("%SecondName");
+            dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<IdentityEntity>(dialect);
             var expectedFields = "first_name, second_name, birthday";
-            var expectedValues = "@FirstName, @SecondName, @Birthday";
+            var expectedValues = "%FirstName, %SecondName, %Birthday";
 
             exp.GetInsertSql();
             dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);

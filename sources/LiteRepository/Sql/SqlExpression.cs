@@ -26,7 +26,7 @@ using LiteRepository.Common.Extensions;
 
 namespace LiteRepository.Sql
 {
-    public sealed class SqlExpression<E>
+    public sealed partial class SqlExpression<E>
         where E : class
     {
         public ISqlDialect Dialect
@@ -39,12 +39,6 @@ namespace LiteRepository.Sql
             get; private set;
         }
 
-        [Obsolete]
-        public SqlExpression()
-        {
-            Metadata = SqlMetadata.GetSqlMetadata(typeof(E));
-        }
-
         public SqlExpression(ISqlDialect dialect)
         {
             Metadata = SqlMetadata.GetSqlMetadata(typeof(E));
@@ -53,12 +47,20 @@ namespace LiteRepository.Sql
 
         public string GetSelectSql(Type type = null, Expression<Func<E, bool>> where = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null)
         {
-            return Dialect.Select(Metadata.DbName, GetSelectPartSql(type), GetWherePartSql(where), GetOrderPartSql(orderBy));
+            var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
+            if (properties.Count() == 0)
+                throw new InvalidOperationException("There are not fields to select");
+
+            return Dialect.Select(Metadata.DbName, GetSelectPartSql(properties), GetWherePartSql(where), GetOrderPartSql(orderBy));
         }
 
         public string GetSelectByKeySql(Type type = null)
         {
-            return Dialect.Select(Metadata.DbName, GetSelectPartSql(type), GetWhereByKeyPartSql(), string.Empty);
+            var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
+            if (properties.Count() == 0)
+                throw new InvalidOperationException("There are not fields to select");
+
+            return Dialect.Select(Metadata.DbName, GetSelectPartSql(properties), GetWhereByKeyPartSql(), string.Empty);
         }
 
         public string GetSelectScalarSql<T>(Expression<Func<IEnumerable<E>, T>> expression, Expression<Func<E, bool>> where = null)
@@ -96,13 +98,12 @@ namespace LiteRepository.Sql
                 where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where));
         }
 
-        public string GetSelectPartSql(Type type = null)
+        private string GetSelectPartSql(IEnumerable<SqlMetadata.Property> properties)
         {
-            var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
             return string.Join(", ", properties.Select(i => $"{i.DbName} AS {i.Name}"));
         }
 
-        public string GetSelectScalarPartSql<T>(Expression<Func<IEnumerable<E>, T>> expression)
+        private string GetSelectScalarPartSql<T>(Expression<Func<IEnumerable<E>, T>> expression)
         {
             if (expression == null)
                 return string.Empty;
@@ -113,22 +114,22 @@ namespace LiteRepository.Sql
                 throw new NotSupportedException();
         }
 
-        public string GetInsertFieldsPartSql(IEnumerable<SqlMetadata.Property> properties)
+        private string GetInsertFieldsPartSql(IEnumerable<SqlMetadata.Property> properties)
         {
             return string.Join(", ", properties.Where(i => !i.IsIdentity).Select(i => i.DbName));
         }
 
-        public string GetInsertValuesPartSql(IEnumerable<SqlMetadata.Property> properties)
+        private string GetInsertValuesPartSql(IEnumerable<SqlMetadata.Property> properties)
         {
             return string.Join(", ", properties.Where(i => !i.IsIdentity).Select(i => Dialect.Parameter(i.Name)));
         }
 
-        public string GetUpdatePartSql(IEnumerable<SqlMetadata.Property> properties)
+        private string GetUpdatePartSql(IEnumerable<SqlMetadata.Property> properties)
         {
             return string.Join(", ", properties.Where(i => !i.IsPrimaryKey).Select(i => $"{i.DbName} = {Dialect.Parameter(i.Name)}"));
         }
 
-        public string GetWherePartSql(Expression<Func<E, bool>> expression)
+        private string GetWherePartSql(Expression<Func<E, bool>> expression)
         {
             if (expression == null)
                 return string.Empty;
@@ -136,12 +137,12 @@ namespace LiteRepository.Sql
             return Process(expression.Body);
         }
 
-        public string GetWhereByKeyPartSql()
+        private string GetWhereByKeyPartSql()
         {
             return string.Join(" AND ", Metadata.Where(i => i.IsPrimaryKey).Select(i => $"{i.DbName} = {Dialect.Parameter(i.Name)}"));
         }
 
-        public string GetOrderPartSql(Expression<Func<IEnumerable<E>, IEnumerable<E>>> expression)
+        private string GetOrderPartSql(Expression<Func<IEnumerable<E>, IEnumerable<E>>> expression)
         {
             if (expression == null)
                 return string.Empty;
@@ -150,229 +151,6 @@ namespace LiteRepository.Sql
                 return ProcessOrderMethodCall(expression.Body as MethodCallExpression);
             else
                 throw new NotSupportedException();
-        }
-
-        private string NodeType(Expression expression)
-        {
-            switch (expression.NodeType)
-            {
-                case ExpressionType.AndAlso:
-                    return "AND";
-                case ExpressionType.OrElse:
-                    return "OR";
-                case ExpressionType.Equal:
-                    return "=";
-                case ExpressionType.NotEqual:
-                    return "<>";
-                case ExpressionType.LessThan:
-                    return "<";
-                case ExpressionType.LessThanOrEqual:
-                    return "<=";
-                case ExpressionType.GreaterThan:
-                    return ">";
-                case ExpressionType.GreaterThanOrEqual:
-                    return ">=";
-
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
-        private string ToString(object value)
-        {
-            if (value == null)
-                return string.Empty;
-            else if (value is DateTime)
-                return ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-            else if (value is double || value is decimal)
-                return string.Format(CultureInfo.InvariantCulture, "{0:g}", value);
-            else
-                return value.ToString();
-        }
-
-        private string Process(Expression expression)
-        {
-            if (expression is BinaryExpression)
-                return ProcessBinary(expression as BinaryExpression);
-            else if (expression is UnaryExpression)
-                return ProcessUnary(expression as UnaryExpression);
-            else if (expression is MemberExpression)
-                return ProcessMember(expression as MemberExpression);
-            else if (expression is ConstantExpression)
-                return ProcessConstant(expression as ConstantExpression);
-            else if (expression is MethodCallExpression)
-                return ProcessMethodCall(expression as MethodCallExpression);
-            else if (expression is NewExpression)
-                return ProcessNew(expression as NewExpression);
-
-            throw new NotSupportedException();
-        }
-
-        private string ProcessBinary(BinaryExpression expression, BinaryExpression parentExpression = null)
-        {
-            if (expression.Left.NodeType == ExpressionType.Convert)
-            {
-                var mEx = (expression.Left as UnaryExpression)?.Operand as MemberExpression;
-                var cEx = expression.Right as ConstantExpression;
-
-                if (mEx != null && mEx.Type == typeof(char) && cEx != null)
-                    return $"{ProcessMember(mEx)} {NodeType(expression)} '{Convert.ToChar(cEx.Value)}'";
-            }
-            else if (expression.Right.NodeType == ExpressionType.Convert)
-            {
-                var mEx = (expression.Right as UnaryExpression)?.Operand as MemberExpression;
-                var cEx = expression.Left as ConstantExpression;
-
-                if (mEx != null && mEx.Type == typeof(char) && cEx != null)
-                    return $"'{Convert.ToChar(cEx.Value)}' {NodeType(expression)} {ProcessMember(mEx)}";
-            }
-
-            var left = expression.Left is BinaryExpression
-                ? ProcessBinary(expression.Left as BinaryExpression, expression)
-                : Process(expression.Left);
-            var right = expression.Right is BinaryExpression
-                ? ProcessBinary(expression.Right as BinaryExpression, expression)
-                : Process(expression.Right);
-
-            var result = $"{left} {NodeType(expression)} {right}";
-            if (parentExpression != null
-                && expression.NodeType.In(ExpressionType.AndAlso, ExpressionType.OrElse)
-                && expression.NodeType != parentExpression.NodeType)
-                return $"({result})";
-            else
-                return result;
-        }
-
-        private string ProcessUnary(UnaryExpression expression)
-        {
-            switch (expression.NodeType)
-            {
-                case ExpressionType.Not:
-                    return "NOT " + Process(expression.Operand);
-
-                default:
-                    return Process(expression.Operand);
-            }
-        }
-
-        private string ProcessMember(MemberExpression expression)
-        {
-            if (expression.Member.ReflectedType == typeof(E))
-                return Metadata[expression.Member.Name]; // this is db field
-            else
-                return Dialect.Parameter(expression.Member.Name); // this is property of the parameter's object
-        }
-
-        private string ProcessConstant(ConstantExpression expression)
-        {
-            if (expression.Type == typeof(string))
-                return $"'{expression.Value}'";
-            else
-                return ToString(expression.Value);
-        }
-
-        private string ProcessMethodCall(MethodCallExpression expression)
-        {
-            if (expression.Method.DeclaringType == typeof(string))
-            {
-                var member = Process(expression.Object);
-                switch (expression.Method.Name)
-                {
-                    case nameof(string.StartsWith):
-                        return $"{member} like {ProcessStringMethodArg(expression, postfix: "%")}";
-                    case nameof(string.EndsWith):
-                        return $"{member} like {ProcessStringMethodArg(expression, prefix: "%")}";
-                    case nameof(string.Contains):
-                        return $"{member} like {ProcessStringMethodArg(expression, prefix: "%", postfix: "%")}";
-
-                    case nameof(string.ToLower):
-                        return $"lower({member})";
-
-                    case nameof(string.ToUpper):
-                        return $"upper({member})";
-                }
-            }
-
-            throw new NotSupportedException();
-        }
-
-        private string ProcessScalarMethodCall(MethodCallExpression expression)
-        {
-            if (expression.Method.DeclaringType == typeof(Enumerable))
-            {
-                switch (expression.Method.Name)
-                {
-                    case nameof(Enumerable.Count):
-                        return "COUNT(1)";
-                    case nameof(Enumerable.Average):
-                        if (expression.Arguments.LastOrDefault() is LambdaExpression == false)
-                            throw new NotSupportedException();
-                        return $"AVG({ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression)})";
-                    case nameof(Enumerable.Sum):
-                        if (expression.Arguments.LastOrDefault() is LambdaExpression == false)
-                            throw new NotSupportedException();
-                        return $"SUM({ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression)})";
-                }
-            }
-
-            throw new NotSupportedException();
-        }
-
-        private string ProcessOrderMethodCall(MethodCallExpression expression)
-        {
-            if (expression.Method.DeclaringType == typeof(Enumerable))
-            {
-                if (expression.Method.Name.In(nameof(Enumerable.OrderBy), nameof(Enumerable.OrderByDescending)))
-                {
-                    if (expression.Arguments.LastOrDefault() is LambdaExpression == false)
-                        throw new NotSupportedException();
-                    var dbName = ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression);
-                    if (expression.Method.Name == nameof(Enumerable.OrderByDescending))
-                        dbName += " DESC";
-
-                    var innerSql = string.Empty;
-                    if (expression.Arguments.FirstOrDefault() is MethodCallExpression)
-                        innerSql = ProcessOrderMethodCall(expression.Arguments.FirstOrDefault() as MethodCallExpression);
-                    else if (expression.Arguments.FirstOrDefault() is ParameterExpression == false)
-                        throw new NotSupportedException();
-
-                    if (innerSql.Length > 0)
-                        return $"{innerSql}, {dbName}";
-                    else
-                        return dbName;
-                }
-            }
-
-            throw new NotSupportedException();
-        }
-
-        private string ProcessStringMethodArg(MethodCallExpression expression, string prefix = null, string postfix = null)
-        {
-            var arg = expression.Arguments[0];
-
-            if (arg is ConstantExpression)
-                return $"'{prefix}{(arg as ConstantExpression).Value}{postfix}'";
-            else if (arg is MemberExpression)
-                return ProcessMember(arg as MemberExpression);
-            else
-                throw new NotSupportedException();
-        }
-
-        private string ProcessNew(NewExpression expression)
-        {
-            if (expression.Type != typeof(DateTime))
-                throw new NotSupportedException();
-
-            var lambda = Expression.Lambda<Func<object>>(Expression.Convert(expression, typeof(object)));
-            var obj = lambda.Compile()();
-
-
-            return $"'{ToString(obj)}'";
-        }
-
-        private string ProcessLambda(LambdaExpression expression)
-        {
-            return Process(expression.Body);
-        }
+        }     
     }
 }

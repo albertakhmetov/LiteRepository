@@ -41,10 +41,10 @@ namespace LiteRepository.Sql
         public void Where_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Cource").Returns("@Cource");
+            dialect.Parameter("Cource").Returns("%Cource");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "cource = @Cource";
+            var expected = "cource = %Cource";
             var p = new { Cource = 123 };
 
             exp.GetSelectScalarSql<int>(i => i.Count(), where: i => i.Cource == p.Cource);

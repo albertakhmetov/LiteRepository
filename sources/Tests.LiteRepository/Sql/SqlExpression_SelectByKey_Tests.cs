@@ -43,15 +43,59 @@ namespace LiteRepository.Sql
         public void Where_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Cource").Returns("@Cource");
-            dialect.Parameter("Letter").Returns("@Letter");
-            dialect.Parameter("LocalId").Returns("@LocalId");
+            dialect.Parameter("Cource").Returns("%Cource");
+            dialect.Parameter("Letter").Returns("%Letter");
+            dialect.Parameter("LocalId").Returns("%LocalId");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "cource = @Cource AND letter = @Letter AND local_id = @LocalId";
+            var expected = "cource = %Cource AND letter = %Letter AND local_id = %LocalId";
 
             exp.GetSelectByKeySql();
             dialect.Received(1).Select(exp.Metadata.DbName, Arg.Any<string>(), expected, string.Empty);
+        }
+
+        [Fact]
+        public void SelectSubEntity_Test()
+        {
+            var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("Cource").Returns("%Cource");
+            dialect.Parameter("Letter").Returns("%Letter");
+            dialect.Parameter("LocalId").Returns("%LocalId");
+
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = "letter AS Letter, second_name AS SecondName";
+            var expectedWhere = "cource = %Cource AND letter = %Letter AND local_id = %LocalId";
+            var p = new { Letter = 'A', SecondName = "B" };
+
+            exp.GetSelectByKeySql(p.GetType());
+            dialect.Received(1).Select(exp.Metadata.DbName, expected, expectedWhere, string.Empty);
+        }
+
+        [Fact]
+        public void SelectIntersectEntity_Test()
+        {
+            var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("Cource").Returns("%Cource");
+            dialect.Parameter("Letter").Returns("%Letter");
+            dialect.Parameter("LocalId").Returns("%LocalId");
+
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = "letter AS Letter, second_name AS SecondName";
+            var expectedWhere = "cource = %Cource AND letter = %Letter AND local_id = %LocalId";
+            var p = new { Letter = 'A', IsStudent = false, SecondName = "B" };
+
+            exp.GetSelectByKeySql(p.GetType());
+            dialect.Received(1).Select(exp.Metadata.DbName, expected, expectedWhere, string.Empty);
+        }
+
+        [Fact]
+        public void SelectDifferentEntity_Test()
+        {
+            var dialect = Substitute.For<ISqlDialect>();
+            var exp = new SqlExpression<Entity>(dialect);
+            var p = new { Salary = 100m, IsStudent = false };
+                       
+            Assert.Throws<InvalidOperationException>(() =>  exp.GetSelectSql(p.GetType()));
         }
     }
 }
