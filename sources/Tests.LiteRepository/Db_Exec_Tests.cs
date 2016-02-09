@@ -28,14 +28,14 @@ namespace LiteRepository
 {
     public class Db_Exec_Tests
     {
-        private Db<Models.Entity, Models.EntityKey> GetDb(DbConnection dbConnection)
+        private Db GetDb(DbConnection dbConnection)
         {
-            return new Db<Models.Entity, Models.EntityKey>(Substitute.For<ISqlDialect>(), dbConnection);
+            return new Db(Substitute.For<ISqlDialect>(), dbConnection);
         }
 
-        private Db<Models.Entity, Models.EntityKey> GetDb(Func<DbConnection> dbConnectionFactory)
+        private Db GetDb(Func<DbConnection> dbConnectionFactory)
         {
-            return new Db<Models.Entity, Models.EntityKey>(Substitute.For<ISqlDialect>(), dbConnectionFactory);
+            return new Db(Substitute.For<ISqlDialect>(), dbConnectionFactory);
         }
 
         [Fact]

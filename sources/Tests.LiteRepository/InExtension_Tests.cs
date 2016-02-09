@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace LiteRepository
 {
-    public class InExtensionTests
+    public class InExtension_Tests
     {
         [Fact]
         public void NullValue_Test()

@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql.Commands
+namespace LiteRepository
 {
     public static class DbMocks
     {
