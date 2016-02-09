@@ -51,15 +51,26 @@ namespace LiteRepository
         public void Where_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "birthday = %Birthday";
+            var expected = "birthday = '2000-01-01 00:00:00'";
+
+            exp.GetUpdateSql(where: i => i.Birthday == new DateTime(2000, 1, 1));
+            dialect.Received(1).Update(exp.Metadata.DbName, Arg.Any<string>(), expected);
+        }
+
+        [Fact]
+        public void WhereWithParameters_Test()
+        {
+            var dialect = Substitute.For<ISqlDialect>();
+            dialect.Parameter("Birthday").Returns("%Birthday");
+            dialect.HasParameters(Arg.Is<string>(x => x.Contains("%"))).Returns(true);
+
+            var exp = new SqlExpression<Entity>(dialect);
 
             var p = new { Birthday = new DateTime(2000, 1, 1) };
 
-            exp.GetUpdateSql(where: i => i.Birthday == p.Birthday);
-            dialect.Received(1).Update(exp.Metadata.DbName, Arg.Any<string>(), expected);
+            Assert.Throws<NotSupportedException>(() => exp.GetUpdateSql(where: i => i.Birthday == p.Birthday));
         }
 
         [Fact]

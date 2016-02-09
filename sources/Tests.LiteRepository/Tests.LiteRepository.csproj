@@ -79,6 +79,7 @@
     <Compile Include="Db_Insert_Tests.cs" />
     <Compile Include="Db_Ctor_Tests.cs" />
     <Compile Include="Db_Exec_Tests.cs" />
+    <Compile Include="Db_Update_Custom_Tests.cs" />
     <Compile Include="Db_Update_Tests.cs" />
     <Compile Include="InExtension_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

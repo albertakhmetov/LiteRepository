@@ -163,14 +163,29 @@ namespace LiteRepository
             return ExecAsync(dbConnection => dbConnection.ExecuteAsync(sqlExpression.GetUpdateSql(), entity));
         }
 
-        public int Update<E>(object subEntity, Expression<Func<E, bool>> where, object param = null) where E : class
+        public int Update<E>(object subEntity, Expression<Func<E, bool>> where) where E : class
         {
-            throw new NotImplementedException();
+            if (subEntity == null)
+                throw new ArgumentNullException(nameof(subEntity));
+            if (where == null)
+                throw new ArgumentNullException(nameof(where));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetUpdateSql(subEntity.GetType(), where);
+            return Exec(dbConnection => dbConnection.Execute(sql, subEntity));
+
         }
 
-        public Task<int> UpdateAsync<E>(object subEntity, Expression<Func<E, bool>> where, object param = null) where E : class
+        public Task<int> UpdateAsync<E>(object subEntity, Expression<Func<E, bool>> where) where E : class
         {
-            throw new NotImplementedException();
+            if (subEntity == null)
+                throw new ArgumentNullException(nameof(subEntity));
+            if (where == null)
+                throw new ArgumentNullException(nameof(where));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetUpdateSql(subEntity.GetType(), where);
+            return Exec(dbConnection => dbConnection.ExecuteAsync(sql, subEntity));
         }
 
         public int Delete<E, K>(K key) where E : K where K : class

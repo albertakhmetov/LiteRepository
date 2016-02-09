@@ -86,15 +86,16 @@ namespace LiteRepository
             if (properties.Count() == 0)
                 throw new InvalidOperationException("There are not fields to update");
 
-            return Dialect.Update(Metadata.DbName,
-                GetUpdatePartSql(properties),
-                where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where));
+            var whereSql = where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where);
+            if (where != null && Dialect.HasParameters(whereSql))
+                throw new NotSupportedException("Parameters is not supported in where clause");
+
+            return Dialect.Update(Metadata.DbName, GetUpdatePartSql(properties), whereSql);
         }
 
         public string GetDeleteSql(Expression<Func<E, bool>> where = null)
         {
-            return Dialect.Delete(Metadata.DbName,
-                where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where));
+            return Dialect.Delete(Metadata.DbName, where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where));
         }
 
         private string GetSelectPartSql(IEnumerable<SqlMetadata.Property> properties)
@@ -150,6 +151,6 @@ namespace LiteRepository
                 return ProcessOrderMethodCall(expression.Body as MethodCallExpression);
             else
                 throw new NotSupportedException();
-        }     
+        }
     }
 }

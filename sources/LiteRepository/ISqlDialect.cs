@@ -32,5 +32,6 @@ namespace LiteRepository
         string Delete(string tableName, string where);
 
         string Parameter(string name);
+        bool HasParameters(string vaue);
     }
 }
