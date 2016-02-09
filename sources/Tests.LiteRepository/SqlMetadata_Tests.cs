@@ -22,11 +22,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LiteRepository.Sql.Attributes;
-using LiteRepository.Common;
+using LiteRepository.Attributes;
 using System.Diagnostics;
 
-namespace LiteRepository.Sql
+namespace LiteRepository
 {
     public class SqlMetadata_Tests
     {

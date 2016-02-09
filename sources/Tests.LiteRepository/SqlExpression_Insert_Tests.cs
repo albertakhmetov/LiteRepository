@@ -22,11 +22,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LiteRepository.Sql.Models;
+using LiteRepository.Models;
 
-namespace LiteRepository.Sql
+namespace LiteRepository
 {
-    public class SqlExpression_Update_Tests
+    public class SqlExpression_Insert_Tests
     {
         [Fact]
         public void Null_Test()
@@ -40,82 +40,59 @@ namespace LiteRepository.Sql
             dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expectedSet = "first_name = %FirstName, second_name = %SecondName, birthday = %Birthday";
-            var expectedWhere = "cource = %Cource AND letter = %Letter AND local_id = %LocalId";
+            var expectedFields = "cource, letter, local_id, first_name, second_name, birthday";
+            var expectedValues = "%Cource, %Letter, %LocalId, %FirstName, %SecondName, %Birthday";
 
-            exp.GetUpdateSql();
-            dialect.Received(1).Update(exp.Metadata.DbName, expectedSet, expectedWhere);
+            exp.GetInsertSql();
+            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);
         }
 
         [Fact]
-        public void Where_Test()
-        {
-            var dialect = Substitute.For<ISqlDialect>();
-            dialect.Parameter("Birthday").Returns("%Birthday");
-
-            var exp = new SqlExpression<Entity>(dialect);
-            var expected = "birthday = %Birthday";
-
-            var p = new { Birthday = new DateTime(2000, 1, 1) };
-
-            exp.GetUpdateSql(where: i => i.Birthday == p.Birthday);
-            dialect.Received(1).Update(exp.Metadata.DbName, Arg.Any<string>(), expected);
-        }
-
-        [Fact]
-        public void UpdateSub_Test()
+        public void InsertSub_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
             dialect.Parameter("FirstName").Returns("%FirstName");
             dialect.Parameter("SecondName").Returns("%SecondName");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "first_name = %FirstName, second_name = %SecondName";
+            var expectedFields = "first_name, second_name";
+            var expectedValues = "%FirstName, %SecondName";
 
             var p = new { FirstName = "A", SecondName = "I" };
 
-            exp.GetUpdateSql(p.GetType());
-            dialect.Received(1).Update(exp.Metadata.DbName, expected, Arg.Any<string>());
+            exp.GetInsertSql(p.GetType());
+            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);
         }
 
         [Fact]
-        public void UpdateIntersect_Test()
+        public void InsertIntersect_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
             dialect.Parameter("FirstName").Returns("%FirstName");
             dialect.Parameter("SecondName").Returns("%SecondName");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "first_name = %FirstName, second_name = %SecondName";
+            var expectedFields = "first_name, second_name";
+            var expectedValues = "%FirstName, %SecondName";
 
             var p = new { FirstName = "A", SecondName = "I", IsStudent = false };
 
-            exp.GetUpdateSql(p.GetType());
-            dialect.Received(1).Update(exp.Metadata.DbName, expected, Arg.Any<string>());
+            exp.GetInsertSql(p.GetType());
+            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);
         }
 
         [Fact]
-        public void UpdateDifferent_Test()
+        public void InsertDifferent_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var p = new { IsStudent = false };
 
-            Assert.Throws<InvalidOperationException>(() => exp.GetUpdateSql(p.GetType()));
+            Assert.Throws<InvalidOperationException>(() => exp.GetInsertSql(p.GetType()));
         }
 
         [Fact]
-        public void UpdateKey_Test()
-        {
-            var dialect = Substitute.For<ISqlDialect>();
-            var exp = new SqlExpression<Entity>(dialect);
-            var p = new { Cource = 5 };
-
-            Assert.Throws<InvalidOperationException>(() => exp.GetUpdateSql(p.GetType()));
-        }
-
-        [Fact]
-        public void UpdateIdentity_Test()
+        public void InsertIdentity_Test()
         {
             var dialect = Substitute.For<ISqlDialect>();
             dialect.Parameter("Id").Returns("%Id");
@@ -124,10 +101,11 @@ namespace LiteRepository.Sql
             dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<IdentityEntity>(dialect);
-            var expected = "first_name = %FirstName, second_name = %SecondName, birthday = %Birthday";
+            var expectedFields = "first_name, second_name, birthday";
+            var expectedValues = "%FirstName, %SecondName, %Birthday";
 
-            exp.GetUpdateSql();
-            dialect.Received(1).Update(exp.Metadata.DbName, expected, Arg.Any<string>());
+            exp.GetInsertSql();
+            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);
         }
     }
 }

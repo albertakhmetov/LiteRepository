@@ -21,23 +21,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql.Attributes
+namespace LiteRepository
 {
-    [AttributeUsage(validOn: AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
-    public sealed class SqlAliasAttribute : Attribute
+    public interface IIdentityEntity
     {
-        public string DbName
+        long Id { get; }
+        object UpdateId(long id);
+    }
+
+    public sealed class IdentityKey
+    {
+        public long Id
         {
-            get;
-            private set;
+            get; private set;
         }
 
-        public SqlAliasAttribute(string dbName)
+        public IdentityKey(long id)
         {
-            if (string.IsNullOrWhiteSpace(dbName))
-                throw new ArgumentException(nameof(dbName));
-
-            DbName = dbName;
+            Id = id;
         }
     }
 }

@@ -15,30 +15,32 @@ See the License for the specific
 
 */
 
+using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Common
+namespace LiteRepository.Attributes
 {
-    public interface IIdentityEntity
+    public class SqlAliasAttributeTests
     {
-        long Id { get; }
-        object UpdateId(long id);
-    }
-
-    public sealed class IdentityKey
-    {
-        public long Id
+        [Fact]
+        public void Ctor_NullOrEmpty_Test()
         {
-            get; private set;
+            Assert.Throws<ArgumentException>(() => new SqlAliasAttribute(null));
+            Assert.Throws<ArgumentException>(() => new SqlAliasAttribute(string.Empty));
+            Assert.Throws<ArgumentException>(() => new SqlAliasAttribute("   "));
         }
 
-        public IdentityKey(long id)
+        [Fact]
+        public void Ctor_Test()
         {
-            Id = id;
+            const string dbName = "nameInDb";
+            var sa = new SqlAliasAttribute(dbName);
+
+            Assert.Equal(dbName, sa.DbName);
         }
     }
 }

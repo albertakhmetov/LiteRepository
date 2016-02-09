@@ -21,10 +21,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql.Attributes
+namespace LiteRepository
 {
-    [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
-    public sealed class SqlKeyAttribute : Attribute
+    public interface ISqlDialect
     {
+        string Select(string tableName, string fields, string where, string order, int? top = null);
+        string SelectScalar(string tableName, string expression, string where);
+        string Insert(string tableName, string fields, string values);
+        string Update(string tableName, string set, string where);
+        string Delete(string tableName, string where);
+
+        string Parameter(string name);
     }
 }

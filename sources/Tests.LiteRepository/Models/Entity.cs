@@ -15,20 +15,46 @@ See the License for the specific
 
 */
 
-using LiteRepository.Common;
-using LiteRepository.Sql.Attributes;
+using LiteRepository.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql.Models
+namespace LiteRepository.Models
 {
-    [SqlAlias("users")]
-    public class IdentityEntity : IIdentityEntity
+    [SqlAlias("students")]
+    public class Entity
     {
-        public long Id
+        public class Key
+        {
+            public long Cource
+            {
+                get; set;
+            }
+
+            public char Letter
+            {
+                get; set;
+            }
+        }
+
+        [SqlKey]
+        public long Cource
+        {
+            get; set;
+        }
+
+        [SqlKey]
+        public char Letter
+        {
+            get; set;
+        }
+        
+        [SqlKey]
+        [SqlAlias("local_id")]
+        public int LocalId
         {
             get; set;
         }
@@ -56,25 +82,14 @@ namespace LiteRepository.Sql.Models
             get; set;
         }
 
-        public object UpdateId(long id)
-        {
-            return new IdentityEntity
-            {
-                Id = id,
-                FirstName = this.FirstName,
-                SecondName = this.SecondName,
-                Birthday = this.Birthday
-            };
-        }
-
         public override bool Equals(object obj)
         {
-            return Equals(obj as IdentityEntity);
+            return Equals(obj as Entity);
         }
 
-        public bool Equals(IdentityEntity entity)
+        public bool Equals(Entity entity)
         {
-            return entity != null && entity.Id == Id
+            return entity != null && entity.Cource == Cource && entity.Letter == Letter
                 && entity.FirstName == FirstName
                 && entity.SecondName == SecondName
                 && entity.Birthday == Birthday;
@@ -82,7 +97,7 @@ namespace LiteRepository.Sql.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode() 
+            return Cource.GetHashCode() ^ Letter.GetHashCode() 
                 ^ (FirstName ?? string.Empty).GetHashCode()
                 ^ (SecondName ?? string.Empty).GetHashCode()
                 ^ Birthday.GetHashCode();

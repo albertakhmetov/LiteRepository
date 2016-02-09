@@ -23,7 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Common;
-using LiteRepository.Sql.Models;
+using LiteRepository.Models;
 using System.Data;
 
 namespace LiteRepository.Sql.Commands

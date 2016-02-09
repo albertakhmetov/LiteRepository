@@ -16,7 +16,7 @@ See the License for the specific
 */
 
 using LiteRepository.Common;
-using LiteRepository.Sql.Attributes;
+using LiteRepository.Attributes;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql
+namespace LiteRepository
 {
     public sealed class SqlMetadata : IEnumerable<SqlMetadata.Property>
     {

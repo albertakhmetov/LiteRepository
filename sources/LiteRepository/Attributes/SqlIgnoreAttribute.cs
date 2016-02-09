@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql.Attributes
+namespace LiteRepository.Attributes
 {
     [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
     public sealed class SqlIgnoreAttribute : Attribute

@@ -23,9 +23,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
-using LiteRepository.Sql.Models;
+using LiteRepository.Models;
 
-namespace LiteRepository.Sql
+namespace LiteRepository
 {
     public class SqlExpression_Part_Where_Tests
     {

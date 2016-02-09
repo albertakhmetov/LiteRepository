@@ -23,7 +23,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql
+namespace LiteRepository
 {
     public sealed partial class SqlExpression<E>
         where E : class

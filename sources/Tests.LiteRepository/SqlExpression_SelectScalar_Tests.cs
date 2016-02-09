@@ -22,9 +22,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LiteRepository.Sql.Models;
+using LiteRepository.Models;
 
-namespace LiteRepository.Sql
+namespace LiteRepository
 {
     public class SqlExpression_SelectScalar_Tests
     {

@@ -15,32 +15,29 @@ See the License for the specific
 
 */
 
-using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql.Attributes
+namespace LiteRepository.Attributes
 {
-    public class SqlAliasAttributeTests
+    [AttributeUsage(validOn: AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
+    public sealed class SqlAliasAttribute : Attribute
     {
-        [Fact]
-        public void Ctor_NullOrEmpty_Test()
+        public string DbName
         {
-            Assert.Throws<ArgumentException>(() => new SqlAliasAttribute(null));
-            Assert.Throws<ArgumentException>(() => new SqlAliasAttribute(string.Empty));
-            Assert.Throws<ArgumentException>(() => new SqlAliasAttribute("   "));
+            get;
+            private set;
         }
 
-        [Fact]
-        public void Ctor_Test()
+        public SqlAliasAttribute(string dbName)
         {
-            const string dbName = "nameInDb";
-            var sa = new SqlAliasAttribute(dbName);
+            if (string.IsNullOrWhiteSpace(dbName))
+                throw new ArgumentException(nameof(dbName));
 
-            Assert.Equal(dbName, sa.DbName);
+            DbName = dbName;
         }
     }
 }

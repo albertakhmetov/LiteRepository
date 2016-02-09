@@ -15,46 +15,20 @@ See the License for the specific
 
 */
 
-using LiteRepository.Sql.Attributes;
+using LiteRepository.Common;
+using LiteRepository.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteRepository.Sql.Models
+namespace LiteRepository.Models
 {
-    [SqlAlias("students")]
-    public class Entity
+    [SqlAlias("users")]
+    public class IdentityEntity : IIdentityEntity
     {
-        public class Key
-        {
-            public long Cource
-            {
-                get; set;
-            }
-
-            public char Letter
-            {
-                get; set;
-            }
-        }
-
-        [SqlKey]
-        public long Cource
-        {
-            get; set;
-        }
-
-        [SqlKey]
-        public char Letter
-        {
-            get; set;
-        }
-        
-        [SqlKey]
-        [SqlAlias("local_id")]
-        public int LocalId
+        public long Id
         {
             get; set;
         }
@@ -82,14 +56,25 @@ namespace LiteRepository.Sql.Models
             get; set;
         }
 
-        public override bool Equals(object obj)
+        public object UpdateId(long id)
         {
-            return Equals(obj as Entity);
+            return new IdentityEntity
+            {
+                Id = id,
+                FirstName = this.FirstName,
+                SecondName = this.SecondName,
+                Birthday = this.Birthday
+            };
         }
 
-        public bool Equals(Entity entity)
+        public override bool Equals(object obj)
         {
-            return entity != null && entity.Cource == Cource && entity.Letter == Letter
+            return Equals(obj as IdentityEntity);
+        }
+
+        public bool Equals(IdentityEntity entity)
+        {
+            return entity != null && entity.Id == Id
                 && entity.FirstName == FirstName
                 && entity.SecondName == SecondName
                 && entity.Birthday == Birthday;
@@ -97,7 +82,7 @@ namespace LiteRepository.Sql.Models
 
         public override int GetHashCode()
         {
-            return Cource.GetHashCode() ^ Letter.GetHashCode() 
+            return Id.GetHashCode() 
                 ^ (FirstName ?? string.Empty).GetHashCode()
                 ^ (SecondName ?? string.Empty).GetHashCode()
                 ^ Birthday.GetHashCode();
