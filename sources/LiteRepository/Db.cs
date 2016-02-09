@@ -147,12 +147,20 @@ namespace LiteRepository
 
         public int Update<E>(E entity) where E : class
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            var sqlExpression = GetSqlExpression<E>();
+            return Exec(dbConnection => dbConnection.Execute(sqlExpression.GetUpdateSql(), entity));
         }
 
         public Task<int> UpdateAsync<E>(E entity) where E : class
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            var sqlExpression = GetSqlExpression<E>();
+            return ExecAsync(dbConnection => dbConnection.ExecuteAsync(sqlExpression.GetUpdateSql(), entity));
         }
 
         public int Update<E>(object subEntity, Expression<Func<E, bool>> where, object param = null) where E : class
@@ -170,7 +178,7 @@ namespace LiteRepository
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteAsync<E,K>(K key) where E : K where K : class
+        public Task<int> DeleteAsync<E, K>(K key) where E : K where K : class
         {
             throw new NotImplementedException();
         }
@@ -185,18 +193,18 @@ namespace LiteRepository
             throw new NotImplementedException();
         }
 
-        public E GetByKey<E,K>(K key, Type type = null) where E : K where K : class
+        public E GetByKey<E, K>(K key, Type type = null) where E : K where K : class
         {
             throw new NotImplementedException();
         }
 
-        public Task<E> GetByKeyAsync<E,K>(K key, Type type = null) where E : K where K : class
+        public Task<E> GetByKeyAsync<E, K>(K key, Type type = null) where E : K where K : class
         {
             throw new NotImplementedException();
         }
 
         public IEnumerable<E> Get<E>(
-            Type type = null, 
+            Type type = null,
             Expression<Func<E, bool>> where = null,
             object param = null,
             Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null) where E : class
@@ -205,9 +213,9 @@ namespace LiteRepository
         }
 
         public Task<IEnumerable<E>> GetAsync<E>(
-            Type type = null, 
-            Expression<Func<E, bool>> where = null, 
-            object param = null, 
+            Type type = null,
+            Expression<Func<E, bool>> where = null,
+            object param = null,
             Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null) where E : class
         {
             throw new NotImplementedException();
@@ -215,7 +223,7 @@ namespace LiteRepository
 
         public T GetScalar<E, T>(
             Expression<Func<IEnumerable<E>, T>> expression,
-            Expression<Func<E, bool>> where = null, 
+            Expression<Func<E, bool>> where = null,
             object param = null) where E : class
         {
             throw new NotImplementedException();
@@ -223,7 +231,7 @@ namespace LiteRepository
 
         public Task<T> GetScalarAsync<E, T>(
             Expression<Func<IEnumerable<E>, T>> expression,
-            Expression<Func<E, bool>> where = null, 
+            Expression<Func<E, bool>> where = null,
             object param = null) where E : class
         {
             throw new NotImplementedException();

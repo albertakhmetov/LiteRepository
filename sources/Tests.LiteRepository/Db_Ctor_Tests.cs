@@ -27,7 +27,7 @@ using System.Data;
 
 namespace LiteRepository
 {
-    public class Db_Tests
+    public class Db_Ctor_Tests
     {
         [Fact]
         public void Ctor_Null_Test()

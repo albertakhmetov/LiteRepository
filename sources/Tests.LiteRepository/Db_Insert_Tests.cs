@@ -39,14 +39,14 @@ namespace LiteRepository
         }
 
         [Fact]
-        public void Execute_NullEntity_Test()
+        public void Insert_NullEntity_Test()
         {
             var db = GetDb();
             Assert.Throws<ArgumentNullException>(() => db.Insert<Entity>(null));
         }
 
         [Fact]
-        public async void ExecuteAsync_NullEntity_Test()
+        public async void InsertAsync_NullEntity_Test()
         {
             var db = GetDb();
             await Assert.ThrowsAsync<ArgumentNullException>(() => db.InsertAsync<Entity>(null));
@@ -113,7 +113,7 @@ namespace LiteRepository
         }
 
         [Fact]
-        public void Execute_Entity_Test()
+        public void Insert_Entity_Test()
         {
             var entity = GetEntity();
             var sql = GetSql();
@@ -126,7 +126,6 @@ namespace LiteRepository
             var db = GetDb(sqlDialect, DbMocks.CreateConnection(dbCommand));
 
             var execResult = db.Insert(entity);
-
             Assert.Equal(entity, execResult);
 
             CheckCommand(entity, sql, dbParameters, dbCommand);
@@ -134,7 +133,7 @@ namespace LiteRepository
         }
 
         [Fact]
-        public async void ExecuteAsync_Entity_Test()
+        public async void InsertAsync_Entity_Test()
         {
             var entity = GetEntity();
             var sql = GetSql();
@@ -147,7 +146,6 @@ namespace LiteRepository
             var db = GetDb(sqlDialect, DbMocks.CreateConnection(dbCommand));
 
             var execResult = await db.InsertAsync(entity);
-
             Assert.Equal(entity, execResult);
 
             CheckCommand(entity, sql, dbParameters, dbCommand);
@@ -155,7 +153,7 @@ namespace LiteRepository
         }
 
         [Fact]
-        public void Execute_IdentityEntity_Test()
+        public void Insert_IdentityEntity_Test()
         {
             var entity = GetIdentityEntity();
             var newId = 42;
@@ -183,7 +181,7 @@ namespace LiteRepository
         }
 
         [Fact]
-        public async void ExecuteAsync_IdentityEntity_Test()
+        public async void InsertAsync_IdentityEntity_Test()
         {
             var entity = GetIdentityEntity();
             var newId = 42;
