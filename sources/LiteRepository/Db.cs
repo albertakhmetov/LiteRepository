@@ -29,19 +29,26 @@ namespace LiteRepository
         where E : K
         where K : class
     {
+        private readonly ISqlDialect _sqlDialect;
         private readonly DbConnection _dbConnection;
         private readonly Func<DbConnection> _dbConnectionFactory;
 
         public Db(ISqlDialect sqlDialect, DbConnection dbConnection)
         {
+            if (sqlDialect == null)
+                throw new ArgumentNullException(nameof(sqlDialect));
             if (dbConnection == null)
                 throw new ArgumentNullException(nameof(dbConnection));
+
+            _sqlDialect = sqlDialect;
             _dbConnection = dbConnection;
             _dbConnectionFactory = null;
         }
 
         public Db(ISqlDialect sqlDialect, Func<DbConnection> dbConnectionFactory)
         {
+            if (sqlDialect == null)
+                throw new ArgumentNullException(nameof(sqlDialect));
             if (dbConnectionFactory == null)
                 throw new ArgumentNullException(nameof(dbConnectionFactory));
             _dbConnection = null;
@@ -80,12 +87,44 @@ namespace LiteRepository
 
         public T Exec<T>(Func<DbConnection, T> action)
         {
-            throw new NotImplementedException();
+            var isOpened = _dbConnection?.State == System.Data.ConnectionState.Open;
+            var dbConnection = _dbConnection;
+
+            try
+            {
+                if (dbConnection == null)
+                    dbConnection = _dbConnectionFactory();
+                if (!isOpened)
+                    dbConnection.Open();
+
+                return action(dbConnection);
+            }
+            finally
+            {
+                if (!isOpened)
+                    dbConnection.Close();
+            }
         }
 
-        public Task<T> ExecAsync<T>(Func<DbConnection, T> action)
+        public async Task<T> ExecAsync<T>(Func<DbConnection, Task<T>> action)
         {
-            throw new NotImplementedException();
+            var isOpened = _dbConnection?.State == System.Data.ConnectionState.Open;
+            var dbConnection = _dbConnection;
+
+            try
+            {
+                if (dbConnection == null)
+                    dbConnection = _dbConnectionFactory();
+                if (!isOpened)
+                    await dbConnection.OpenAsync();
+
+                return await action(dbConnection);
+            }
+            finally
+            {
+                if (!isOpened)
+                    dbConnection.Close();
+            }
         }
 
         public E Insert(E entity)

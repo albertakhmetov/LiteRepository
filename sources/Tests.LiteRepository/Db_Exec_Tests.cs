@@ -33,15 +33,93 @@ namespace LiteRepository
             return new Db<Models.Entity, Models.EntityKey>(Substitute.For<ISqlDialect>(), dbConnection);
         }
 
-        [Fact]
-        public void Connection_Test()
+        private Db<Models.Entity, Models.EntityKey> GetDb(Func<DbConnection> dbConnectionFactory)
         {
-            //var dbConnection = Substitute.For<DbConnection>();            
-            //var db = GetDb(null);
+            return new Db<Models.Entity, Models.EntityKey>(Substitute.For<ISqlDialect>(), dbConnectionFactory);
+        }
 
-            //db.Exec<int>(connection => 0);
+        [Fact]
+        public void Connection_Opened_Test()
+        {
+            var dbConnection = Substitute.For<DbConnection>();
+            dbConnection.State.Returns(System.Data.ConnectionState.Open);
+            var db = GetDb(dbConnection);
 
-            //dbConnection.Received(0).Open();
+            var execResult = db.Exec<int>(connection => 42);
+            Assert.Equal(42, execResult);
+
+            dbConnection.Received(0).Open();
+            dbConnection.Received(0).Close();
+        }
+
+        [Fact]
+        public void Connection_Closed_Test()
+        {
+            var dbConnection = Substitute.For<DbConnection>();
+            dbConnection.State.Returns(System.Data.ConnectionState.Closed);
+            var db = GetDb(dbConnection);
+
+            var execResult = db.Exec<int>(connection => 42);
+            Assert.Equal(42, execResult);
+
+            dbConnection.Received(1).Open();
+            dbConnection.Received(1).Close();
+        }
+
+        [Fact]
+        public void Connection_Factory_Test()
+        {
+            var dbConnection = Substitute.For<DbConnection>();
+            dbConnection.State.Returns(System.Data.ConnectionState.Closed);
+            var db = GetDb(() => dbConnection);
+
+            var execResult = db.Exec<int>(connection => 42);
+            Assert.Equal(42, execResult);
+
+            dbConnection.Received(1).Open();
+            dbConnection.Received(1).Close();
+        }
+
+        [Fact]
+        public async void ConnectionAsync_Opened_Test()
+        {
+            var dbConnection = Substitute.For<DbConnection>();
+            dbConnection.State.Returns(System.Data.ConnectionState.Open);
+            var db = GetDb(dbConnection);
+
+            var execResult = await db.ExecAsync<int>(connection => Task<int>.FromResult(42));
+            Assert.Equal(42, execResult);
+
+            await dbConnection.Received(0).OpenAsync();
+            dbConnection.Received(0).Close();
+        }
+
+        [Fact]
+        public async void ConnectionAsync_Closed_Test()
+        {
+            var dbConnection = Substitute.For<DbConnection>();
+            dbConnection.State.Returns(System.Data.ConnectionState.Closed);
+            var db = GetDb(dbConnection);
+
+            var execResult = await db.ExecAsync<int>(connection => Task<int>.FromResult(42));
+            Assert.Equal(42, execResult);
+
+            await dbConnection.Received(1).OpenAsync();
+            dbConnection.Received(1).Close();
+        }
+
+        [Fact]
+        public async void ConnectionAsync_Factory_Test()
+        {
+            var dbConnection = Substitute.For<DbConnection>();
+            dbConnection.State.Returns(System.Data.ConnectionState.Closed);
+            var db = GetDb(() => dbConnection);
+
+            var execResult = await db.ExecAsync<int>(connection => Task<int>.FromResult(42));
+            Assert.Equal(42, execResult);
+
+            await dbConnection.Received(1).OpenAsync();
+            dbConnection.Received(1).Close();
         }
     }
 }

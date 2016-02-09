@@ -92,7 +92,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Db_Connection_Tests.cs" />
+    <Compile Include="Db_Tests.cs" />
     <Compile Include="Db_Exec_Tests.cs" />
     <Compile Include="InExtensionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
