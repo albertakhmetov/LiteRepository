@@ -40,8 +40,8 @@ namespace LiteRepository
             dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expectedFields = "cource, letter, local_id, first_name, second_name, birthday";
-            var expectedValues = "%Cource, %Letter, %LocalId, %FirstName, %SecondName, %Birthday";
+            var expectedFields = "first_name, second_name, birthday, cource, letter, local_id";
+            var expectedValues = "%FirstName, %SecondName, %Birthday, %Cource, %Letter, %LocalId";
 
             exp.GetInsertSql();
             dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);

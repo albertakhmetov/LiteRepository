@@ -29,87 +29,141 @@ namespace LiteRepository
         where E : K
         where K : class
     {
-        public Db(ISqlDialect sqlDialect)
+        private readonly DbConnection _dbConnection;
+        private readonly Func<DbConnection> _dbConnectionFactory;
+
+        public Db(ISqlDialect sqlDialect, DbConnection dbConnection)
+        {
+            if (dbConnection == null)
+                throw new ArgumentNullException(nameof(dbConnection));
+            _dbConnection = dbConnection;
+            _dbConnectionFactory = null;
+        }
+
+        public Db(ISqlDialect sqlDialect, Func<DbConnection> dbConnectionFactory)
+        {
+            if (dbConnectionFactory == null)
+                throw new ArgumentNullException(nameof(dbConnectionFactory));
+            _dbConnection = null;
+            _dbConnectionFactory = dbConnectionFactory;
+        }
+
+        private DbConnection GetDbConnection()
+        {
+            var dbConnecton = _dbConnection ?? _dbConnectionFactory();
+            if (dbConnecton == null)
+                throw new InvalidOperationException("Connection can't be null");
+            return dbConnecton;
+        }
+
+        public DbConnection OpenDbConnection()
+        {
+            var dbConnection = GetDbConnection();
+            if (dbConnection.State == System.Data.ConnectionState.Closed)
+                dbConnection.Open();
+            return dbConnection;
+        }
+
+        public async Task<DbConnection> OpenDbConnectionAsync()
+        {
+            var dbConnection = GetDbConnection();
+            if (dbConnection.State == System.Data.ConnectionState.Closed)
+                await dbConnection.OpenAsync();
+            return dbConnection;
+        }
+
+        public void CloseDbConnection(DbConnection dbConnection)
+        {
+            if (_dbConnectionFactory != null && dbConnection != null && dbConnection.State == System.Data.ConnectionState.Open)
+                dbConnection.Close();
+        }
+
+        public T Exec<T>(Func<DbConnection, T> action)
         {
             throw new NotImplementedException();
         }
 
-        public E Insert(E entity, DbConnection dbConnection = null)
+        public Task<T> ExecAsync<T>(Func<DbConnection, T> action)
         {
             throw new NotImplementedException();
         }
 
-        public Task<E> InsertAsync(E entity, DbConnection dbConnection = null)
+        public E Insert(E entity)
         {
             throw new NotImplementedException();
         }
 
-        public int Update(E entity, DbConnection dbConnection = null)
+        public Task<E> InsertAsync(E entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> UpdateAsync(E entity, DbConnection dbConnection = null)
+        public int Update(E entity)
         {
             throw new NotImplementedException();
         }
 
-        public int Update(object param, Expression<Func<E, bool>> where, DbConnection dbConnection = null)
+        public Task<int> UpdateAsync(E entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> UpdateAsync(object param, Expression<Func<E, bool>> where, DbConnection dbConnection = null)
+        public int Update(object param, Expression<Func<E, bool>> where)
         {
             throw new NotImplementedException();
         }
 
-        public int Delete(K key, DbConnection dbConnection = null)
+        public Task<int> UpdateAsync(object param, Expression<Func<E, bool>> where)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteAsync(K key, DbConnection dbConnection = null)
+        public int Delete(K key)
         {
             throw new NotImplementedException();
         }
 
-        public int Delete(Expression<Func<E, bool>> where, object param = null, DbConnection dbConnection = null)
+        public Task<int> DeleteAsync(K key)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteAsync(Expression<Func<E, bool>> where, object param = null, DbConnection dbConnection = null)
+        public int Delete(Expression<Func<E, bool>> where, object param = null)
         {
             throw new NotImplementedException();
         }
 
-        public E GetByKey(K key, Type type = null, DbConnection dbConnection = null)
+        public Task<int> DeleteAsync(Expression<Func<E, bool>> where, object param = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<E> GetByKeyAsync(K key, Type type = null, DbConnection dbConnection = null)
+        public E GetByKey(K key, Type type = null)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<E> Get(Type type = null, Expression<Func<E, bool>> where = null, object param = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null, DbConnection dbConnection = null)
+        public Task<E> GetByKeyAsync(K key, Type type = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<E>> GetAsync(Type type = null, Expression<Func<E, bool>> where = null, object param = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null, DbConnection dbConnection = null)
+        public IEnumerable<E> Get(Type type = null, Expression<Func<E, bool>> where = null, object param = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null)
         {
             throw new NotImplementedException();
         }
 
-        public T GetScalar<T>(Expression<Func<IEnumerable<E>, T>> expression, Expression<Func<E, bool>> where = null, object param = null, DbConnection dbConnection = null)
+        public Task<IEnumerable<E>> GetAsync(Type type = null, Expression<Func<E, bool>> where = null, object param = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> GetScalarAsync<T>(Expression<Func<IEnumerable<E>, T>> expression, Expression<Func<E, bool>> where = null, object param = null, DbConnection dbConnection = null)
+        public T GetScalar<T>(Expression<Func<IEnumerable<E>, T>> expression, Expression<Func<E, bool>> where = null, object param = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetScalarAsync<T>(Expression<Func<IEnumerable<E>, T>> expression, Expression<Func<E, bool>> where = null, object param = null)
         {
             throw new NotImplementedException();
         }

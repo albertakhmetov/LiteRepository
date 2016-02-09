@@ -133,7 +133,7 @@ namespace LiteRepository
 
         private string ProcessMember(MemberExpression expression)
         {
-            if (expression.Member.ReflectedType == typeof(E))
+            if (typeof(E) == expression.Member.ReflectedType || typeof(E).IsSubclassOf(expression.Member.ReflectedType))
                 return Metadata[expression.Member.Name]; // this is db field
             else
                 return Dialect.Parameter(expression.Member.Name); // this is property of the parameter's object

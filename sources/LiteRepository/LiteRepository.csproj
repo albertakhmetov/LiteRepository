@@ -65,7 +65,6 @@
     <Compile Include="Common\Commands\IGetCountCommand.cs" />
     <Compile Include="Common\Commands\IInsertCommand.cs" />
     <Compile Include="Common\Commands\IUpdateCommand.cs" />
-    <Compile Include="Common\Db.cs" />
     <Compile Include="Db.cs" />
     <Compile Include="InExtension.cs" />
     <Compile Include="Common\IDb.cs" />

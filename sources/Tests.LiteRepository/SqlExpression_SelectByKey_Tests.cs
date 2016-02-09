@@ -33,7 +33,7 @@ namespace LiteRepository
         {
             var dialect = Substitute.For<ISqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "cource AS Cource, letter AS Letter, local_id AS LocalId, first_name AS FirstName, second_name AS SecondName, birthday AS Birthday";
+            var expected = "first_name AS FirstName, second_name AS SecondName, birthday AS Birthday, cource AS Cource, letter AS Letter, local_id AS LocalId";
 
             exp.GetSelectByKeySql();
             dialect.Received(1).Select(exp.Metadata.DbName, expected, Arg.Any<string>(), string.Empty);
@@ -63,7 +63,7 @@ namespace LiteRepository
             dialect.Parameter("LocalId").Returns("%LocalId");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "letter AS Letter, second_name AS SecondName";
+            var expected = "second_name AS SecondName, letter AS Letter";
             var expectedWhere = "cource = %Cource AND letter = %Letter AND local_id = %LocalId";
             var p = new { Letter = 'A', SecondName = "B" };
 
@@ -80,7 +80,7 @@ namespace LiteRepository
             dialect.Parameter("LocalId").Returns("%LocalId");
 
             var exp = new SqlExpression<Entity>(dialect);
-            var expected = "letter AS Letter, second_name AS SecondName";
+            var expected = "second_name AS SecondName, letter AS Letter";
             var expectedWhere = "cource = %Cource AND letter = %Letter AND local_id = %LocalId";
             var p = new { Letter = 'A', IsStudent = false, SecondName = "B" };
 

@@ -25,15 +25,25 @@ using System.Threading.Tasks;
 using System.Data.Common;
 using System.Data;
 
-namespace LiteRepository.Common
+namespace LiteRepository
 {
-    public class DbTests
+    public class Db_Connection_Tests
     {
         [Fact]
         public void Ctor_Null_Test()
         {
-            Assert.Throws<ArgumentNullException>(() => new Db(default(DbConnection)));
-            Assert.Throws<ArgumentNullException>(() => new Db(default(Func<DbConnection>)));
+            Assert.Throws<ArgumentNullException>(() => new Db<Models.Entity, Models.EntityKey>(Substitute.For<ISqlDialect>(), default(DbConnection)));
+            Assert.Throws<ArgumentNullException>(() => new Db<Models.Entity, Models.EntityKey>(Substitute.For<ISqlDialect>(), default(Func<DbConnection>)));
+        }
+
+        private Db<Models.Entity, Models.EntityKey> GetDb(DbConnection dbConnection)
+        {
+            return new Db<Models.Entity, Models.EntityKey>(Substitute.For<ISqlDialect>(), dbConnection);
+        }
+
+        private Db<Models.Entity, Models.EntityKey> GetDb(Func<DbConnection> dbConnectionFactory)
+        {
+            return new Db<Models.Entity, Models.EntityKey>(Substitute.For<ISqlDialect>(), dbConnectionFactory);
         }
 
         [Fact]
@@ -42,7 +52,7 @@ namespace LiteRepository.Common
             var dbConnection = Substitute.For<DbConnection>();
             dbConnection.State.Returns(ConnectionState.Open);
 
-            var db = new Db(dbConnection);
+            var db = GetDb(dbConnection);
 
             var execResult = db.OpenDbConnection();
             Assert.Equal(dbConnection, execResult);
@@ -56,7 +66,7 @@ namespace LiteRepository.Common
             var dbConnection = Substitute.For<DbConnection>();
             dbConnection.State.Returns(ConnectionState.Closed);
 
-            var db = new Db(dbConnection);
+            var db = GetDb(dbConnection);
 
             var execResult = db.OpenDbConnection();
             Assert.Equal(dbConnection, execResult);
@@ -70,7 +80,7 @@ namespace LiteRepository.Common
             var dbConnection = Substitute.For<DbConnection>();
             dbConnection.State.Returns(ConnectionState.Open);
 
-            var db = new Db(dbConnection);
+            var db = GetDb(dbConnection);
 
             var execResult = await db.OpenDbConnectionAsync();
             Assert.Equal(dbConnection, execResult);
@@ -84,7 +94,7 @@ namespace LiteRepository.Common
             var dbConnection = Substitute.For<DbConnection>();
             dbConnection.State.Returns(ConnectionState.Closed);
 
-            var db = new Db(dbConnection);
+            var db = GetDb(dbConnection);
 
             var execResult = await db.OpenDbConnectionAsync();
             Assert.Equal(dbConnection, execResult);
@@ -98,7 +108,7 @@ namespace LiteRepository.Common
             var dbConnection = Substitute.For<DbConnection>();
             dbConnection.State.Returns(ConnectionState.Open);
 
-            var db = new Db(dbConnection);
+            var db = GetDb(dbConnection);
 
             db.CloseDbConnection(dbConnection);
             dbConnection.Received(0).Close();
@@ -111,7 +121,7 @@ namespace LiteRepository.Common
             var factory = Substitute.For<Func<DbConnection>>();
             factory.Invoke().Returns(dbConnection);
 
-            var db = new Db(factory);
+            var db = GetDb(factory);
 
             var execResult = db.OpenDbConnection();
             Assert.Equal(dbConnection, execResult);
@@ -127,7 +137,7 @@ namespace LiteRepository.Common
             var factory = Substitute.For<Func<DbConnection>>();
             factory.Invoke().Returns(dbConnection);
 
-            var db = new Db(factory);
+            var db = GetDb(factory);
 
             var execResult = await db.OpenDbConnectionAsync();
             Assert.Equal(dbConnection, execResult);
@@ -142,7 +152,7 @@ namespace LiteRepository.Common
             var dbConnection = Substitute.For<DbConnection>();
             dbConnection.State.Returns(ConnectionState.Open);
 
-            var db = new Db(() => Substitute.For<DbConnection>());
+            var db = GetDb(() => Substitute.For<DbConnection>());
 
             db.CloseDbConnection(dbConnection);
 
@@ -155,7 +165,7 @@ namespace LiteRepository.Common
             var dbConnection = Substitute.For<DbConnection>();
             dbConnection.State.Returns(ConnectionState.Closed);
 
-            var db = new Db(() => Substitute.For<DbConnection>());
+            var db = GetDb(() => Substitute.For<DbConnection>());
 
             db.CloseDbConnection(dbConnection);
 
@@ -165,7 +175,7 @@ namespace LiteRepository.Common
         [Fact]
         public void CloseNullDbConnection_Factory_Test()
         {
-            var db = new Db(() => Substitute.For<DbConnection>());
+            var db = GetDb(() => Substitute.For<DbConnection>());
 
             db.CloseDbConnection(null);
         }

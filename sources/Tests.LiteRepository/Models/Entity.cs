@@ -24,8 +24,30 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Models
 {
+    public class EntityKey
+    {
+        [SqlKey]
+        public long Cource
+        {
+            get; set;
+        }
+
+        [SqlKey]
+        public char Letter
+        {
+            get; set;
+        }
+
+        [SqlKey]
+        [SqlAlias("local_id")]
+        public int LocalId
+        {
+            get; set;
+        }
+    }
+
     [SqlAlias("students")]
-    public class Entity
+    public class Entity : EntityKey
     {
         public class Key
         {
@@ -38,25 +60,6 @@ namespace LiteRepository.Models
             {
                 get; set;
             }
-        }
-
-        [SqlKey]
-        public long Cource
-        {
-            get; set;
-        }
-
-        [SqlKey]
-        public char Letter
-        {
-            get; set;
-        }
-        
-        [SqlKey]
-        [SqlAlias("local_id")]
-        public int LocalId
-        {
-            get; set;
         }
 
         [SqlAlias("first_name")]
