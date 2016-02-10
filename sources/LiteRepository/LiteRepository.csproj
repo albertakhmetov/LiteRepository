@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Db.cs" />
     <Compile Include="InExtension.cs" />
-    <Compile Include="IIdentityEntity.cs" />
+    <Compile Include="Identity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Attributes\SqlAliasAttribute.cs" />
     <Compile Include="Attributes\SqlIgnoreAttribute.cs" />

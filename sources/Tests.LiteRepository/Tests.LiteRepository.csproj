@@ -85,7 +85,7 @@
     <Compile Include="Db_Update_Tests.cs" />
     <Compile Include="InExtension_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Attributes\SqlAliasAttributeTests.cs" />
+    <Compile Include="Attributes\SqlAliasAttribute_Tests.cs" />
     <Compile Include="DbMocks.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\IdentityEntity.cs" />
@@ -99,9 +99,7 @@
     <Compile Include="SqlExpression_Update_Tests.cs" />
     <Compile Include="SqlMetadata_Tests.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Attributes
 {
-    public class SqlAliasAttributeTests
+    public class SqlAliasAttribute_Tests
     {
         [Fact]
         public void Ctor_NullOrEmpty_Test()
