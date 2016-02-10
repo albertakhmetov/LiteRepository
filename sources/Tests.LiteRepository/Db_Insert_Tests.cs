@@ -119,7 +119,7 @@ namespace LiteRepository
             var sql = GetSql();
 
             var sqlDialect = Substitute.For<SqlDialectBase>();
-            sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(sql);
+            sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), false).Returns(sql);
 
             var dbParameters = new List<DbParameter>();
             var dbCommand = DbMocks.CreateCommand(dbParameters);
@@ -139,7 +139,7 @@ namespace LiteRepository
             var sql = GetSql();
 
             var sqlDialect = Substitute.For<SqlDialectBase>();
-            sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(sql);
+            sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), false).Returns(sql);
 
             var dbParameters = new List<DbParameter>();
             var dbCommand = DbMocks.CreateCommand(dbParameters);
@@ -160,7 +160,7 @@ namespace LiteRepository
             var sql = GetIdentitySql();
 
             var sqlDialect = Substitute.For<SqlDialectBase>();
-            sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(sql);
+            sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), true).Returns(sql);
 
             var dbParameters = new List<DbParameter>();
             var dbCommand = DbMocks.CreateCommand(dbParameters);
@@ -188,7 +188,7 @@ namespace LiteRepository
             var sql = GetIdentitySql();
 
             var sqlDialect = Substitute.For<SqlDialectBase>();
-            sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(sql);
+            sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), true).Returns(sql);
 
             var dbParameters = new List<DbParameter>();
             var dbCommand = DbMocks.CreateCommand(dbParameters);

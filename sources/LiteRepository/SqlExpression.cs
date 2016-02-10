@@ -76,7 +76,7 @@ namespace LiteRepository
             if (properties.Count() == 0)
                 throw new InvalidOperationException("There are not fields to insert");
 
-            return Dialect.Insert(Metadata.DbName, GetInsertFieldsPartSql(properties), GetInsertValuesPartSql(properties));
+            return Dialect.Insert(Metadata.DbName, GetInsertFieldsPartSql(properties), GetInsertValuesPartSql(properties), Metadata.IsIdentity);
         }
 
         public string GetUpdateSql(Type type = null, Expression<Func<E, bool>> where = null)

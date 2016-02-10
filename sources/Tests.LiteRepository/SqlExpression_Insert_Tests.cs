@@ -44,7 +44,7 @@ namespace LiteRepository
             var expectedValues = "%FirstName, %SecondName, %Birthday, %Cource, %Letter, %LocalId";
 
             exp.GetInsertSql();
-            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);
+            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues, false);
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace LiteRepository
             var p = new { FirstName = "A", SecondName = "I" };
 
             exp.GetInsertSql(p.GetType());
-            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);
+            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues, false);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace LiteRepository
             var p = new { FirstName = "A", SecondName = "I", IsStudent = false };
 
             exp.GetInsertSql(p.GetType());
-            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);
+            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues, false);
         }
 
         [Fact]
@@ -105,7 +105,7 @@ namespace LiteRepository
             var expectedValues = "%FirstName, %SecondName, %Birthday";
 
             exp.GetInsertSql();
-            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues);
+            dialect.Received(1).Insert(exp.Metadata.DbName, expectedFields, expectedValues, true);
         }
     }
 }

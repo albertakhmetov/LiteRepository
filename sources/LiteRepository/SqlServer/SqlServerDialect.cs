@@ -45,7 +45,7 @@ namespace LiteRepository.SqlServer
             return $"SELECT {expression} FROM {tableName}{GetWhere(where)}";
         }
 
-        public override string Insert(string tableName, string fields, string values)
+        public override string Insert(string tableName, string fields, string values, bool isIdentity)
         {
             throw new NotImplementedException();
         }

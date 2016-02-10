@@ -27,7 +27,7 @@ namespace LiteRepository
     {
         public abstract string Select(string tableName, string fields, string where, string orderBy, int? top = null);
         public abstract string SelectScalar(string tableName, string expression, string where);
-        public abstract string Insert(string tableName, string fields, string values);
+        public abstract string Insert(string tableName, string fields, string values, bool isIdentity);
         public abstract string Update(string tableName, string set, string where);
         public abstract string Delete(string tableName, string where);
 
