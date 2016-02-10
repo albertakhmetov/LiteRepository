@@ -46,29 +46,35 @@ namespace LiteRepository.SqlServer
         }
 
         public override string Insert(string tableName, string fields, string values, bool isIdentity)
-        {
-            throw new NotImplementedException();
+        {            
+            var sql = $"INSERT INTO {tableName} ({fields}) VALUES ({values})";
+            if(isIdentity)
+            {
+                sql += Environment.NewLine;
+                sql += "SELECT SCOPE_IDENTITY()";
+            }
+            return sql;
         }
 
         public override string Update(string tableName, string set, string where)
         {
-            throw new NotImplementedException();
+            return $"UPDATE {tableName} SET {set}{GetWhere(where)}";
         }
 
         public override string Delete(string tableName, string where)
         {
-            throw new NotImplementedException();
+            return $"DELETE FROM {tableName}{GetWhere(where)}";
         }
 
 
         public override string Parameter(string name)
         {
-            throw new NotImplementedException();
+            return name.StartsWith("@") ? name : "@" + name;
         }
 
-        public override bool HasParameters(string vaue)
+        public override bool HasParameters(string value)
         {
-            throw new NotImplementedException();
+            return value.Contains("@");
         }
     }
 }

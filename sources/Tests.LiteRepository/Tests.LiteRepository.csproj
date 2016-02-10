@@ -98,7 +98,11 @@
     <Compile Include="SqlExpression_Part_Where_Tests.cs" />
     <Compile Include="SqlExpression_Update_Tests.cs" />
     <Compile Include="SqlMetadata_Tests.cs" />
+    <Compile Include="SqlServer\SqlServerDialect_Delete_Tests.cs" />
+    <Compile Include="SqlServer\SqlServerDialect_Insert_Tests.cs" />
+    <Compile Include="SqlServer\SqlServerDialect_Parameter_Tests.cs" />
     <Compile Include="SqlServer\SqlServerDialect_Select_Tests.cs" />
+    <Compile Include="SqlServer\SqlServerDialect_Update_Tests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
