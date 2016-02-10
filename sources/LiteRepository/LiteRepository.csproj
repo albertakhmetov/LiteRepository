@@ -54,6 +54,7 @@
     <Compile Include="SqlDialectBase.cs" />
     <Compile Include="SqlExpression.cs" />
     <Compile Include="SqlMetadata.cs" />
+    <Compile Include="SqlServer\SqlServerDialect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

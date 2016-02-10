@@ -25,7 +25,7 @@ namespace LiteRepository
 {
     public abstract class SqlDialectBase
     {
-        public abstract string Select(string tableName, string fields, string where, string order, int? top = null);
+        public abstract string Select(string tableName, string fields, string where, string orderBy, int? top = null);
         public abstract string SelectScalar(string tableName, string expression, string where);
         public abstract string Insert(string tableName, string fields, string values);
         public abstract string Update(string tableName, string set, string where);
