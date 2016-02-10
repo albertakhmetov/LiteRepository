@@ -77,6 +77,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Db_Delete_Tests.cs" />
+    <Compile Include="Db_Get_Tests.cs" />
     <Compile Include="Db_Insert_Tests.cs" />
     <Compile Include="Db_Ctor_Tests.cs" />
     <Compile Include="Db_Exec_Tests.cs" />

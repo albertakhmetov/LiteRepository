@@ -227,14 +227,24 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.ExecuteAsync(sql, param));
         }
 
-        public E GetByKey<E, K>(K key, Type type = null) where E : K where K : class
+        public E GetByKey<E, K>(K key, Type type = null) where E : class, K where K : class
         {
-            throw new NotImplementedException();
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetSelectByKeySql(type);
+            return Exec(dbConnection => dbConnection.Query<E>(sql, key).FirstOrDefault());
         }
 
-        public Task<E> GetByKeyAsync<E, K>(K key, Type type = null) where E : K where K : class
+        public Task<E> GetByKeyAsync<E, K>(K key, Type type = null) where E : class, K where K : class
         {
-            throw new NotImplementedException();
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetSelectByKeySql(type);
+            return ExecAsync(async dbConnection => (await dbConnection.QueryAsync<E>(sql, key)).FirstOrDefault());
         }
 
         public IEnumerable<E> Get<E>(
@@ -243,7 +253,9 @@ namespace LiteRepository
             object param = null,
             Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null) where E : class
         {
-            throw new NotImplementedException();
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetSelectSql(type, where, orderBy);
+            return Exec(dbConnection => dbConnection.Query<E>(sql, param));
         }
 
         public Task<IEnumerable<E>> GetAsync<E>(
@@ -252,7 +264,9 @@ namespace LiteRepository
             object param = null,
             Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null) where E : class
         {
-            throw new NotImplementedException();
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetSelectSql(type, where, orderBy);
+            return ExecAsync(dbConnection => dbConnection.QueryAsync<E>(sql, param));
         }
 
         public T GetScalar<E, T>(
@@ -260,7 +274,12 @@ namespace LiteRepository
             Expression<Func<E, bool>> where = null,
             object param = null) where E : class
         {
-            throw new NotImplementedException();
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetSelectScalarSql<T>(expression, where);
+            return Exec(dbConnection => dbConnection.ExecuteScalar<T>(sql, param));
         }
 
         public Task<T> GetScalarAsync<E, T>(
@@ -268,7 +287,12 @@ namespace LiteRepository
             Expression<Func<E, bool>> where = null,
             object param = null) where E : class
         {
-            throw new NotImplementedException();
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            var sqlExpression = GetSqlExpression<E>();
+            var sql = sqlExpression.GetSelectScalarSql<T>(expression, where);
+            return ExecAsync(dbConnection => dbConnection.ExecuteScalarAsync<T>(sql, param));
         }
     }
 }
