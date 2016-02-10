@@ -49,19 +49,6 @@ namespace LiteRepository.Models
     [SqlAlias("students")]
     public class Entity : EntityKey
     {
-        public class Key
-        {
-            public long Cource
-            {
-                get; set;
-            }
-
-            public char Letter
-            {
-                get; set;
-            }
-        }
-
         [SqlAlias("first_name")]
         public string FirstName
         {
