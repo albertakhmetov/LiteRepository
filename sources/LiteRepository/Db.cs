@@ -28,11 +28,11 @@ namespace LiteRepository
 {
     public class Db
     {
-        private readonly ISqlDialect _sqlDialect;
+        private readonly SqlDialectBase _sqlDialect;
         private readonly DbConnection _dbConnection;
         private readonly Func<DbConnection> _dbConnectionFactory;
 
-        public Db(ISqlDialect sqlDialect, DbConnection dbConnection)
+        public Db(SqlDialectBase sqlDialect, DbConnection dbConnection)
         {
             if (sqlDialect == null)
                 throw new ArgumentNullException(nameof(sqlDialect));
@@ -44,7 +44,7 @@ namespace LiteRepository
             _dbConnectionFactory = null;
         }
 
-        public Db(ISqlDialect sqlDialect, Func<DbConnection> dbConnectionFactory)
+        public Db(SqlDialectBase sqlDialect, Func<DbConnection> dbConnectionFactory)
         {
             if (sqlDialect == null)
                 throw new ArgumentNullException(nameof(sqlDialect));

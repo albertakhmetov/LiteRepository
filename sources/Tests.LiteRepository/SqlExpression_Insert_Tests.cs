@@ -31,7 +31,7 @@ namespace LiteRepository
         [Fact]
         public void Null_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("Cource").Returns("%Cource");
             dialect.Parameter("Letter").Returns("%Letter");
             dialect.Parameter("LocalId").Returns("%LocalId");
@@ -50,7 +50,7 @@ namespace LiteRepository
         [Fact]
         public void InsertSub_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("FirstName").Returns("%FirstName");
             dialect.Parameter("SecondName").Returns("%SecondName");
 
@@ -67,7 +67,7 @@ namespace LiteRepository
         [Fact]
         public void InsertIntersect_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("FirstName").Returns("%FirstName");
             dialect.Parameter("SecondName").Returns("%SecondName");
 
@@ -84,7 +84,7 @@ namespace LiteRepository
         [Fact]
         public void InsertDifferent_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             var exp = new SqlExpression<Entity>(dialect);
             var p = new { IsStudent = false };
 
@@ -94,7 +94,7 @@ namespace LiteRepository
         [Fact]
         public void InsertIdentity_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("Id").Returns("%Id");
             dialect.Parameter("FirstName").Returns("%FirstName");
             dialect.Parameter("SecondName").Returns("%SecondName");

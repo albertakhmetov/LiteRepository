@@ -31,7 +31,7 @@ namespace LiteRepository
         [Fact]
         public void NullExpression_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             var exp = new SqlExpression<Entity>(dialect);
 
             Assert.Throws<ArgumentNullException>(() => exp.GetSelectScalarSql<int>(null));
@@ -40,7 +40,7 @@ namespace LiteRepository
         [Fact]
         public void Where_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("Cource").Returns("%Cource");
 
             var exp = new SqlExpression<Entity>(dialect);
@@ -54,7 +54,7 @@ namespace LiteRepository
         [Fact]
         public void Count_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "COUNT(1)";
 
@@ -65,7 +65,7 @@ namespace LiteRepository
         [Fact]
         public void Avg_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "AVG(cource)";
 
@@ -76,7 +76,7 @@ namespace LiteRepository
         [Fact]
         public void Sum_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "SUM(cource)";
 

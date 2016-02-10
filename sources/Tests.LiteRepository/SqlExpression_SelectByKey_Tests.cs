@@ -31,7 +31,7 @@ namespace LiteRepository
         [Fact]
         public void Null_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name AS FirstName, second_name AS SecondName, birthday AS Birthday, cource AS Cource, letter AS Letter, local_id AS LocalId";
 
@@ -42,7 +42,7 @@ namespace LiteRepository
         [Fact]
         public void Where_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("Cource").Returns("%Cource");
             dialect.Parameter("Letter").Returns("%Letter");
             dialect.Parameter("LocalId").Returns("%LocalId");
@@ -57,7 +57,7 @@ namespace LiteRepository
         [Fact]
         public void SelectSubEntity_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("Cource").Returns("%Cource");
             dialect.Parameter("Letter").Returns("%Letter");
             dialect.Parameter("LocalId").Returns("%LocalId");
@@ -74,7 +74,7 @@ namespace LiteRepository
         [Fact]
         public void SelectIntersectEntity_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("Cource").Returns("%Cource");
             dialect.Parameter("Letter").Returns("%Letter");
             dialect.Parameter("LocalId").Returns("%LocalId");
@@ -91,7 +91,7 @@ namespace LiteRepository
         [Fact]
         public void SelectDifferentEntity_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             var exp = new SqlExpression<Entity>(dialect);
             var p = new { Salary = 100m, IsStudent = false };
                        

@@ -28,7 +28,7 @@ namespace LiteRepository
     public sealed partial class SqlExpression<E>
         where E : class
     {
-        public ISqlDialect Dialect
+        public SqlDialectBase Dialect
         {
             get; private set;
         }
@@ -38,7 +38,7 @@ namespace LiteRepository
             get; private set;
         }
 
-        public SqlExpression(ISqlDialect dialect)
+        public SqlExpression(SqlDialectBase dialect)
         {
             Metadata = SqlMetadata.GetSqlMetadata(typeof(E));
             Dialect = dialect;

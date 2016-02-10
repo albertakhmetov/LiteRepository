@@ -31,10 +31,10 @@ namespace LiteRepository
 {
     public class Db_Insert_Tests
     {
-        private Db GetDb(ISqlDialect sqlDialect = null, DbConnection dbConnection = null)
+        private Db GetDb(SqlDialectBase sqlDialect = null, DbConnection dbConnection = null)
         {
             return new Db(
-                sqlDialect ?? Substitute.For<ISqlDialect>(),
+                sqlDialect ?? Substitute.For<SqlDialectBase>(),
                 dbConnection ?? Substitute.For<DbConnection>());
         }
 
@@ -118,7 +118,7 @@ namespace LiteRepository
             var entity = GetEntity();
             var sql = GetSql();
 
-            var sqlDialect = Substitute.For<ISqlDialect>();
+            var sqlDialect = Substitute.For<SqlDialectBase>();
             sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(sql);
 
             var dbParameters = new List<DbParameter>();
@@ -138,7 +138,7 @@ namespace LiteRepository
             var entity = GetEntity();
             var sql = GetSql();
 
-            var sqlDialect = Substitute.For<ISqlDialect>();
+            var sqlDialect = Substitute.For<SqlDialectBase>();
             sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(sql);
 
             var dbParameters = new List<DbParameter>();
@@ -159,7 +159,7 @@ namespace LiteRepository
             var newId = 42;
             var sql = GetIdentitySql();
 
-            var sqlDialect = Substitute.For<ISqlDialect>();
+            var sqlDialect = Substitute.For<SqlDialectBase>();
             sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(sql);
 
             var dbParameters = new List<DbParameter>();
@@ -187,7 +187,7 @@ namespace LiteRepository
             var newId = 42;
             var sql = GetIdentitySql();
 
-            var sqlDialect = Substitute.For<ISqlDialect>();
+            var sqlDialect = Substitute.For<SqlDialectBase>();
             sqlDialect.Insert(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(sql);
 
             var dbParameters = new List<DbParameter>();

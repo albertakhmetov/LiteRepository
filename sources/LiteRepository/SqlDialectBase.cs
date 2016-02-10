@@ -23,15 +23,15 @@ using System.Threading.Tasks;
 
 namespace LiteRepository
 {
-    public interface ISqlDialect
+    public abstract class SqlDialectBase
     {
-        string Select(string tableName, string fields, string where, string order, int? top = null);
-        string SelectScalar(string tableName, string expression, string where);
-        string Insert(string tableName, string fields, string values);
-        string Update(string tableName, string set, string where);
-        string Delete(string tableName, string where);
+        public abstract string Select(string tableName, string fields, string where, string order, int? top = null);
+        public abstract string SelectScalar(string tableName, string expression, string where);
+        public abstract string Insert(string tableName, string fields, string values);
+        public abstract string Update(string tableName, string set, string where);
+        public abstract string Delete(string tableName, string where);
 
-        string Parameter(string name);
-        bool HasParameters(string vaue);
+        public abstract string Parameter(string name);
+        public abstract bool HasParameters(string vaue);
     }
 }

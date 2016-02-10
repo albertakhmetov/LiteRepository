@@ -51,7 +51,7 @@
     <Compile Include="Attributes\SqlAliasAttribute.cs" />
     <Compile Include="Attributes\SqlIgnoreAttribute.cs" />
     <Compile Include="Attributes\SqlKeyAttribute.cs" />
-    <Compile Include="ISqlDialect.cs" />
+    <Compile Include="SqlDialectBase.cs" />
     <Compile Include="SqlExpression.cs" />
     <Compile Include="SqlMetadata.cs" />
   </ItemGroup>

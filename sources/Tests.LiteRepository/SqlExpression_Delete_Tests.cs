@@ -31,7 +31,7 @@ namespace LiteRepository
         [Fact]
         public void Null_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("Cource").Returns("%Cource");
             dialect.Parameter("Letter").Returns("%Letter");
             dialect.Parameter("LocalId").Returns("%LocalId");
@@ -46,7 +46,7 @@ namespace LiteRepository
         [Fact]
         public void Where_Test()
         {
-            var dialect = Substitute.For<ISqlDialect>();
+            var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("Birthday").Returns("%Birthday");
 
             var exp = new SqlExpression<Entity>(dialect);
