@@ -215,5 +215,47 @@ namespace LiteRepository
             CheckShortCommand(key, sql, dbParameters, dbCommand);
             await dbCommand.Received(1).ExecuteNonQueryAsync();
         }
+
+        [Fact]
+        public void Truncate_Test()
+        {
+            var sql = "TRUNCATE TABLE students";
+
+            var sqlDialect = Substitute.For<SqlDialectBase>();
+            sqlDialect.Delete(
+                Arg.Any<string>(),
+                string.Empty).Returns(sql);
+
+            var dbParameters = new List<DbParameter>();
+            var dbCommand = DbMocks.CreateCommand(dbParameters);
+
+            var db = GetDb(sqlDialect, DbMocks.CreateConnection(dbCommand));
+            db.Truncate<Entity>();
+
+            dbCommand.Received(1).CommandText = sql;
+            dbCommand.Received(0).CreateParameter();
+            dbCommand.Received(1).ExecuteNonQuery();
+        }
+
+        [Fact]
+        public async void TruncateAsync_Test()
+        {
+            var sql = "TRUNCATE TABLE students";
+
+            var sqlDialect = Substitute.For<SqlDialectBase>();
+            sqlDialect.Delete(
+                Arg.Any<string>(),
+                string.Empty).Returns(sql);
+
+            var dbParameters = new List<DbParameter>();
+            var dbCommand = DbMocks.CreateCommand(dbParameters);
+
+            var db = GetDb(sqlDialect, DbMocks.CreateConnection(dbCommand));
+            await db.TruncateAsync<Entity>();
+
+            dbCommand.Received(1).CommandText = sql;
+            dbCommand.Received(0).CreateParameter();
+            await dbCommand.Received(1).ExecuteNonQueryAsync();
+        }
     }
 }

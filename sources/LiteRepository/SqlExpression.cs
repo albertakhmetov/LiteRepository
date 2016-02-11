@@ -98,6 +98,11 @@ namespace LiteRepository
             return Dialect.Delete(Metadata.DbName, where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where));
         }
 
+        public string GetTruncateSql()
+        {
+            return Dialect.Delete(Metadata.DbName, string.Empty);
+        }
+
         private string GetSelectPartSql(IEnumerable<SqlMetadata.Property> properties)
         {
             return string.Join(", ", properties.Select(i => $"{i.DbName} AS {i.Name}"));

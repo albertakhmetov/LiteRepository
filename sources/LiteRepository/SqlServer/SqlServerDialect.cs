@@ -46,9 +46,9 @@ namespace LiteRepository.SqlServer
         }
 
         public override string Insert(string tableName, string fields, string values, bool isIdentity)
-        {            
+        {
             var sql = $"INSERT INTO {tableName} ({fields}) VALUES ({values})";
-            if(isIdentity)
+            if (isIdentity)
             {
                 sql += Environment.NewLine;
                 sql += "SELECT SCOPE_IDENTITY()";
@@ -63,7 +63,10 @@ namespace LiteRepository.SqlServer
 
         public override string Delete(string tableName, string where)
         {
-            return $"DELETE FROM {tableName}{GetWhere(where)}";
+            if (string.IsNullOrWhiteSpace(where))
+                return $"TRUNCATE TABLE {tableName}";
+            else
+                return $"DELETE FROM {tableName}{GetWhere(where)}";
         }
 
 

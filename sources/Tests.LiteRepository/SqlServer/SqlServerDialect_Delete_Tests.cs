@@ -33,7 +33,7 @@ namespace LiteRepository.SqlServer
             var dialect = new SqlServerDialect();
             var sql = dialect.Delete("table", "");
 
-            Assert.Equal("DELETE FROM table", sql);
+            Assert.Equal("TRUNCATE TABLE table", sql);
         }
 
         [Fact]

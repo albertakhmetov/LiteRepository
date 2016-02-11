@@ -57,5 +57,15 @@ namespace LiteRepository
             exp.GetDeleteSql(where: i => i.Birthday == p.Birthday);
             dialect.Received(1).Delete(exp.Metadata.DbName, expected);
         }
+
+        [Fact]
+        public void Truncate_Test()
+        {
+            var dialect = Substitute.For<SqlDialectBase>();
+            var exp = new SqlExpression<Entity>(dialect);
+
+            exp.GetTruncateSql();
+            dialect.Received(1).Delete(exp.Metadata.DbName, string.Empty);
+        }
     }
 }
