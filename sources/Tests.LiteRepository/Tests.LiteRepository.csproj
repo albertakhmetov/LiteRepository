@@ -103,6 +103,7 @@
     <Compile Include="SqlServer\SqlServerDialect_Parameter_Tests.cs" />
     <Compile Include="SqlServer\SqlServerDialect_Select_Tests.cs" />
     <Compile Include="SqlServer\SqlServerDialect_Update_Tests.cs" />
+    <Compile Include="SqlServer\SqlServer_Integration_Tests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
