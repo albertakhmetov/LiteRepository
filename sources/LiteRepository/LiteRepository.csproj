@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Db.cs" />
+    <Compile Include="IDb.cs" />
     <Compile Include="InExtension.cs" />
     <Compile Include="Identity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

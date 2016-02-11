@@ -26,7 +26,7 @@ using Dapper;
 
 namespace LiteRepository
 {
-    public class Db
+    public class Db : IDb
     {
         private readonly SqlDialectBase _sqlDialect;
         private readonly DbConnection _dbConnection;
