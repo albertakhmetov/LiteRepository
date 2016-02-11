@@ -2,8 +2,9 @@
 (
 	[cource] BIGINT NOT NULL, 
     [letter] NCHAR(1) NOT NULL, 
+	[local_id] INT NOT NULL,
     [first_name] NVARCHAR(80) NOT NULL, 
     [second_name] NVARCHAR(80) NOT NULL, 
     [birthday] DATE NOT NULL, 
-    CONSTRAINT [PK_students] PRIMARY KEY ([cource], [letter])
+    CONSTRAINT [PK_students] PRIMARY KEY ([cource], [letter], [local_id])
 )

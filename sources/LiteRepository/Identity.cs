@@ -29,7 +29,7 @@ namespace LiteRepository
         object UpdateId(long id);
     }
 
-    public sealed class IdentityKey
+    public sealed class IdentityKey : IIdentityEntity
     {
         public long Id
         {
@@ -39,6 +39,11 @@ namespace LiteRepository
         public IdentityKey(long id)
         {
             Id = id;
+        }
+
+        public object UpdateId(long id)
+        {
+            return new IdentityKey(id);
         }
     }
 }
