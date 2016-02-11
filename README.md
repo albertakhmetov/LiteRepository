@@ -12,6 +12,8 @@ Designed for use with plain SQL. Support for Stored Procedures is not implemente
 
 [Install via NuGet](https://www.nuget.org/packages/LiteRepository/)
 
+**Current status is early alpha. Use on own risk.** About all issues please report in the tracker.
+
 ## Usage
 
 Each RDBMS includes a specialized dialect provider. At this moment supports only Sql Server (incuded in standart package).
