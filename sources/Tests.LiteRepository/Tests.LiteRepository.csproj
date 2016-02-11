@@ -89,6 +89,7 @@
     <Compile Include="DbMocks.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\IdentityEntity.cs" />
+    <Compile Include="Repository_Tests.cs" />
     <Compile Include="SqlExpression_Delete_Tests.cs" />
     <Compile Include="SqlExpression_Insert_Tests.cs" />
     <Compile Include="SqlExpression_Part_Order_Tests.cs" />
