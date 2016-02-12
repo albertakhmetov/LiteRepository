@@ -50,7 +50,11 @@ namespace LiteRepository
             if (properties.Count() == 0)
                 throw new InvalidOperationException("There are not fields to select");
 
-            return Dialect.Select(Metadata.DbName, GetSelectPartSql(properties), GetWherePartSql(where), GetOrderPartSql(orderBy));
+            return Dialect.Select(
+                Metadata.DbName,
+                GetSelectPartSql(properties),
+                GetWherePartSql(where, new Parameters(param)),
+                GetOrderPartSql(orderBy));
         }
 
         public string GetSelectByKeySql(Type type = null)
@@ -67,7 +71,10 @@ namespace LiteRepository
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-            return Dialect.SelectScalar(Metadata.DbName, GetSelectScalarPartSql(expression), GetWherePartSql(where));
+            return Dialect.SelectScalar(
+                Metadata.DbName,
+                GetSelectScalarPartSql(expression),
+                GetWherePartSql(where, new Parameters(param)));
         }
 
         public string GetInsertSql(Type type = null)
@@ -86,7 +93,9 @@ namespace LiteRepository
             if (properties.Count() == 0)
                 throw new InvalidOperationException("There are not fields to update");
 
-            var whereSql = where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where);
+            var whereSql = where == null
+                ? GetWhereByKeyPartSql()
+                : GetWherePartSql(where, Parameters.Empty);
             if (where != null && Dialect.HasParameters(whereSql))
                 throw new NotSupportedException("Parameters is not supported in where clause");
 
@@ -95,7 +104,9 @@ namespace LiteRepository
 
         public string GetDeleteSql(Expression<Func<E, bool>> where = null, object param = null)
         {
-            return Dialect.Delete(Metadata.DbName, where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where));
+            return Dialect.Delete(Metadata.DbName, where == null
+                ? GetWhereByKeyPartSql()
+                : GetWherePartSql(where, new Parameters(param)));
         }
 
         public string GetTruncateSql()
@@ -114,7 +125,7 @@ namespace LiteRepository
                 return string.Empty;
 
             if (expression.Body is MethodCallExpression)
-                return ProcessScalarMethodCall(expression.Body as MethodCallExpression);
+                return ProcessScalarMethodCall(expression.Body as MethodCallExpression, Parameters.Empty);
             else
                 throw new NotSupportedException();
         }
@@ -134,12 +145,12 @@ namespace LiteRepository
             return string.Join(", ", properties.Where(i => !i.IsPrimaryKey).Select(i => $"{i.DbName} = {Dialect.Parameter(i.Name)}"));
         }
 
-        private string GetWherePartSql(Expression<Func<E, bool>> expression)
+        private string GetWherePartSql(Expression<Func<E, bool>> expression, Parameters parameters)
         {
             if (expression == null)
                 return string.Empty;
 
-            return Process(expression.Body);
+            return Process(expression.Body, parameters);
         }
 
         private string GetWhereByKeyPartSql()
@@ -153,7 +164,7 @@ namespace LiteRepository
                 return string.Empty;
 
             if (expression.Body is MethodCallExpression)
-                return ProcessOrderMethodCall(expression.Body as MethodCallExpression);
+                return ProcessOrderMethodCall(expression.Body as MethodCallExpression, Parameters.Empty);
             else
                 throw new NotSupportedException();
         }

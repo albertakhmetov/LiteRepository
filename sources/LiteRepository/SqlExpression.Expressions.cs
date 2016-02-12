@@ -28,6 +28,33 @@ namespace LiteRepository
     partial class SqlExpression<E>
         where E : class
     {
+        private sealed class Parameters
+        {
+            public static readonly Parameters Empty = new Parameters(null);
+
+            public object Value
+            {
+                get; private set;
+            }
+
+            public Type Type
+            {
+                get; private set;
+            }
+
+            public bool IsEmpty
+            {
+                get; private set;
+            }
+
+            public Parameters(object value)
+            {
+                IsEmpty = value == null;
+                Type = value?.GetType();
+                Value = value;
+            }
+        }
+
         private string NodeType(Expression expression)
         {
             switch (expression.NodeType)
@@ -66,25 +93,25 @@ namespace LiteRepository
                 return value.ToString();
         }
 
-        private string Process(Expression expression)
+        private string Process(Expression expression, Parameters parameters)
         {
             if (expression is BinaryExpression)
-                return ProcessBinary(expression as BinaryExpression);
+                return ProcessBinary(expression as BinaryExpression, null, parameters);
             else if (expression is UnaryExpression)
-                return ProcessUnary(expression as UnaryExpression);
+                return ProcessUnary(expression as UnaryExpression, parameters);
             else if (expression is MemberExpression)
-                return ProcessMember(expression as MemberExpression);
+                return ProcessMember(expression as MemberExpression, parameters);
             else if (expression is ConstantExpression)
-                return ProcessConstant(expression as ConstantExpression);
+                return ProcessConstant(expression as ConstantExpression, parameters);
             else if (expression is MethodCallExpression)
-                return ProcessMethodCall(expression as MethodCallExpression);
+                return ProcessMethodCall(expression as MethodCallExpression, parameters);
             else if (expression is NewExpression)
-                return ProcessNew(expression as NewExpression);
+                return ProcessNew(expression as NewExpression, parameters);
 
             throw new NotSupportedException();
         }
 
-        private string ProcessBinary(BinaryExpression expression, BinaryExpression parentExpression = null)
+        private string ProcessBinary(BinaryExpression expression, BinaryExpression parentExpression, Parameters parameters)
         {
             if (expression.Left.NodeType == ExpressionType.Convert)
             {
@@ -92,7 +119,7 @@ namespace LiteRepository
                 var cEx = expression.Right as ConstantExpression;
 
                 if (mEx != null && mEx.Type == typeof(char) && cEx != null)
-                    return $"{ProcessMember(mEx)} {NodeType(expression)} '{Convert.ToChar(cEx.Value)}'";
+                    return $"{ProcessMember(mEx, parameters)} {NodeType(expression)} '{Convert.ToChar(cEx.Value)}'";
             }
             else if (expression.Right.NodeType == ExpressionType.Convert)
             {
@@ -100,15 +127,15 @@ namespace LiteRepository
                 var cEx = expression.Left as ConstantExpression;
 
                 if (mEx != null && mEx.Type == typeof(char) && cEx != null)
-                    return $"'{Convert.ToChar(cEx.Value)}' {NodeType(expression)} {ProcessMember(mEx)}";
+                    return $"'{Convert.ToChar(cEx.Value)}' {NodeType(expression)} {ProcessMember(mEx, parameters)}";
             }
 
             var left = expression.Left is BinaryExpression
-                ? ProcessBinary(expression.Left as BinaryExpression, expression)
-                : Process(expression.Left);
+                ? ProcessBinary(expression.Left as BinaryExpression, expression, parameters)
+                : Process(expression.Left, parameters);
             var right = expression.Right is BinaryExpression
-                ? ProcessBinary(expression.Right as BinaryExpression, expression)
-                : Process(expression.Right);
+                ? ProcessBinary(expression.Right as BinaryExpression, expression, parameters)
+                : Process(expression.Right, parameters);
 
             var result = $"{left} {NodeType(expression)} {right}";
             if (parentExpression != null
@@ -119,19 +146,19 @@ namespace LiteRepository
                 return result;
         }
 
-        private string ProcessUnary(UnaryExpression expression)
+        private string ProcessUnary(UnaryExpression expression, Parameters parameters)
         {
             switch (expression.NodeType)
             {
                 case ExpressionType.Not:
-                    return "NOT " + Process(expression.Operand);
+                    return "NOT " + Process(expression.Operand, parameters);
 
                 default:
-                    return Process(expression.Operand);
+                    return Process(expression.Operand, parameters);
             }
         }
 
-        private string ProcessMember(MemberExpression expression)
+        private string ProcessMember(MemberExpression expression, Parameters parameters)
         {
             if (typeof(E) == expression.Member.ReflectedType || typeof(E).IsSubclassOf(expression.Member.ReflectedType))
                 return Metadata[expression.Member.Name]; // this is db field
@@ -139,7 +166,7 @@ namespace LiteRepository
                 return Dialect.Parameter(expression.Member.Name); // this is property of the parameter's object
         }
 
-        private string ProcessConstant(ConstantExpression expression)
+        private string ProcessConstant(ConstantExpression expression, Parameters parameters)
         {
             if (expression.Type == typeof(string))
                 return $"'{expression.Value}'";
@@ -147,19 +174,19 @@ namespace LiteRepository
                 return ToString(expression.Value);
         }
 
-        private string ProcessMethodCall(MethodCallExpression expression)
+        private string ProcessMethodCall(MethodCallExpression expression, Parameters parameters)
         {
             if (expression.Method.DeclaringType == typeof(string))
             {
-                var member = Process(expression.Object);
+                var member = Process(expression.Object, parameters);
                 switch (expression.Method.Name)
                 {
                     case nameof(string.StartsWith):
-                        return $"{member} like {ProcessStringMethodArg(expression, postfix: "%")}";
+                        return $"{member} like {ProcessStringMethodArg(expression, parameters, postfix: "%")}";
                     case nameof(string.EndsWith):
-                        return $"{member} like {ProcessStringMethodArg(expression, prefix: "%")}";
+                        return $"{member} like {ProcessStringMethodArg(expression, parameters, prefix: "%")}";
                     case nameof(string.Contains):
-                        return $"{member} like {ProcessStringMethodArg(expression, prefix: "%", postfix: "%")}";
+                        return $"{member} like {ProcessStringMethodArg(expression, parameters, prefix: "%", postfix: "%")}";
 
                     case nameof(string.ToLower):
                         return $"lower({member})";
@@ -172,7 +199,7 @@ namespace LiteRepository
             throw new NotSupportedException();
         }
 
-        private string ProcessScalarMethodCall(MethodCallExpression expression)
+        private string ProcessScalarMethodCall(MethodCallExpression expression, Parameters parameters)
         {
             if (expression.Method.DeclaringType == typeof(Enumerable))
             {
@@ -183,18 +210,18 @@ namespace LiteRepository
                     case nameof(Enumerable.Average):
                         if (expression.Arguments.LastOrDefault() is LambdaExpression == false)
                             throw new NotSupportedException();
-                        return $"AVG({ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression)})";
+                        return $"AVG({ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression, parameters)})";
                     case nameof(Enumerable.Sum):
                         if (expression.Arguments.LastOrDefault() is LambdaExpression == false)
                             throw new NotSupportedException();
-                        return $"SUM({ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression)})";
+                        return $"SUM({ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression, parameters)})";
                 }
             }
 
             throw new NotSupportedException();
         }
 
-        private string ProcessOrderMethodCall(MethodCallExpression expression)
+        private string ProcessOrderMethodCall(MethodCallExpression expression, Parameters parameters)
         {
             if (expression.Method.DeclaringType == typeof(Enumerable))
             {
@@ -202,13 +229,13 @@ namespace LiteRepository
                 {
                     if (expression.Arguments.LastOrDefault() is LambdaExpression == false)
                         throw new NotSupportedException();
-                    var dbName = ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression);
+                    var dbName = ProcessLambda(expression.Arguments.LastOrDefault() as LambdaExpression, parameters);
                     if (expression.Method.Name == nameof(Enumerable.OrderByDescending))
                         dbName += " DESC";
 
                     var innerSql = string.Empty;
                     if (expression.Arguments.FirstOrDefault() is MethodCallExpression)
-                        innerSql = ProcessOrderMethodCall(expression.Arguments.FirstOrDefault() as MethodCallExpression);
+                        innerSql = ProcessOrderMethodCall(expression.Arguments.FirstOrDefault() as MethodCallExpression, parameters);
                     else if (expression.Arguments.FirstOrDefault() is ParameterExpression == false)
                         throw new NotSupportedException();
 
@@ -222,19 +249,19 @@ namespace LiteRepository
             throw new NotSupportedException();
         }
 
-        private string ProcessStringMethodArg(MethodCallExpression expression, string prefix = null, string postfix = null)
+        private string ProcessStringMethodArg(MethodCallExpression expression, Parameters parameters, string prefix = null, string postfix = null)
         {
             var arg = expression.Arguments[0];
 
             if (arg is ConstantExpression)
                 return $"'{prefix}{(arg as ConstantExpression).Value}{postfix}'";
             else if (arg is MemberExpression)
-                return ProcessMember(arg as MemberExpression);
+                return ProcessMember(arg as MemberExpression, parameters);
             else
                 throw new NotSupportedException();
         }
 
-        private string ProcessNew(NewExpression expression)
+        private string ProcessNew(NewExpression expression, Parameters parameters)
         {
             if (expression.Type != typeof(DateTime))
                 throw new NotSupportedException();
@@ -246,9 +273,9 @@ namespace LiteRepository
             return $"'{ToString(obj)}'";
         }
 
-        private string ProcessLambda(LambdaExpression expression)
+        private string ProcessLambda(LambdaExpression expression, Parameters parameters)
         {
-            return Process(expression.Body);
+            return Process(expression.Body, parameters);
         }
     }
 }
