@@ -13,6 +13,12 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/albertakhmetov/LiteRepository</projectUrl>
     <tags>Dapper Repository RepositoryPattern .NET SqlServer CRUD ORM</tags>
-    <releaseNotes>Backward compatibility with 1.x not supported</releaseNotes>
+    <releaseNotes>
+      Backward compatibility with 1.x not supported
+
+      version 2.0.2 (alpha)
+
+      * Changes in the processing of SQL Expressions
+    </releaseNotes>
   </metadata>
 </package>
