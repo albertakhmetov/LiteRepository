@@ -213,7 +213,7 @@ namespace LiteRepository
                 throw new ArgumentNullException(nameof(where));
 
             var sqlExpression = GetSqlExpression<E>();
-            var sql = sqlExpression.GetDeleteSql(where);
+            var sql = sqlExpression.GetDeleteSql(where, param);
             return Exec(dbConnection => dbConnection.Execute(sql, param));
         }
 
@@ -223,7 +223,7 @@ namespace LiteRepository
                 throw new ArgumentNullException(nameof(where));
 
             var sqlExpression = GetSqlExpression<E>();
-            var sql = sqlExpression.GetDeleteSql(where);
+            var sql = sqlExpression.GetDeleteSql(where, param);
             return ExecAsync(dbConnection => dbConnection.ExecuteAsync(sql, param));
         }
 
@@ -268,7 +268,7 @@ namespace LiteRepository
             Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null) where E : class
         {
             var sqlExpression = GetSqlExpression<E>();
-            var sql = sqlExpression.GetSelectSql(type, where, orderBy);
+            var sql = sqlExpression.GetSelectSql(type, where, param, orderBy);
             return Exec(dbConnection => dbConnection.Query<E>(sql, param));
         }
 
@@ -279,7 +279,7 @@ namespace LiteRepository
             Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null) where E : class
         {
             var sqlExpression = GetSqlExpression<E>();
-            var sql = sqlExpression.GetSelectSql(type, where, orderBy);
+            var sql = sqlExpression.GetSelectSql(type, where, param, orderBy);
             return ExecAsync(dbConnection => dbConnection.QueryAsync<E>(sql, param));
         }
 
@@ -292,7 +292,7 @@ namespace LiteRepository
                 throw new ArgumentNullException(nameof(expression));
 
             var sqlExpression = GetSqlExpression<E>();
-            var sql = sqlExpression.GetSelectScalarSql<T>(expression, where);
+            var sql = sqlExpression.GetSelectScalarSql<T>(expression, where, param);
             return Exec(dbConnection => dbConnection.ExecuteScalar<T>(sql, param));
         }
 
@@ -305,7 +305,7 @@ namespace LiteRepository
                 throw new ArgumentNullException(nameof(expression));
 
             var sqlExpression = GetSqlExpression<E>();
-            var sql = sqlExpression.GetSelectScalarSql<T>(expression, where);
+            var sql = sqlExpression.GetSelectScalarSql<T>(expression, where, param);
             return ExecAsync(dbConnection => dbConnection.ExecuteScalarAsync<T>(sql, param));
         }
     }

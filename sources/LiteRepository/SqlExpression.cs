@@ -44,7 +44,7 @@ namespace LiteRepository
             Dialect = dialect;
         }
 
-        public string GetSelectSql(Type type = null, Expression<Func<E, bool>> where = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null)
+        public string GetSelectSql(Type type = null, Expression<Func<E, bool>> where = null, object param = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null)
         {
             var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
             if (properties.Count() == 0)
@@ -62,7 +62,7 @@ namespace LiteRepository
             return Dialect.Select(Metadata.DbName, GetSelectPartSql(properties), GetWhereByKeyPartSql(), string.Empty);
         }
 
-        public string GetSelectScalarSql<T>(Expression<Func<IEnumerable<E>, T>> expression, Expression<Func<E, bool>> where = null)
+        public string GetSelectScalarSql<T>(Expression<Func<IEnumerable<E>, T>> expression, Expression<Func<E, bool>> where = null, object param = null)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -93,7 +93,7 @@ namespace LiteRepository
             return Dialect.Update(Metadata.DbName, GetUpdatePartSql(properties), whereSql);
         }
 
-        public string GetDeleteSql(Expression<Func<E, bool>> where = null)
+        public string GetDeleteSql(Expression<Func<E, bool>> where = null, object param = null)
         {
             return Dialect.Delete(Metadata.DbName, where == null ? GetWhereByKeyPartSql() : GetWherePartSql(where));
         }
