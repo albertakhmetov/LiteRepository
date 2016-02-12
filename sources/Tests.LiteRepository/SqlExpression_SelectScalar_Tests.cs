@@ -47,7 +47,7 @@ namespace LiteRepository
             var expected = "cource = %Cource";
             var p = new { Cource = 123 };
 
-            exp.GetSelectScalarSql<int>(i => i.Count(), where: i => i.Cource == p.Cource);
+            exp.GetSelectScalarSql<int>(i => i.Count(), where: i => i.Cource == p.Cource, param: p);
             dialect.Received(1).SelectScalar(exp.Metadata.DbName, Arg.Any<string>(), expected);
         }
 

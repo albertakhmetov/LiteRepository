@@ -67,10 +67,12 @@ namespace LiteRepository
             dialect.HasParameters(Arg.Is<string>(x => x.Contains("%"))).Returns(true);
 
             var exp = new SqlExpression<Entity>(dialect);
+            var expected = "birthday = '2000-01-01 00:00:00'";
 
             var p = new { Birthday = new DateTime(2000, 1, 1) };
 
-            Assert.Throws<NotSupportedException>(() => exp.GetUpdateSql(where: i => i.Birthday == p.Birthday));
+            exp.GetUpdateSql(where: i => i.Birthday == p.Birthday);
+            dialect.Received(1).Update(exp.Metadata.DbName, Arg.Any<string>(), expected);
         }
 
         [Fact]

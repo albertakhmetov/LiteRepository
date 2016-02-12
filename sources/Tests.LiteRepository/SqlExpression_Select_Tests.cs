@@ -48,7 +48,7 @@ namespace LiteRepository
             var expected = "cource = %Cource";
             var p = new { Cource = 123 };
 
-            exp.GetSelectSql(where: i => i.Cource == p.Cource);
+            exp.GetSelectSql(where: i => i.Cource == p.Cource, param: p);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 

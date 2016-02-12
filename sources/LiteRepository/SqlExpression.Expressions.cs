@@ -174,8 +174,10 @@ namespace LiteRepository
         {
             if (typeof(E) == expression.Member.ReflectedType || typeof(E).IsSubclassOf(expression.Member.ReflectedType))
                 return Metadata[expression.Member.Name]; // this is db field
-            else
+            else if (!parameters.IsEmpty && parameters.Type == expression.Member.ReflectedType)
                 return Dialect.Parameter(expression.Member.Name); // this is property of the parameter's object
+            else
+                return CompileAndExecute(expression);
         }
 
         private string ProcessConstant(ConstantExpression expression, Parameters parameters)

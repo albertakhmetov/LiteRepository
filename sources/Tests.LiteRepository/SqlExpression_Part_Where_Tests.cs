@@ -84,6 +84,20 @@ namespace LiteRepository
         }
 
         [Fact]
+        public void String_ToUpper_Parameter_Test()
+        {
+            var dialect = Substitute.For<SqlDialectBase>();
+            dialect.Parameter("Name").Returns("%Name");
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = "first_name = upper(%Name)";
+
+            var p = new { Name = "" };
+
+            exp.GetSelectSql(where: e => e.FirstName == p.Name.ToUpper(), param:p);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
+        }
+
+        [Fact]
         public void String_StartsExpression_Constant_Test()
         {
             var dialect = Substitute.For<SqlDialectBase>();
@@ -97,15 +111,15 @@ namespace LiteRepository
         [Fact]
         public void String_StartsExpression_Parameter_Test()
         {
-            var name = "Ivan";
-
             var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("name").Returns("%name");
 
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name like %name";
 
-            exp.GetSelectSql(where: e => e.FirstName.StartsWith(name));
+            var p = new { name = "" };
+
+            exp.GetSelectSql(where: e => e.FirstName.StartsWith(p.name), param: p);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
@@ -123,15 +137,15 @@ namespace LiteRepository
         [Fact]
         public void String_EndsExpression_Parameter_Test()
         {
-            var name = "Ivan";
-
             var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("name").Returns("%name");
 
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name like %name";
 
-            exp.GetSelectSql(where: e => e.FirstName.EndsWith(name));
+            var p = new { name = "" };
+
+            exp.GetSelectSql(where: e => e.FirstName.EndsWith(p.name), param: p);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
@@ -149,15 +163,15 @@ namespace LiteRepository
         [Fact]
         public void String_ContainsExpression_Parameter_Test()
         {
-            var name = "Ivan";
-
             var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("name").Returns("%name");
 
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name like %name";
 
-            exp.GetSelectSql(where: e => e.FirstName.Contains(name));
+            var p = new { name = "" };
+
+            exp.GetSelectSql(where: e => e.FirstName.Contains(p.name), param: p);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
@@ -175,45 +189,45 @@ namespace LiteRepository
         [Fact]
         public void DateTime_EqExpression_Parameter_Test()
         {
-            var date = new DateTime(1991, 12, 3);
-
             var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("date").Returns("%date");
 
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "birthday = %date";
 
-            exp.GetSelectSql(where: e => e.Birthday == date);
+            var p = new { date = new DateTime(1991, 12, 3) };
+
+            exp.GetSelectSql(where: e => e.Birthday == p.date, param: p);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
         public void Int_EqExpression_Parameter_Test()
         {
-            var cr = 4L;
-
             var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("cr").Returns("%cr");
 
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = %cr";
 
-            exp.GetSelectSql(where: e => e.Cource == cr);
+            var p = new { cr = 4L };
+
+            exp.GetSelectSql(where: e => e.Cource == p.cr, param: p);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
         [Fact]
         public void Int_EqExpression_Parameter_Convert_Test()
         {
-            var cr = 4;
-
             var dialect = Substitute.For<SqlDialectBase>();
             dialect.Parameter("cr").Returns("%cr");
 
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = %cr";
 
-            exp.GetSelectSql(where: e => e.Cource == cr);
+            var p = new { cr = 4 };
+
+            exp.GetSelectSql(where: e => e.Cource == p.cr, param: p);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
@@ -341,13 +355,42 @@ namespace LiteRepository
         #region Compilation
 
         [Fact]
-        public void MethodCall_Test()
+        public void Compilation_MethodCall_Test()
         {
             var dialect = Substitute.For<SqlDialectBase>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "birthday = '2006-06-06 00:00:00'";
 
-            exp.GetSelectSql(where: i=>i.Birthday == DateTime.Parse("2006-06-06"));
+            exp.GetSelectSql(where: i => i.Birthday == DateTime.Parse("2006-06-06"));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
+        }
+
+        [Fact]
+        public void Compilation_EvalVar_Test()
+        {
+            var dialect = Substitute.For<SqlDialectBase>();
+            dialect.Parameter("p").Returns("%p");
+
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = "birthday = '2006-06-06 00:00:00'";
+
+            var p = DateTime.Parse("2006-06-06");
+            var param = new { p = DateTime.Parse("2006-01-01") };
+
+            exp.GetSelectSql(where: i => i.Birthday == p, param: param);
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
+        }
+
+        [Fact]
+        public void Compilation_EvalVar_NoParam_Test()
+        {
+            var dialect = Substitute.For<SqlDialectBase>();
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = "birthday = '2006-06-06 00:00:00'";
+
+            var p = DateTime.Parse("2006-06-06");
+
+            exp.GetSelectSql(where: i => i.Birthday == p);
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 

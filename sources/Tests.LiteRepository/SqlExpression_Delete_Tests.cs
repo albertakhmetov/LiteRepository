@@ -54,7 +54,7 @@ namespace LiteRepository
 
             var p = new { Birthday = new DateTime(2000, 1, 1) };
 
-            exp.GetDeleteSql(where: i => i.Birthday == p.Birthday);
+            exp.GetDeleteSql(where: i => i.Birthday == p.Birthday, param: p);
             dialect.Received(1).Delete(exp.Metadata.DbName, expected);
         }
 
