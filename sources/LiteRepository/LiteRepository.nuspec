@@ -12,7 +12,7 @@
     <copyright>Copyright © 2016, $author$</copyright>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/albertakhmetov/LiteRepository</projectUrl>
-    <tags>Dapper Repository RepositoryPattern .NET SqlServer CRUD ORM</tags>
+    <tags>Dapper Repository RepositoryPattern .NET SqlServer SQL CRUD ORM</tags>
     <releaseNotes>
       Backward compatibility with 1.x not supported
 
