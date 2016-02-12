@@ -83,14 +83,26 @@ namespace LiteRepository
 
         private string ToString(object value)
         {
-            if (value == null)
-                return string.Empty;
-            else if (value is DateTime)
-                return ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            var str = string.Empty;
+
+            if (value is DateTime)
+                str = ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
             else if (value is double || value is decimal)
-                return string.Format(CultureInfo.InvariantCulture, "{0:g}", value);
+                str = string.Format(CultureInfo.InvariantCulture, "{0:g}", value);
+            else if(value != null)
+                str = value.ToString();
+
+            if (value is DateTime || value is string || value is char)
+                return $"'{str}'";
             else
-                return value.ToString();
+                return str;
+        }
+
+        private string CompileAndExecute(Expression expression)
+        {
+            var lambda = Expression.Lambda<Func<object>>(Expression.Convert(expression, typeof(object)));
+            var obj = lambda.Compile()();
+            return ToString(obj);
         }
 
         private string Process(Expression expression, Parameters parameters)
@@ -168,10 +180,7 @@ namespace LiteRepository
 
         private string ProcessConstant(ConstantExpression expression, Parameters parameters)
         {
-            if (expression.Type == typeof(string))
-                return $"'{expression.Value}'";
-            else
-                return ToString(expression.Value);
+            return ToString(expression.Value);
         }
 
         private string ProcessMethodCall(MethodCallExpression expression, Parameters parameters)
@@ -266,11 +275,7 @@ namespace LiteRepository
             if (expression.Type != typeof(DateTime))
                 throw new NotSupportedException();
 
-            var lambda = Expression.Lambda<Func<object>>(Expression.Convert(expression, typeof(object)));
-            var obj = lambda.Compile()();
-
-
-            return $"'{ToString(obj)}'";
+            return CompileAndExecute(expression);
         }
 
         private string ProcessLambda(LambdaExpression expression, Parameters parameters)
