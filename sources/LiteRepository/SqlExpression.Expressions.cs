@@ -77,7 +77,7 @@ namespace LiteRepository
                     return ">=";
 
                 default:
-                    throw new NotSupportedException();
+                    throw new NotSupportedException($"Node type '{expression.NodeType}' is not supported");
             }
         }
 
@@ -120,7 +120,7 @@ namespace LiteRepository
             else if (expression is NewExpression)
                 return ProcessNew(expression as NewExpression, parameters);
 
-            throw new NotSupportedException();
+            throw new NotSupportedException($"Expression '{expression.GetType()}' is not supported");
         }
 
         private string ProcessBinary(BinaryExpression expression, BinaryExpression parentExpression, Parameters parameters)
@@ -229,7 +229,7 @@ namespace LiteRepository
                 }
             }
 
-            throw new NotSupportedException();
+            throw new NotSupportedException($"Method '{expression.Method}' is not supported");
         }
 
         private string ProcessOrderMethodCall(MethodCallExpression expression, Parameters parameters)
@@ -248,7 +248,7 @@ namespace LiteRepository
                     if (expression.Arguments.FirstOrDefault() is MethodCallExpression)
                         innerSql = ProcessOrderMethodCall(expression.Arguments.FirstOrDefault() as MethodCallExpression, parameters);
                     else if (expression.Arguments.FirstOrDefault() is ParameterExpression == false)
-                        throw new NotSupportedException();
+                        throw new NotSupportedException("Only methods OrderBy and OrderByDescending is supported");
 
                     if (innerSql.Length > 0)
                         return $"{innerSql}, {dbName}";
@@ -257,7 +257,7 @@ namespace LiteRepository
                 }
             }
 
-            throw new NotSupportedException();
+            throw new NotSupportedException($"Method '{expression.Method}' is not supported");
         }
 
         private string ProcessStringMethodArg(MethodCallExpression expression, Parameters parameters, string prefix = null, string postfix = null)
@@ -269,7 +269,7 @@ namespace LiteRepository
             else if (arg is MemberExpression)
                 return ProcessMember(arg as MemberExpression, parameters);
             else
-                throw new NotSupportedException();
+                throw new NotSupportedException($"Expression '{arg.GetType()}' as string function parameter is no supported");
         }
 
         private string ProcessNew(NewExpression expression, Parameters parameters)

@@ -48,7 +48,7 @@ namespace LiteRepository
         {
             var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
             if (properties.Count() == 0)
-                throw new InvalidOperationException("There are not fields to select");
+                throw new InvalidOperationException("There are no fields to select");
 
             return Dialect.Select(
                 Metadata.DbName,
@@ -61,7 +61,7 @@ namespace LiteRepository
         {
             var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
             if (properties.Count() == 0)
-                throw new InvalidOperationException("There are not fields to select");
+                throw new InvalidOperationException("There are no fields to select");
 
             return Dialect.Select(Metadata.DbName, GetSelectPartSql(properties), GetWhereByKeyPartSql(), string.Empty);
         }
@@ -81,7 +81,7 @@ namespace LiteRepository
         {
             var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
             if (properties.Count() == 0)
-                throw new InvalidOperationException("There are not fields to insert");
+                throw new InvalidOperationException("There are no fields to insert");
 
             return Dialect.Insert(Metadata.DbName, GetInsertFieldsPartSql(properties), GetInsertValuesPartSql(properties), Metadata.IsIdentity);
         }
@@ -91,13 +91,11 @@ namespace LiteRepository
             var properties = type == null || type == typeof(E) ? Metadata : Metadata.GetSubsetForType(type);
             properties = properties.Where(i => !i.IsPrimaryKey);
             if (properties.Count() == 0)
-                throw new InvalidOperationException("There are not fields to update");
+                throw new InvalidOperationException("There are no fields to update");
 
             var whereSql = where == null
                 ? GetWhereByKeyPartSql()
                 : GetWherePartSql(where, Parameters.Empty);
-            if (where != null && Dialect.HasParameters(whereSql))
-                throw new NotSupportedException("Parameters is not supported in where clause");
 
             return Dialect.Update(Metadata.DbName, GetUpdatePartSql(properties), whereSql);
         }
@@ -127,7 +125,7 @@ namespace LiteRepository
             if (expression.Body is MethodCallExpression)
                 return ProcessScalarMethodCall(expression.Body as MethodCallExpression, Parameters.Empty);
             else
-                throw new NotSupportedException();
+                throw new NotSupportedException($"Expression '{expression.Body.GetType()}' in Scalar is not supported");
         }
 
         private string GetInsertFieldsPartSql(IEnumerable<SqlMetadata.Property> properties)
@@ -166,7 +164,7 @@ namespace LiteRepository
             if (expression.Body is MethodCallExpression)
                 return ProcessOrderMethodCall(expression.Body as MethodCallExpression, Parameters.Empty);
             else
-                throw new NotSupportedException();
+                throw new NotSupportedException($"Expression '{expression.Body.GetType()}' in OrderBy is not supported");
         }
     }
 }
