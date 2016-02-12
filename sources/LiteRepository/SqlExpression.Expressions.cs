@@ -205,7 +205,7 @@ namespace LiteRepository
                 }
             }
 
-            throw new NotSupportedException();
+            return CompileAndExecute(expression);
         }
 
         private string ProcessScalarMethodCall(MethodCallExpression expression, Parameters parameters)

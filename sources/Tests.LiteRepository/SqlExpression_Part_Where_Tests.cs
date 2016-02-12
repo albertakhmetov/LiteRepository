@@ -338,6 +338,23 @@ namespace LiteRepository
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
 
+        #region Compilation
+
+        [Fact]
+        public void MethodCall_Test()
+        {
+            var dialect = Substitute.For<SqlDialectBase>();
+            var exp = new SqlExpression<Entity>(dialect);
+            var expected = "birthday = '2006-06-06 00:00:00'";
+
+            exp.GetSelectSql(where: i=>i.Birthday == DateTime.Parse("2006-06-06"));
+            dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
+        }
+
+        #endregion
+
+        #region Group (AND, OR)
+
         [Fact]
         public void Group_AndExpression_Test()
         {
@@ -439,5 +456,7 @@ namespace LiteRepository
                 ));
             dialect.Received(1).Select(Arg.Any<string>(), Arg.Any<string>(), expected, string.Empty);
         }
+
+        #endregion
     }
 }
