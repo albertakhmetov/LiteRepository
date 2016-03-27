@@ -32,7 +32,7 @@ namespace LiteRepository
         [Fact]
         public void NullExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
 
             exp.GetSelectSql(where: null);
@@ -42,7 +42,7 @@ namespace LiteRepository
         [Fact]
         public void String_EqExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name = 'Ivan'";
 
@@ -53,7 +53,7 @@ namespace LiteRepository
         [Fact]
         public void String_NotEqExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name <> 'Ivan'";
 
@@ -64,7 +64,7 @@ namespace LiteRepository
         [Fact]
         public void String_ToLowerExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "lower(first_name) = 'ivan'";
 
@@ -75,7 +75,7 @@ namespace LiteRepository
         [Fact]
         public void String_ToUpperExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "upper(first_name) = 'IVAN'";
 
@@ -86,7 +86,7 @@ namespace LiteRepository
         [Fact]
         public void String_ToUpper_Parameter_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("Name").Returns("%Name");
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name = upper(%Name)";
@@ -100,7 +100,7 @@ namespace LiteRepository
         [Fact]
         public void String_StartsExpression_Constant_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name like 'Iv%'";
 
@@ -111,7 +111,7 @@ namespace LiteRepository
         [Fact]
         public void String_StartsExpression_Parameter_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("name").Returns("%name");
 
             var exp = new SqlExpression<Entity>(dialect);
@@ -126,7 +126,7 @@ namespace LiteRepository
         [Fact]
         public void String_EndsExpression_Constant_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name like '%ov'";
 
@@ -137,7 +137,7 @@ namespace LiteRepository
         [Fact]
         public void String_EndsExpression_Parameter_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("name").Returns("%name");
 
             var exp = new SqlExpression<Entity>(dialect);
@@ -152,7 +152,7 @@ namespace LiteRepository
         [Fact]
         public void String_ContainsExpression_Constant_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "first_name like '%van%'";
 
@@ -163,7 +163,7 @@ namespace LiteRepository
         [Fact]
         public void String_ContainsExpression_Parameter_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("name").Returns("%name");
 
             var exp = new SqlExpression<Entity>(dialect);
@@ -178,7 +178,7 @@ namespace LiteRepository
         [Fact]
         public void DateTime_EqExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "birthday = '1991-12-03 00:00:00'";
 
@@ -189,7 +189,7 @@ namespace LiteRepository
         [Fact]
         public void DateTime_EqExpression_Parameter_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("date").Returns("%date");
 
             var exp = new SqlExpression<Entity>(dialect);
@@ -204,7 +204,7 @@ namespace LiteRepository
         [Fact]
         public void Int_EqExpression_Parameter_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("cr").Returns("%cr");
 
             var exp = new SqlExpression<Entity>(dialect);
@@ -219,7 +219,7 @@ namespace LiteRepository
         [Fact]
         public void Int_EqExpression_Parameter_Convert_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("cr").Returns("%cr");
 
             var exp = new SqlExpression<Entity>(dialect);
@@ -234,7 +234,7 @@ namespace LiteRepository
         [Fact]
         public void Int_EqExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = 3";
 
@@ -245,7 +245,7 @@ namespace LiteRepository
         [Fact]
         public void Int_NotEqExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource <> 3";
 
@@ -256,7 +256,7 @@ namespace LiteRepository
         [Fact]
         public void Int_LessExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource < 3";
 
@@ -267,7 +267,7 @@ namespace LiteRepository
         [Fact]
         public void Int_LessOrEqExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource <= 3";
 
@@ -278,7 +278,7 @@ namespace LiteRepository
         [Fact]
         public void Int_GreaterExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource > 3";
 
@@ -289,7 +289,7 @@ namespace LiteRepository
         [Fact]
         public void Int_GreaterOrEqExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource >= 3";
 
@@ -300,7 +300,7 @@ namespace LiteRepository
         [Fact]
         public void Decimal_EqExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = 12.2";
 
@@ -311,7 +311,7 @@ namespace LiteRepository
         [Fact]
         public void Int_NotExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "NOT cource = 12";
 
@@ -322,7 +322,7 @@ namespace LiteRepository
         [Fact]
         public void Int_EqExpression_Reverse_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "12 = cource";
 
@@ -333,7 +333,7 @@ namespace LiteRepository
         [Fact]
         public void Char_EqExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "letter = 'A'";
 
@@ -344,7 +344,7 @@ namespace LiteRepository
         [Fact]
         public void Char_EqExpression_Reverse_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "'A' = letter";
 
@@ -357,7 +357,7 @@ namespace LiteRepository
         [Fact]
         public void Compilation_MethodCall_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "birthday = '2006-06-06 00:00:00'";
 
@@ -368,7 +368,7 @@ namespace LiteRepository
         [Fact]
         public void Compilation_EvalVar_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("p").Returns("%p");
 
             var exp = new SqlExpression<Entity>(dialect);
@@ -384,7 +384,7 @@ namespace LiteRepository
         [Fact]
         public void Compilation_EvalVar_NoParam_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "birthday = '2006-06-06 00:00:00'";
 
@@ -401,7 +401,7 @@ namespace LiteRepository
         [Fact]
         public void Group_AndExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = 1 AND letter = 'A'";
 
@@ -412,7 +412,7 @@ namespace LiteRepository
         [Fact]
         public void Group_OrExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = 1 OR letter = 'A'";
 
@@ -423,7 +423,7 @@ namespace LiteRepository
         [Fact]
         public void Group_TwoAnd_Expression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = 1 AND letter = 'A' AND second_name = 'Ivan'";
 
@@ -434,7 +434,7 @@ namespace LiteRepository
         [Fact]
         public void Group_TwoOr_Expression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = 1 OR letter = 'A' OR second_name = 'Ivan'";
 
@@ -445,7 +445,7 @@ namespace LiteRepository
         [Fact]
         public void Group_ExpOrAndGroup_Expression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = 1 OR (letter = 'A' AND second_name = 'Ivan')";
 
@@ -456,7 +456,7 @@ namespace LiteRepository
         [Fact]
         public void Group_ExpAndOrGroup_Expression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "cource = 1 AND (letter = 'A' OR second_name = 'Ivan')";
 
@@ -467,7 +467,7 @@ namespace LiteRepository
         [Fact]
         public void Group_AndGroupOrExp_Expression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "(cource = 1 AND letter = 'A') OR second_name = 'Ivan'";
 
@@ -478,7 +478,7 @@ namespace LiteRepository
         [Fact]
         public void Group_OrGroupAndExp_Expression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "(cource = 1 OR letter = 'A') AND second_name = 'Ivan'";
 
@@ -489,7 +489,7 @@ namespace LiteRepository
         [Fact]
         public void Group_Complex_Expression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "(cource = 1 OR cource = 2 OR letter = 'A') AND (second_name = 'Ivan' OR (second_name = 'Petrov' AND first_name like 'P%'))";
 

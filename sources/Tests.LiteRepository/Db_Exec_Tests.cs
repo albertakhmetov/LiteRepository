@@ -30,12 +30,12 @@ namespace LiteRepository
     {
         private Db GetDb(DbConnection dbConnection)
         {
-            return new Db(Substitute.For<SqlDialectBase>(), dbConnection);
+            return new Db(Substitute.For<SqlDialect>(), dbConnection);
         }
 
         private Db GetDb(Func<DbConnection> dbConnectionFactory)
         {
-            return new Db(Substitute.For<SqlDialectBase>(), dbConnectionFactory);
+            return new Db(Substitute.For<SqlDialect>(), dbConnectionFactory);
         }
 
         [Fact]

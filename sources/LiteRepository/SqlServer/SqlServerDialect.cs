@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.SqlServer
 {
-    public class SqlServerDialect : SqlDialectBase
+    public class SqlServerDialect : SqlDialect
     {
         private string GetWhere(string where)
         {

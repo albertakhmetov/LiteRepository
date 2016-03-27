@@ -31,7 +31,7 @@ namespace LiteRepository
         [Fact]
         public void Null_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("Cource").Returns("%Cource");
             dialect.Parameter("Letter").Returns("%Letter");
             dialect.Parameter("LocalId").Returns("%LocalId");
@@ -50,7 +50,7 @@ namespace LiteRepository
         [Fact]
         public void Where_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
 
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "birthday = '2000-01-01 00:00:00'";
@@ -62,7 +62,7 @@ namespace LiteRepository
         [Fact]
         public void WhereWithParameters_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("Birthday").Returns("%Birthday");
             dialect.HasParameters(Arg.Is<string>(x => x.Contains("%"))).Returns(true);
 
@@ -78,7 +78,7 @@ namespace LiteRepository
         [Fact]
         public void UpdateSub_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("FirstName").Returns("%FirstName");
             dialect.Parameter("SecondName").Returns("%SecondName");
 
@@ -94,7 +94,7 @@ namespace LiteRepository
         [Fact]
         public void UpdateIntersect_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("FirstName").Returns("%FirstName");
             dialect.Parameter("SecondName").Returns("%SecondName");
 
@@ -110,7 +110,7 @@ namespace LiteRepository
         [Fact]
         public void UpdateDifferent_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var p = new { IsStudent = false };
 
@@ -120,7 +120,7 @@ namespace LiteRepository
         [Fact]
         public void UpdateKey_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var p = new { Cource = 5 };
 
@@ -130,7 +130,7 @@ namespace LiteRepository
         [Fact]
         public void UpdateIdentity_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             dialect.Parameter("Id").Returns("%Id");
             dialect.Parameter("FirstName").Returns("%FirstName");
             dialect.Parameter("SecondName").Returns("%SecondName");

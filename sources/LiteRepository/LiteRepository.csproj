@@ -54,7 +54,7 @@
     <Compile Include="Attributes\SqlIgnoreAttribute.cs" />
     <Compile Include="Attributes\SqlKeyAttribute.cs" />
     <Compile Include="Repository.cs" />
-    <Compile Include="SqlDialectBase.cs" />
+    <Compile Include="SqlDialect.cs" />
     <Compile Include="SqlExpression.cs" />
     <Compile Include="SqlMetadata.cs" />
     <Compile Include="SqlServer\SqlServerDialect.cs" />

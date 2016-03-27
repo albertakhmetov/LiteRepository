@@ -32,8 +32,8 @@ namespace LiteRepository
         [Fact]
         public void Ctor_Null_Test()
         {
-            Assert.Throws<ArgumentNullException>(() => new Db(Substitute.For<SqlDialectBase>(), default(DbConnection)));
-            Assert.Throws<ArgumentNullException>(() => new Db(Substitute.For<SqlDialectBase>(), default(Func<DbConnection>)));
+            Assert.Throws<ArgumentNullException>(() => new Db(Substitute.For<SqlDialect>(), default(DbConnection)));
+            Assert.Throws<ArgumentNullException>(() => new Db(Substitute.For<SqlDialect>(), default(Func<DbConnection>)));
             Assert.Throws<ArgumentNullException>(() => new Db(null, Substitute.For<DbConnection>()));
             Assert.Throws<ArgumentNullException>(() => new Db(null, Substitute.For<Func<DbConnection>>()));
         }

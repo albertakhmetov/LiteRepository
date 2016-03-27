@@ -30,10 +30,10 @@ namespace LiteRepository
 {
     public class Db_Update_Custom_Tests
     {
-        private Db GetDb(SqlDialectBase sqlDialect = null, DbConnection dbConnection = null)
+        private Db GetDb(SqlDialect sqlDialect = null, DbConnection dbConnection = null)
         {
             return new Db(
-                sqlDialect ?? Substitute.For<SqlDialectBase>(),
+                sqlDialect ?? Substitute.For<SqlDialect>(),
                 dbConnection ?? Substitute.For<DbConnection>());
         }
 
@@ -100,7 +100,7 @@ namespace LiteRepository
             var sql = GetSql();
             var affectedRows = 1;
 
-            var sqlDialect = Substitute.For<SqlDialectBase>();
+            var sqlDialect = Substitute.For<SqlDialect>();
             sqlDialect.Parameter("FirstName").Returns("@FirstName");
             sqlDialect.Parameter("SecondName").Returns("@SecondName");
             sqlDialect.Parameter("Birthday").Returns("@Birthday");
@@ -129,7 +129,7 @@ namespace LiteRepository
             var sql = GetSql();
             var affectedRows = 1;
 
-            var sqlDialect = Substitute.For<SqlDialectBase>();
+            var sqlDialect = Substitute.For<SqlDialect>();
             sqlDialect.Parameter("FirstName").Returns("@FirstName");
             sqlDialect.Parameter("SecondName").Returns("@SecondName");
             sqlDialect.Parameter("Birthday").Returns("@Birthday");

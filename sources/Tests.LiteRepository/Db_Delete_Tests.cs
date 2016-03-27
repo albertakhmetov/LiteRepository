@@ -31,10 +31,10 @@ namespace LiteRepository
 {
     public class Db_Delete_Tests
     {
-        private Db GetDb(SqlDialectBase sqlDialect = null, DbConnection dbConnection = null)
+        private Db GetDb(SqlDialect sqlDialect = null, DbConnection dbConnection = null)
         {
             return new Db(
-                sqlDialect ?? Substitute.For<SqlDialectBase>(),
+                sqlDialect ?? Substitute.For<SqlDialect>(),
                 dbConnection ?? Substitute.For<DbConnection>());
         }
 
@@ -111,7 +111,7 @@ namespace LiteRepository
             var sql = GetSql();
             var affectedRows = 1;
 
-            var sqlDialect = Substitute.For<SqlDialectBase>();
+            var sqlDialect = Substitute.For<SqlDialect>();
             sqlDialect.Parameter("Cource").Returns("@Cource");
             sqlDialect.Parameter("Letter").Returns("@Letter");
             sqlDialect.Parameter("LocalId").Returns("@LocalId");
@@ -139,7 +139,7 @@ namespace LiteRepository
             var sql = GetSql();
             var affectedRows = 1;
 
-            var sqlDialect = Substitute.For<SqlDialectBase>();
+            var sqlDialect = Substitute.For<SqlDialect>();
             sqlDialect.Parameter("Cource").Returns("@Cource");
             sqlDialect.Parameter("Letter").Returns("@Letter");
             sqlDialect.Parameter("LocalId").Returns("@LocalId");
@@ -167,7 +167,7 @@ namespace LiteRepository
             var sql = GetShortSql();
             var affectedRows = 1;
 
-            var sqlDialect = Substitute.For<SqlDialectBase>();
+            var sqlDialect = Substitute.For<SqlDialect>();
             sqlDialect.Parameter("LastCource").Returns("@LastCource");
             sqlDialect.Delete(
                 Arg.Any<string>(),
@@ -195,7 +195,7 @@ namespace LiteRepository
             var sql = GetShortSql();
             var affectedRows = 1;
 
-            var sqlDialect = Substitute.For<SqlDialectBase>();
+            var sqlDialect = Substitute.For<SqlDialect>();
             sqlDialect.Parameter("LastCource").Returns("@LastCource");
             sqlDialect.Delete(
                 Arg.Any<string>(),
@@ -221,7 +221,7 @@ namespace LiteRepository
         {
             var sql = "TRUNCATE TABLE students";
 
-            var sqlDialect = Substitute.For<SqlDialectBase>();
+            var sqlDialect = Substitute.For<SqlDialect>();
             sqlDialect.Delete(
                 Arg.Any<string>(),
                 string.Empty).Returns(sql);
@@ -242,7 +242,7 @@ namespace LiteRepository
         {
             var sql = "TRUNCATE TABLE students";
 
-            var sqlDialect = Substitute.For<SqlDialectBase>();
+            var sqlDialect = Substitute.For<SqlDialect>();
             sqlDialect.Delete(
                 Arg.Any<string>(),
                 string.Empty).Returns(sql);

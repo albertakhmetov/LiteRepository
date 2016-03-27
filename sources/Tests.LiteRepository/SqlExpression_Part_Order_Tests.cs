@@ -31,7 +31,7 @@ namespace LiteRepository
         [Fact]
         public void NullExpression_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
 
             exp.GetSelectSql();
@@ -41,7 +41,7 @@ namespace LiteRepository
         [Fact]
         public void Order_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "birthday";
 
@@ -52,7 +52,7 @@ namespace LiteRepository
         [Fact]
         public void OrderOrderByDesc_Test()
         {
-            var dialect = Substitute.For<SqlDialectBase>();
+            var dialect = Substitute.For<SqlDialect>();
             var exp = new SqlExpression<Entity>(dialect);
             var expected = "birthday, second_name DESC";
 
