@@ -359,6 +359,13 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.Query<E>(sql, key).FirstOrDefault());
         }
 
+        /// <summary>
+        /// An asynchronous version of <see cref="GetByKey{E, K}">GetByKeyAsync</see>
+        /// </summary>
+        /// <typeparam name="E">Type of the entity</typeparam>
+        /// <typeparam name="K">Type of the entity key</typeparam>
+        /// <param name="key">Entity key</param>
+        /// <param name="type">Type which sets a subsets of the fields to retrive</param>
         /// <returns>A task representing the asynchronous operation.</returns>
         public virtual Task<E> GetByKeyAsync<E, K>(K key, Type type = null) where E : class, K where K : class
         {
@@ -371,13 +378,13 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// 
+        /// Returns a collection of entities which meet a <paramref name="where"/> condition
         /// </summary>
-        /// <typeparam name="E"></typeparam>
-        /// <param name="type"></param>
-        /// <param name="where"></param>
-        /// <param name="param"></param>
-        /// <param name="orderBy"></param>
+        /// <typeparam name="E">Type of the entity</typeparam>
+        /// <param name="type">Type which sets a subsets of the fields to retrive</param>
+        /// <param name="where">Where expression.</param>
+        /// <param name="param">Query parameters</param>
+        /// <param name="orderBy">Sort expression.</param>
         /// <returns></returns>
         public virtual IEnumerable<E> Get<E>(
             Type type = null,
@@ -390,6 +397,14 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.Query<E>(sql, param));
         }
 
+        /// <summary>
+        /// An asynchronous version of <see cref="Get{E}">Get</see>
+        /// </summary>
+        /// <typeparam name="E">Type of the entity</typeparam>
+        /// <param name="type">Type which sets a subsets of the fields to retrive</param>
+        /// <param name="where">Where expression.</param>
+        /// <param name="param">Query parameters</param>
+        /// <param name="orderBy">Sort expression.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
         public virtual Task<IEnumerable<E>> GetAsync<E>(
             Type type = null,
@@ -405,12 +420,12 @@ namespace LiteRepository
         /// <summary>
         /// Returns a scalar expression
         /// </summary>
-        /// <typeparam name="E"></typeparam>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="expression"></param>
-        /// <param name="where"></param>
-        /// <param name="param"></param>
-        /// <returns></returns>
+        /// <typeparam name="E">Type of the entity</typeparam>
+        /// <typeparam name="T">Result type</typeparam>
+        /// <param name="expression">Scalar expression</param>
+        /// <param name="where">Where expression.</param>
+        /// <param name="param">Query parameters</param>
+        /// <returns>Scalar select SQL</returns>
         public virtual T GetScalar<E, T>(
             Expression<Func<IEnumerable<E>, T>> expression,
             Expression<Func<E, bool>> where = null,
@@ -424,6 +439,14 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.ExecuteScalar<T>(sql, param));
         }
 
+        /// <summary>
+        /// An asynchronous version of <see cref="GetScalar{E, T}">GetScalar</see>
+        /// </summary>
+        /// <typeparam name="E">Type of the entity</typeparam>
+        /// <typeparam name="T">Result type</typeparam>
+        /// <param name="expression">Scalar expression</param>
+        /// <param name="where">Where expression.</param>
+        /// <param name="param">Query parameters</param>
         /// <returns>A task representing the asynchronous operation.</returns>
         public virtual Task<T> GetScalarAsync<E, T>(
             Expression<Func<IEnumerable<E>, T>> expression,

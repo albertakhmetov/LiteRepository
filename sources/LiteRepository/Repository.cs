@@ -23,15 +23,27 @@ using System.Threading.Tasks;
 
 namespace LiteRepository
 {
+    /// <summary>
+    /// Provides implementation of basic Repository
+    /// </summary>
+    /// <typeparam name="E"></typeparam>
+    /// <typeparam name="K"></typeparam>
     public class Repository<E, K>
         where E : class, K
         where K : class
     {
+        /// <summary>
+        /// Gets <see cref="Db"/> instance
+        /// </summary>
         public Db Db
         {
             get; private set;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Repository{E, K}"/> class
+        /// </summary>
+        /// <param name="db"><see cref="Db"/></param>
         public Repository(Db db)
         {
             if (db == null)
@@ -39,31 +51,59 @@ namespace LiteRepository
             Db = db;
         }
 
+        /// <summary>
+        /// Inserts the <paramref name="entity"/>
+        /// </summary>
+        /// <param name="entity">Entity to insert</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public virtual Task<E> InsertAsync(E entity)
         {
             return Db.InsertAsync<E>(entity);
         }
 
+        /// <summary>
+        /// Updates the <paramref name="entity"/>
+        /// </summary>
+        /// <param name="entity">Entity to update</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public virtual Task<int> UpdateAsync(E entity)
         {
             return Db.UpdateAsync<E>(entity);
         }
 
+        /// <summary>
+        /// Deletes the entity with a <paramref name="key"/>
+        /// </summary>
+        /// <param name="key">Key of the entity</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public virtual Task<int> DeleteAsync(K key)
         {
             return Db.DeleteAsync<E, K>(key);
         }
 
+        /// <summary>
+        /// Gets a entity with <paramref name="key"/>
+        /// </summary>
+        /// <param name="key">Key of the entity</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public virtual Task<E> GetAsync(K key)
         {
             return Db.GetByKeyAsync<E, K>(key);
         }
 
+        /// <summary>
+        /// Gets all entities
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public virtual Task<IEnumerable<E>> GetAllAsync()
         {
             return Db.GetAsync<E>();
         }
 
+        /// <summary>
+        /// Gets a count of all entities
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public virtual Task<long> GetCountAsync()
         {
             return Db.GetScalarAsync<E, long>(i => i.Count());

@@ -35,11 +35,19 @@ namespace LiteRepository
 
         private static readonly ConcurrentDictionary<Type, SqlMetadata> _cache = new ConcurrentDictionary<Type, SqlMetadata>();
 
+        /// <summary>
+        /// Returns a metadata for <paramref name="type"/>
+        /// </summary>
+        /// <param name="type">Type of entity</param>
+        /// <returns>Metadata for type</returns>
         public static SqlMetadata GetSqlMetadata(Type type)
         {
             return _cache.GetOrAdd(type, t => new SqlMetadata(t));
         }
 
+        /// <summary>
+        /// Clears a cache
+        /// </summary>
         public static void ClearCache()
         {
             _cache.Clear();
