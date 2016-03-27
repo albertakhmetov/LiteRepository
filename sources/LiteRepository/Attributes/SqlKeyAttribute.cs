@@ -23,8 +23,16 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Attributes
 {
+    /// <summary>
+    /// Denotes a property used as a part of a primary key
+    /// </summary>
     [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
     public sealed class SqlKeyAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlKeyAttribute"/> class.
+        /// </summary>
+        public SqlKeyAttribute()
+        { }
     }
 }

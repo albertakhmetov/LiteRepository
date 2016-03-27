@@ -23,8 +23,18 @@ using System.Threading.Tasks;
 
 namespace LiteRepository
 {
+    /// <summary>
+    /// Provides extension methods
+    /// </summary>
     public static class InExtension
     {
+        /// <summary>
+        /// Provides functionality to check if value contains in the collection
+        /// </summary>
+        /// <typeparam name="T">Type of value</typeparam>
+        /// <param name="value">Current value</param>
+        /// <param name="values">Collection of values</param>
+        /// <returns>Returns true if <paramref name="value"/> contains in the <paramref name="values"/> or false.</returns>
         public static bool In<T>(this T value, params T[] values)
         {
             return values.Contains(value);

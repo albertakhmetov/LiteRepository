@@ -23,6 +23,9 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.SqlServer
 {
+    /// <summary>
+    /// Provides functionality to generate SQL with SQL Server dialect
+    /// </summary>
     public class SqlServerDialect : SqlDialect
     {
         private string GetWhere(string where)
@@ -34,17 +37,20 @@ namespace LiteRepository.SqlServer
         {
             return orderBy.Length > 0 ? $" ORDER BY {orderBy}" : string.Empty;
         }
-
+        
+        /// <inheritdoc/>
         public override string Select(string tableName, string fields, string where, string orderBy, int? top = null)
         {
             return $"SELECT {fields} FROM {tableName}{GetWhere(where)}{GetOrderBy(orderBy)}";
         }
 
+        /// <inheritdoc/>
         public override string SelectScalar(string tableName, string expression, string where)
         {
             return $"SELECT {expression} FROM {tableName}{GetWhere(where)}";
         }
 
+        /// <inheritdoc/>
         public override string Insert(string tableName, string fields, string values, bool isIdentity)
         {
             var sql = $"INSERT INTO {tableName} ({fields}) VALUES ({values})";
@@ -56,11 +62,13 @@ namespace LiteRepository.SqlServer
             return sql;
         }
 
+        /// <inheritdoc/>
         public override string Update(string tableName, string set, string where)
         {
             return $"UPDATE {tableName} SET {set}{GetWhere(where)}";
         }
 
+        /// <inheritdoc/>
         public override string Delete(string tableName, string where)
         {
             if (string.IsNullOrWhiteSpace(where))
@@ -69,12 +77,13 @@ namespace LiteRepository.SqlServer
                 return $"DELETE FROM {tableName}{GetWhere(where)}";
         }
 
-
+        /// <inheritdoc/>
         public override string Parameter(string name)
         {
             return name.StartsWith("@") ? name : "@" + name;
         }
 
+        /// <inheritdoc/>
         public override bool HasParameters(string value)
         {
             return value.Contains("@");

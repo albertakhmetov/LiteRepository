@@ -23,8 +23,16 @@ using System.Threading.Tasks;
 
 namespace LiteRepository.Attributes
 {
+    /// <summary>
+    /// Denotes that a property or class should be excluded from database mapping
+    /// </summary>
     [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
     public sealed class SqlIgnoreAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlIgnoreAttribute"/> class.
+        /// </summary>
+        public SqlIgnoreAttribute()
+        { }
     }
 }

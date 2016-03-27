@@ -23,15 +23,70 @@ using System.Threading.Tasks;
 
 namespace LiteRepository
 {
+    /// <summary>
+    /// Provides functionality to generate SQL
+    /// </summary>
     public abstract class SqlDialect
     {
+        /// <summary>
+        /// Returns select SQL
+        /// </summary>
+        /// <param name="tableName">Table name</param>
+        /// <param name="fields">A list of columns separated by commas</param>
+        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2</param>
+        /// <param name="orderBy"></param>
+        /// <param name="top"></param>
+        /// <returns>Returns SQL for select command</returns>
         public abstract string Select(string tableName, string fields, string where, string orderBy, int? top = null);
+
+        /// <summary>
+        /// Returns scalar select SQL
+        /// </summary>
+        /// <param name="tableName">Table name</param>
+        /// <param name="expression">Scalar expression. For example: sum(column1)</param>
+        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2</param>
+        /// <returns>Returns SQL for scalar select command</returns>
         public abstract string SelectScalar(string tableName, string expression, string where);
+
+        /// <summary>
+        /// Returns insert SQL
+        /// </summary>
+        /// <param name="tableName">Table name</param>
+        /// <param name="fields">A list of columns separated by commas</param>
+        /// <param name="values">A list of values separated by commas</param>
+        /// <param name="isIdentity">Determines whether a table is a table with identity key.</param>
+        /// <returns>Returns SQL for insert command</returns>
         public abstract string Insert(string tableName, string fields, string values, bool isIdentity);
+
+        /// <summary>
+        /// Returns update SQL
+        /// </summary>
+        /// <param name="tableName">Table name</param>
+        /// <param name="set">A list of set expressions</param>
+        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2</param>
+        /// <returns>Returns SQL for update command</returns>
         public abstract string Update(string tableName, string set, string where);
+
+        /// <summary>
+        /// Returns delete SQL
+        /// </summary>
+        /// <param name="tableName">Table name</param>
+        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2</param>
+        /// <returns>Returns SQL for delete command</returns>
         public abstract string Delete(string tableName, string where);
 
+        /// <summary>
+        /// Returns parameter with a symbol that represents parameter in <see cref="System.Data.Common.DbParameter"/>.
+        /// </summary>
+        /// <param name="name">Parameter name</param>
+        /// <returns>Returns parameter with parameter symbol</returns>
         public abstract string Parameter(string name);
-        public abstract bool HasParameters(string vaue);
+
+        /// <summary>
+        /// Gets a value indicating whether string has parameters.
+        /// </summary>
+        /// <param name="value">String</param>
+        /// <returns>Returns true if string has parameter or false otherwise</returns>
+        public abstract bool HasParameters(string value);
     }
 }

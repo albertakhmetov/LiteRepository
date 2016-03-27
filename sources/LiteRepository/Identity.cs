@@ -23,24 +23,50 @@ using System.Threading.Tasks;
 
 namespace LiteRepository
 {
+    /// <summary>
+    /// Denotes a class has identity primary key
+    /// </summary>
     public interface IIdentityEntity
     {
+        /// <summary>
+        /// Gets the Primary Key of an entity
+        /// </summary>
         long Id { get; }
+
+        /// <summary>
+        /// Provides functionality to update Primary Key
+        /// </summary>
+        /// <param name="id">A new primary key</param>
+        /// <returns>Returns instance with a new primary key. Current or creates a new (depends on realization)</returns>
         object UpdateId(long id);
     }
 
+    /// <summary>
+    /// Defines a primary key for entities with identity primary keys
+    /// </summary>
     public sealed class IdentityKey : IIdentityEntity
     {
+        /// <summary>
+        /// Gets the Primary Key of entity
+        /// </summary>
         public long Id
         {
             get; private set;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IdentityKey"/> class.
+        /// </summary>
+        /// <param name="id">Primary Key of an entity</param>
         public IdentityKey(long id)
         {
             Id = id;
         }
 
+        /// <summary>
+        /// Provides functionality to update Primary Key
+        /// </summary> 
+        /// <returns>Returns a new instance with <paramref name="id"/> as Primary</returns>
         public object UpdateId(long id)
         {
             return new IdentityKey(id);
