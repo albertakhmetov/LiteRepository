@@ -26,7 +26,7 @@ using Dapper;
 
 namespace LiteRepository
 {
-    public class Db : IDb
+    public class Db
     {
         private readonly SqlDialect _sqlDialect;
         private readonly DbConnection _dbConnection;
@@ -56,7 +56,7 @@ namespace LiteRepository
             _dbConnectionFactory = dbConnectionFactory;
         }
 
-        public T Exec<T>(Func<DbConnection, T> action)
+        public virtual T Exec<T>(Func<DbConnection, T> action)
         {
             var isOpened = _dbConnection?.State == System.Data.ConnectionState.Open;
             var dbConnection = _dbConnection;
@@ -77,7 +77,7 @@ namespace LiteRepository
             }
         }
 
-        public async Task<T> ExecAsync<T>(Func<DbConnection, Task<T>> action)
+        public virtual async Task<T> ExecAsync<T>(Func<DbConnection, Task<T>> action)
         {
             var isOpened = _dbConnection?.State == System.Data.ConnectionState.Open;
             var dbConnection = _dbConnection;
@@ -103,7 +103,7 @@ namespace LiteRepository
             return new SqlExpression<E>(_sqlDialect);
         }
 
-        public E Insert<E>(E entity) where E : class
+        public virtual E Insert<E>(E entity) where E : class
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -124,7 +124,7 @@ namespace LiteRepository
             });
         }
 
-        public Task<E> InsertAsync<E>(E entity) where E : class
+        public virtual Task<E> InsertAsync<E>(E entity) where E : class
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -145,7 +145,7 @@ namespace LiteRepository
             });
         }
 
-        public int Update<E>(E entity) where E : class
+        public virtual int Update<E>(E entity) where E : class
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -154,7 +154,7 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.Execute(sqlExpression.GetUpdateSql(), entity));
         }
 
-        public Task<int> UpdateAsync<E>(E entity) where E : class
+        public virtual Task<int> UpdateAsync<E>(E entity) where E : class
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -163,7 +163,7 @@ namespace LiteRepository
             return ExecAsync(dbConnection => dbConnection.ExecuteAsync(sqlExpression.GetUpdateSql(), entity));
         }
 
-        public int Update<E>(object subEntity, Expression<Func<E, bool>> where) where E : class
+        public virtual int Update<E>(object subEntity, Expression<Func<E, bool>> where) where E : class
         {
             if (subEntity == null)
                 throw new ArgumentNullException(nameof(subEntity));
@@ -175,7 +175,7 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.Execute(sql, subEntity));
         }
 
-        public Task<int> UpdateAsync<E>(object subEntity, Expression<Func<E, bool>> where) where E : class
+        public virtual Task<int> UpdateAsync<E>(object subEntity, Expression<Func<E, bool>> where) where E : class
         {
             if (subEntity == null)
                 throw new ArgumentNullException(nameof(subEntity));
@@ -187,7 +187,7 @@ namespace LiteRepository
             return ExecAsync(dbConnection => dbConnection.ExecuteAsync(sql, subEntity));
         }
 
-        public int Delete<E, K>(K key) where E : class, K where K : class
+        public virtual int Delete<E, K>(K key) where E : class, K where K : class
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
@@ -197,7 +197,7 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.Execute(sql, key));
         }
 
-        public Task<int> DeleteAsync<E, K>(K key) where E : class, K where K : class
+        public virtual Task<int> DeleteAsync<E, K>(K key) where E : class, K where K : class
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
@@ -207,7 +207,7 @@ namespace LiteRepository
             return ExecAsync(dbConnection => dbConnection.ExecuteAsync(sql, key));
         }
 
-        public int Delete<E>(Expression<Func<E, bool>> where, object param = null) where E : class
+        public virtual int Delete<E>(Expression<Func<E, bool>> where, object param = null) where E : class
         {
             if (where == null)
                 throw new ArgumentNullException(nameof(where));
@@ -217,7 +217,7 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.Execute(sql, param));
         }
 
-        public Task<int> DeleteAsync<E>(Expression<Func<E, bool>> where, object param = null) where E : class
+        public virtual Task<int> DeleteAsync<E>(Expression<Func<E, bool>> where, object param = null) where E : class
         {
             if (where == null)
                 throw new ArgumentNullException(nameof(where));
@@ -227,21 +227,21 @@ namespace LiteRepository
             return ExecAsync(dbConnection => dbConnection.ExecuteAsync(sql, param));
         }
 
-        public void Truncate<E>() where E : class
+        public virtual void Truncate<E>() where E : class
         {
             var sqlExpression = GetSqlExpression<E>();
             var sql = sqlExpression.GetTruncateSql();
             Exec(dbConnection => dbConnection.Execute(sql));
         }
 
-        public Task TruncateAsync<E>() where E : class
+        public virtual Task TruncateAsync<E>() where E : class
         {
             var sqlExpression = GetSqlExpression<E>();
             var sql = sqlExpression.GetTruncateSql();
             return ExecAsync(dbConnection => dbConnection.ExecuteAsync(sql));
         }
 
-        public E GetByKey<E, K>(K key, Type type = null) where E : class, K where K : class
+        public virtual E GetByKey<E, K>(K key, Type type = null) where E : class, K where K : class
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
@@ -251,7 +251,7 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.Query<E>(sql, key).FirstOrDefault());
         }
 
-        public Task<E> GetByKeyAsync<E, K>(K key, Type type = null) where E : class, K where K : class
+        public virtual Task<E> GetByKeyAsync<E, K>(K key, Type type = null) where E : class, K where K : class
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
@@ -261,7 +261,7 @@ namespace LiteRepository
             return ExecAsync(async dbConnection => (await dbConnection.QueryAsync<E>(sql, key)).FirstOrDefault());
         }
 
-        public IEnumerable<E> Get<E>(
+        public virtual IEnumerable<E> Get<E>(
             Type type = null,
             Expression<Func<E, bool>> where = null,
             object param = null,
@@ -272,7 +272,7 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.Query<E>(sql, param));
         }
 
-        public Task<IEnumerable<E>> GetAsync<E>(
+        public virtual Task<IEnumerable<E>> GetAsync<E>(
             Type type = null,
             Expression<Func<E, bool>> where = null,
             object param = null,
@@ -283,7 +283,7 @@ namespace LiteRepository
             return ExecAsync(dbConnection => dbConnection.QueryAsync<E>(sql, param));
         }
 
-        public T GetScalar<E, T>(
+        public virtual T GetScalar<E, T>(
             Expression<Func<IEnumerable<E>, T>> expression,
             Expression<Func<E, bool>> where = null,
             object param = null) where E : class
@@ -296,7 +296,7 @@ namespace LiteRepository
             return Exec(dbConnection => dbConnection.ExecuteScalar<T>(sql, param));
         }
 
-        public Task<T> GetScalarAsync<E, T>(
+        public virtual Task<T> GetScalarAsync<E, T>(
             Expression<Func<IEnumerable<E>, T>> expression,
             Expression<Func<E, bool>> where = null,
             object param = null) where E : class

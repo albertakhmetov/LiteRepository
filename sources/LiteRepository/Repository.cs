@@ -23,48 +23,48 @@ using System.Threading.Tasks;
 
 namespace LiteRepository
 {
-    public class Repository<E, K> : IRepository<E, K>
+    public class Repository<E, K>
         where E : class, K
         where K : class
     {
-        public IDb Db
+        public Db Db
         {
             get; private set;
         }
 
-        public Repository(IDb db)
+        public Repository(Db db)
         {
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
             Db = db;
         }
 
-        public Task<E> InsertAsync(E entity)
+        public virtual Task<E> InsertAsync(E entity)
         {
             return Db.InsertAsync<E>(entity);
         }
 
-        public Task<int> UpdateAsync(E entity)
+        public virtual Task<int> UpdateAsync(E entity)
         {
             return Db.UpdateAsync<E>(entity);
         }
 
-        public Task<int> DeleteAsync(K key)
+        public virtual Task<int> DeleteAsync(K key)
         {
             return Db.DeleteAsync<E, K>(key);
         }
 
-        public Task<E> GetAsync(K key)
+        public virtual Task<E> GetAsync(K key)
         {
             return Db.GetByKeyAsync<E, K>(key);
         }
 
-        public Task<IEnumerable<E>> GetAllAsync()
+        public virtual Task<IEnumerable<E>> GetAllAsync()
         {
             return Db.GetAsync<E>();
         }
 
-        public Task<long> GetCountAsync()
+        public virtual Task<long> GetCountAsync()
         {
             return Db.GetScalarAsync<E, long>(i => i.Count());
         }

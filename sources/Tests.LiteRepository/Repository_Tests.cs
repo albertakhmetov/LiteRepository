@@ -24,15 +24,21 @@ using System.Text;
 using System.Threading.Tasks;
 using LiteRepository.Models;
 using System.Linq.Expressions;
+using System.Data.Common;
 
 namespace LiteRepository
 {
     public class Repository_Tests
     {
+        private Db GetDb()
+        {
+            return Substitute.For<Db>(Substitute.For<SqlDialect>(), Substitute.For<DbConnection>());
+        }
+
         [Fact]
         public void Ctor_Test()
         {
-            var db = Substitute.For<IDb>();
+            var db = GetDb();;
             var r = new Repository<Entity, EntityKey>(db);
 
             Assert.Equal(db, r.Db);
@@ -49,7 +55,7 @@ namespace LiteRepository
         {
             var entity = new Entity();
 
-            var db = Substitute.For<IDb>();
+            var db = GetDb();;
             var r = new Repository<Entity, EntityKey>(db);
             await r.InsertAsync(entity);
 
@@ -61,7 +67,7 @@ namespace LiteRepository
         {
             var entity = new Entity();
 
-            var db = Substitute.For<IDb>();
+            var db = GetDb();;
             var r = new Repository<Entity, EntityKey>(db);
             await r.UpdateAsync(entity);
 
@@ -73,7 +79,7 @@ namespace LiteRepository
         {
             var key = new EntityKey();
 
-            var db = Substitute.For<IDb>();
+            var db = GetDb();;
             var r = new Repository<Entity, EntityKey>(db);
             await r.DeleteAsync(key);
 
@@ -85,7 +91,7 @@ namespace LiteRepository
         {
             var key = new EntityKey();
 
-            var db = Substitute.For<IDb>();
+            var db = GetDb();;
             var r = new Repository<Entity, EntityKey>(db);
             await r.GetAsync(key);
 
@@ -95,7 +101,7 @@ namespace LiteRepository
         [Fact]
         public async void GetAllAsync_Test()
         {
-            var db = Substitute.For<IDb>();
+            var db = GetDb();;
             var r = new Repository<Entity, EntityKey>(db);
             await r.GetAllAsync();
 
@@ -105,7 +111,7 @@ namespace LiteRepository
         [Fact]
         public async void GetCountAsync_Test()
         {
-            var db = Substitute.For<IDb>();
+            var db = GetDb();;
             var r = new Repository<Entity, EntityKey>(db);
             await r.GetCountAsync();
 
