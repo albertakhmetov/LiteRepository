@@ -11,6 +11,7 @@ LiteRepository is:
 Designed for use with plain SQL. Support for Stored Procedures is not implemented and not planned (use pure Dapper instead).
 
 [Install via NuGet](https://www.nuget.org/packages/LiteRepository/)
+
 [API Reference](http://albertakhmetov.github.io/LiteRepository/api/)
 
 About all issues please report in the tracker.
