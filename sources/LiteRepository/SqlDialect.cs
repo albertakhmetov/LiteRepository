@@ -24,69 +24,69 @@ using System.Threading.Tasks;
 namespace LiteRepository
 {
     /// <summary>
-    /// Provides functionality to generate SQL
+    /// Provides functionality to generate SQL.
     /// </summary>
     public abstract class SqlDialect
     {
         /// <summary>
-        /// Returns select SQL
+        /// Creates a select SQL.
         /// </summary>
-        /// <param name="tableName">Table name</param>
-        /// <param name="fields">A list of columns separated by commas</param>
-        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2</param>
-        /// <param name="orderBy"></param>
-        /// <param name="top"></param>
-        /// <returns>Returns SQL for select command</returns>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="fields">Comma-separated list of columns.</param>
+        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2.</param>
+        /// <param name="orderBy">Comma-separated list of columns for sorting.</param>
+        /// <param name="top">Value what represents a limit for row to retrive.</param>
+        /// <returns>A string with a select query.</returns>
         public abstract string Select(string tableName, string fields, string where, string orderBy, int? top = null);
 
         /// <summary>
-        /// Returns scalar select SQL
+        /// Creates a scalar select SQL
         /// </summary>
-        /// <param name="tableName">Table name</param>
-        /// <param name="expression">Scalar expression. For example: sum(column1)</param>
-        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2</param>
-        /// <returns>Returns SQL for scalar select command</returns>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="expression">Scalar expression. For example: sum(column1).</param>
+        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2.</param>
+        /// <returns>A string with a select scalar query.</returns>
         public abstract string SelectScalar(string tableName, string expression, string where);
 
         /// <summary>
-        /// Returns insert SQL
+        /// Creates a insert SQL.
         /// </summary>
-        /// <param name="tableName">Table name</param>
-        /// <param name="fields">A list of columns separated by commas</param>
-        /// <param name="values">A list of values separated by commas</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="fields">Comma-separated list of fields.</param>
+        /// <param name="values">Comma-separated list of values.</param>
         /// <param name="isIdentity">Determines whether a table is a table with identity key.</param>
-        /// <returns>Returns SQL for insert command</returns>
+        /// <returns>A string with a insert query.</returns>
         public abstract string Insert(string tableName, string fields, string values, bool isIdentity);
 
         /// <summary>
         /// Returns update SQL
         /// </summary>
-        /// <param name="tableName">Table name</param>
+        /// <param name="tableName">Name of the table.</param>
         /// <param name="set">A list of set expressions</param>
         /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2</param>
-        /// <returns>Returns SQL for update command</returns>
+        /// <returns>A string with a update query.</returns>
         public abstract string Update(string tableName, string set, string where);
 
         /// <summary>
         /// Returns delete SQL
         /// </summary>
-        /// <param name="tableName">Table name</param>
-        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2</param>
-        /// <returns>Returns SQL for delete command</returns>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2.</param>
+        /// <returns>A string with a delete query.</returns>
         public abstract string Delete(string tableName, string where);
 
         /// <summary>
-        /// Returns parameter with a symbol that represents parameter in <see cref="System.Data.Common.DbParameter"/>.
+        /// Returns a parameter with a symbol that represents parameter in <see cref="System.Data.Common.DbParameter"/>.
         /// </summary>
-        /// <param name="name">Parameter name</param>
-        /// <returns>Returns parameter with parameter symbol</returns>
+        /// <param name="name">The name of the parameter.</param>
+        /// <returns>A parameter string with parameter symbol.</returns>
         public abstract string Parameter(string name);
 
         /// <summary>
-        /// Gets a value indicating whether string has parameters.
+        /// Checks the string whether it has parameters.
         /// </summary>
-        /// <param name="value">String</param>
-        /// <returns>Returns true if string has parameter or false otherwise</returns>
+        /// <param name="value">Source string to check.</param>
+        /// <returns>true if string has parameter; otherwise, false.</returns>
         public abstract bool HasParameters(string value);
     }
 }

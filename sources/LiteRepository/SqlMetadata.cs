@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 namespace LiteRepository
 {
     /// <summary>
-    /// Provides functionality for extracting metadata from type definition
+    /// Provides functionality for extracting metadata from type definition.
     /// </summary>
     public sealed class SqlMetadata : IEnumerable<SqlMetadata.Property>
     {
@@ -36,17 +36,17 @@ namespace LiteRepository
         private static readonly ConcurrentDictionary<Type, SqlMetadata> _cache = new ConcurrentDictionary<Type, SqlMetadata>();
 
         /// <summary>
-        /// Returns a metadata for <paramref name="type"/>
+        /// Returns a metadata for <paramref name="type"/>.
         /// </summary>
-        /// <param name="type">Type of entity</param>
-        /// <returns>Metadata for type</returns>
+        /// <param name="type">Type of entity.</param>
+        /// <returns>Metadata for type.</returns>
         public static SqlMetadata GetSqlMetadata(Type type)
         {
             return _cache.GetOrAdd(type, t => new SqlMetadata(t));
         }
 
         /// <summary>
-        /// Clears a cache
+        /// Clears a cache.
         /// </summary>
         public static void ClearCache()
         {
@@ -56,12 +56,12 @@ namespace LiteRepository
         #endregion
 
         /// <summary>
-        /// Defines item of metadata information
+        /// Defines item of metadata information.
         /// </summary>
         public sealed class Property
         {
             /// <summary>
-            /// Gets a name of the property
+            /// Gets a name of the property.
             /// </summary>
             public string Name
             {
@@ -69,7 +69,7 @@ namespace LiteRepository
             }
 
             /// <summary>
-            /// Gets a name of the database column
+            /// Gets a name of the database column.
             /// </summary>
             public string DbName
             {
@@ -77,7 +77,7 @@ namespace LiteRepository
             }
 
             /// <summary>
-            /// Gets a value indicating whether the property is a part of the primary key 
+            /// Gets a value indicating whether the property is a part of the primary key .
             /// </summary>
             public bool IsPrimaryKey
             {
@@ -85,7 +85,7 @@ namespace LiteRepository
             }
 
             /// <summary>
-            /// Gets a value indicating whether the property is identity primary key
+            /// Gets a value indicating whether the property is identity primary key.
             /// </summary>
             public bool IsIdentity
             {
@@ -93,11 +93,11 @@ namespace LiteRepository
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Property"/> class
+            /// Initializes a new instance of the <see cref="Property"/> class.
             /// </summary>
             /// <param name="name">The name of the property.</param>
             /// <param name="dbName">The name of the database column.</param>
-            /// <param name="isPrimaryKey">Determines whether a property is a part of the primary key</param>
+            /// <param name="isPrimaryKey">Determines whether a property is a part of the primary key.</param>
             /// <param name="isIdentity">Determines whether a property is a identity key.</param>
             public Property(string name, string dbName, bool isPrimaryKey, bool isIdentity)
             {
@@ -112,7 +112,7 @@ namespace LiteRepository
         private readonly Dictionary<string, string> _nameToDbNameDictionary;
 
         /// <summary>
-        /// Gets a type of the entity
+        /// Gets a type of the entity.
         /// </summary>
         public Type Type
         {
@@ -120,7 +120,7 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Gets a name of the entity
+        /// Gets a name of the entity.
         /// </summary>
         public string Name
         {
@@ -128,7 +128,7 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Gets a database table name
+        /// Gets a database table name.
         /// </summary>
         public string DbName
         {
@@ -136,7 +136,7 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Gets a value indicating whether the table is the table with identity primary key
+        /// Gets a value indicating whether the table is the table with identity primary key.
         /// </summary>
         public bool IsIdentity
         {
@@ -146,8 +146,8 @@ namespace LiteRepository
         /// <summary>
         /// Gets a property information by <paramref name="index"/>.
         /// </summary>
-        /// <param name="index">Index of property information</param>
-        /// <returns></returns>
+        /// <param name="index">Index of property information.</param>
+        /// <returns>Property information.</returns>
         public Property this[int index]
         {
             get { return _properties[index]; }
@@ -156,15 +156,15 @@ namespace LiteRepository
         /// <summary>
         /// Gets a property information by <paramref name="name"/>.
         /// </summary>
-        /// <param name="name">Name of the property</param>
-        /// <returns></returns>
+        /// <param name="name">Name of the property.</param>
+        /// <returns>A string with db name.</returns>
         public string this[string name]
         {
             get { return _nameToDbNameDictionary[name]; }
         }
 
         /// <summary>
-        /// Gets a count of properties
+        /// Gets a count of properties.
         /// </summary>
         public int Count
         {
@@ -172,9 +172,9 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SqlMetadata"/> class
+        /// Initializes a new instance of the <see cref="SqlMetadata"/> class.
         /// </summary>
-        /// <param name="type">Type of the entity</param>
+        /// <param name="type">Type of the entity.</param>
         public SqlMetadata(Type type)
         {
             if (type == null)
@@ -219,9 +219,10 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Gets a collection of property information only for properties which contains in the <paramref name="type"/>.
+        /// Gets a collection of property information only for properties 
+        /// which contains in the <paramref name="type"/>.
         /// </summary>
-        /// <param name="type">Type what represents a subset of the entity</param>
+        /// <param name="type">Type what represents a subset of the entity.</param>
         /// <returns>Collection of <see cref="Property"/>.</returns>
         public IEnumerable<Property> GetSubsetForType(Type type)
         {
@@ -233,9 +234,9 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Returns a enumerator
+        /// Returns a enumerator.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An enumerator.</returns>
         public IEnumerator<Property> GetEnumerator()
         {
             return _properties.GetEnumerator();
@@ -247,29 +248,33 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Compares <paramref name="obj"/> and current instance
+        /// Compares <paramref name="obj"/> and current instance.
         /// </summary>
-        /// <param name="obj">Another instance of the metadata to compare</param>
-        /// <returns>True if <paramref name="obj"/> is equals to the current metadata</returns>
+        /// <param name="obj">Another instance of the metadata to compare.</param>
+        /// <returns>
+        /// true if <paramref name="obj"/> is equals to the current metadata; otherwise, false.
+        /// </returns>
         public override bool Equals(object obj)
         {
             return Equals(obj as SqlMetadata);
         }
 
         /// <summary>
-        /// Compares <paramref name="metadata"/> and current instance
+        /// Compares <paramref name="metadata"/> and current instance.
         /// </summary>
-        /// <param name="metadata">Another instance of the metadata to compare</param>
-        /// <returns>True if <paramref name="metadata"/> is equals to the current metadata</returns> 
+        /// <param name="metadata">Another instance of the metadata to compare.</param>
+        /// <returns>
+        /// true if <paramref name="metadata"/> is equals to the current metadata; otherwise, false.
+        /// </returns> 
         public bool Equals(SqlMetadata metadata)
         {
             return metadata != null && (metadata.Type == Type);
         }
 
         /// <summary>
-        /// Returns the Hash Code for this instance
+        /// Returns the Hash Code for this instance.
         /// </summary>
-        /// <returns>The Hash Code for this instance</returns>
+        /// <returns>The Hash Code for this instance.</returns>
         public override int GetHashCode()
         {
             return Type.GetHashCode();

@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 namespace LiteRepository.Attributes
 {
     /// <summary>
-    /// Denotes that a property or class should be excluded from database mapping
+    /// Denotes that a property or class should be excluded from database mapping.
     /// </summary>
     [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
     public sealed class SqlIgnoreAttribute : Attribute

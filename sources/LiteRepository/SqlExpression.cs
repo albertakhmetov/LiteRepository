@@ -26,14 +26,14 @@ using System.Threading.Tasks;
 namespace LiteRepository
 {
     /// <summary>
-    /// Provides functionality to convert expression to SQL
+    /// Provides functionality to convert expression to SQL.
     /// </summary>
-    /// <typeparam name="E">Type of the entity</typeparam>
+    /// <typeparam name="E">Type of the entity.</typeparam>
     public sealed partial class SqlExpression<E>
         where E : class
     {
         /// <summary>
-        /// Gets a <see cref="SqlDialect"/>
+        /// Gets a <see cref="SqlDialect"/>.
         /// </summary>
         public SqlDialect Dialect
         {
@@ -41,7 +41,7 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Gets a <see cref="Metadata"/>
+        /// Gets a <see cref="Metadata"/>.
         /// </summary>
         public SqlMetadata Metadata
         {
@@ -51,7 +51,7 @@ namespace LiteRepository
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlExpression{E}"/> class.
         /// </summary>
-        /// <param name="dialect">A specified <see cref="SqlDialect"/></param>
+        /// <param name="dialect">A specified <see cref="SqlDialect"/>.</param>
         public SqlExpression(SqlDialect dialect)
         {
             Metadata = SqlMetadata.GetSqlMetadata(typeof(E));
@@ -59,15 +59,21 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Generates the SELECT SQL based on the passed parameters
+        /// Creates a SELECT SQL based on the passed parameters.
         /// </summary>
-        /// <param name="type">Type that contains subset of <typeparamref name="E"/> members. Used for generate fields list</param>
-        /// <param name="where">Where expression. You can use members of <typeparamref name="E"/> or <paramref name="param"/>. Other values will be evaluated.</param>
-        /// <param name="param">Query parameters</param>
-        /// <param name="orderBy">Sort expression. You can use GroupBy and GroupByDescending methods with members from <typeparamref name="E"/>.</param>
-        /// <returns>Returns select SQL</returns>
+        /// <param name="type">
+        /// Type that contains subset of <typeparamref name="E"/> members.
+        /// Used for generate fields list.</param>
+        /// <param name="where">
+        /// Where expression. You can use members of <typeparamref name="E"/> or <paramref name="param"/>. 
+        /// Other values will be evaluated.</param>
+        /// <param name="param">Query parameters.</param>
+        /// <param name="orderBy">
+        /// Sort expression. 
+        /// You can use GroupBy and GroupByDescending methods with members from <typeparamref name="E"/>.</param>
+        /// <returns>A string with a select query.</returns>
         /// <example>
-        /// Suppose we have a class:
+        /// <para>Suppose we have a class:</para> 
         /// <code lang="c#">
         /// public class User {
         ///     [SqlKey]
@@ -79,34 +85,35 @@ namespace LiteRepository
         ///     public string FullName { get { return FirstName + " " + SecondName; } }
         /// }
         /// </code>
-        /// Without any parameters method returns:
+        /// <para>Without any parameters method returns:</para>
         /// <code lang="c#">
         /// var sql = GetSelectSql(); 
         /// // select Id, FirstName, SecondName, Birthday from User;      
         /// </code>
-        /// If you need to select only parts of columns:
+        /// <para>If you need to select only parts of columns:</para>
         /// <code lang="c#">
         /// var p = new { FirstName = "", SecondName = "" };
         /// var sql = GetSelectSql(type:p.GetType()); 
         /// // select FirstName, SecondName from User;   
         /// </code>
-        /// If you need to filter values with hardcoded parameters:
+        /// <para>If you need to filter values with hard-coded parameters:</para>       
         /// <code lang="c#">
         /// var sql = GetSelectSql(where: e => e.FirstName.StartsWith("A")); 
         /// // select Id, FirstName, SecondName, Birthday from User where FirstName like 'A%';     
         /// </code>
-        /// If you need to filter values with parameters:
+        /// <para>If you need to filter values with parameters:</para>
         /// <code lang="c#">
         /// var parameters = { FirstLetter = "A" };
         /// var sql = GetSelectSql(where: e => e.FirstName.StartsWith(parameters.FirstLetter), param: parameters); 
         /// // select Id, FirstName, SecondName, Birthday from User where FirstName like @FirstLetter%';     
         /// </code>
-        /// If you need sort the results:
+        /// <para>If you need sort the results:</para>       
         /// <code lang="c#">
         /// var sql = GetSelectSql(l => l.OrderBy(x => x.FirstName).OrderByDescending(x => x.Id)); 
         /// // select Id, FirstName, SecondName, Birthday from User order by FirstName, Id desc;  
         /// </code>
-        /// You can combine settings to achieve the desired result. If any option will be skipped - SQL will be generated without it.
+        /// <para>You can combine settings to achieve the desired result. If any option will be skipped - 
+        /// SQL will be generated without it.</para>
         /// </example>
         public string GetSelectSql(Type type = null, Expression<Func<E, bool>> where = null, object param = null, Expression<Func<IEnumerable<E>, IEnumerable<E>>> orderBy = null)
         {
@@ -122,12 +129,13 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Generates the SELECT SQL for single entity based on the passed parameters
+        /// Creates a SELECT SQL for single entity based on the passed parameters.
         /// </summary>
-        /// <param name="type">Type that contains subset of <typeparamref name="E"/> members. Used for generate fields list</param>
-        /// <returns>Returns select SQL</returns>
+        /// <param name="type">
+        /// Type that contains subset of <typeparamref name="E"/> members. Used for generate fields list.</param>
+        /// <returns>A string with a select query (parameters are the same like Primary Key).</returns>
         /// <example>
-        /// Suppose we have a class:
+        /// <para>Suppose we have a class:</para>
         /// <code lang="c#">
         /// public class User {
         ///     [SqlKey]
@@ -139,12 +147,12 @@ namespace LiteRepository
         ///     public string FullName { get { return FirstName + " " + SecondName; } }
         /// }
         /// </code>
-        /// If you don't passed any parameter into method, it returns default update SQL:
+        /// <para>If you don't passed any parameter into method, it returns default update SQL:</para>
         /// <code lang="c#">
         /// var sql = GetSelectByKeySql();
         /// // select * from User where Id = @Id;
         /// </code>
-        /// Passing <paramref name="type"/> you sets subset of columns which you want to update:
+        /// <para>Passing <paramref name="type"/> you sets subset of columns which you want to update:</para>
         /// <code lang="c#">
         /// var p = new { FirstName = "", SecondName = "" };
         /// var sql = GetSelectByKeySql(type:p.GetType()); 
@@ -161,21 +169,23 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Generated scalar SELECT SQL based on the passed parameters
+        /// Creates a scalar SELECT SQL based on the passed parameters.
         /// </summary>
         /// <typeparam name="T">Result type</typeparam>
         /// <param name="expression">Scalar expression</param>
-        /// <param name="where">Where expression. You can use members of <typeparamref name="E"/> or <paramref name="param"/>. Other values will be evaluated.</param>
+        /// <param name="where">
+        /// Where expression. You can use members of <typeparamref name="E"/> or <paramref name="param"/>. 
+        /// Other values will be evaluated.</param>
         /// <param name="param">Query parameters</param>
-        /// <returns>Returns scalar select SQL</returns>
+        /// <returns>A string with a select scalar query.</returns>
         /// <example>
-        /// You need to pass <paramref name="expression"/> for retrive scalar data form database:
+        /// <para>You need to pass <paramref name="expression"/> for retrive scalar data form database:</para>
         /// <code lang="c#">
         /// var sql = GetSelectScalarSql{T}(l => l.Average(e => e.Price));
         /// // select avg(Price) from Table;
         /// </code>
-        /// <typeparamref name="T"/> is the return type for expression.
-        /// Where expression used like in <see cref="GetSelectSql">GetSelectSql</see>
+        /// <para><typeparamref name="T"/> is the return type for expression.
+        /// Where expression used like in <see cref="GetSelectSql">GetSelectSql</see>.</para>
         /// </example>
         public string GetSelectScalarSql<T>(Expression<Func<IEnumerable<E>, T>> expression, Expression<Func<E, bool>> where = null, object param = null)
         {
@@ -189,12 +199,14 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Generated INSERT SQL based on the passed parameters
+        /// Creates a INSERT SQL based on the passed parameters.
         /// </summary>
-        /// <param name="type">Type that contains subset of <typeparamref name="E"/> members. Used for generate fields and values lists</param>
-        /// <returns>Returns insert SQL</returns>
+        /// <param name="type">
+        /// Type that contains subset of <typeparamref name="E"/> members. 
+        /// Used for generate fields and values lists.</param>
+        /// <returns>A string with a insert query.</returns>
         /// <example>
-        /// Suppose we have a class:
+        /// <para>Suppose we have a class:</para>
         /// <code lang="c#">
         /// public class User {
         ///     [SqlKey]
@@ -206,18 +218,18 @@ namespace LiteRepository
         ///     public string FullName { get { return FirstName + " " + SecondName; } }
         /// }
         /// </code>
-        /// If you don't passed any parameter into method, it returns default insert SQL:
+        /// <para>If you don't passed any parameter into method, it returns default insert SQL:</para>
         /// <code lang="c#">
         /// var sql = GetInsertSql();
         /// // insert into User (Id, FirstName, SecondName, Birthday) values (@Id, @FirstName, @SecondName, @Birthday);
         /// </code>
-        /// Passing <paramref name="type"/> you sets subset of columns which you want to insert:
+        /// <para>Passing <paramref name="type"/> you sets subset of columns which you want to insert:</para>
         /// <code lang="c#">
         /// var p = new { Id = 0, FirstName = "", SecondName = "" };
         /// var sql = GetInsertSql(type:p.GetType()); 
         /// // insert into User (Id, FirstName, SecondName) values (@Id, @FirstName, @SecondName);
         /// </code>
-        /// If <typeparamref name="E"/> is identity entity, then method returns special SQL:
+        /// <para>If <typeparamref name="E"/> is identity entity, then method returns special SQL:</para>
         /// <code lang="SQL">
         /// insert into User (FirstName, SecondName, Birthday) values (@FirstName, @SecondName, @Birthday);
         /// select scope_identity();
@@ -233,13 +245,17 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Generated UPDATE SQL based on the passed parameters
+        /// Creates a UPDATE SQL based on the passed parameters.
         /// </summary>
-        /// <param name="type">Type that contains subset of <typeparamref name="E"/> members. Used for generate fields list</param>
-        /// <param name="where">Where expression. You can use members of <typeparamref name="E"/>. Other values will be evaluated.</param>
-        /// <returns>Returns update SQL</returns>
+        /// <param name="type">
+        /// Type that contains subset of <typeparamref name="E"/> members.
+        /// Used for generate fields list</param>
+        /// <param name="where">
+        /// Where expression. You can use members of <typeparamref name="E"/>. 
+        /// Other values will be evaluated.</param>
+        /// <returns>A string with a update query.</returns>
         /// <example>
-        /// Suppose we have a class:
+        /// <para>Suppose we have a class:</para>
         /// <code lang="c#">
         /// public class User {
         ///     [SqlKey]
@@ -251,18 +267,19 @@ namespace LiteRepository
         ///     public string FullName { get { return FirstName + " " + SecondName; } }
         /// }
         /// </code>
-        /// If you don't passed any parameter into method, it returns default update SQL:
+        /// <para>If you don't passed any parameter into method, it returns default update SQL:</para>
         /// <code lang="c#">
         /// var sql = GetUpdateSql();
         /// // update User set FirstName = @FirstName, SecondName = @SecondName, Birthday = @Birthday where Id = @Id;
         /// </code>
-        /// Passing <paramref name="type"/> you sets subset of columns which you want to update:
+        /// <para>Passing <paramref name="type"/> you sets subset of columns which you want to update:</para>
         /// <code lang="c#">
         /// var p = new { FirstName = "", SecondName = "" };
         /// var sql = GetUpdateSql(type:p.GetType()); 
         /// // update User set FirstName = @FirstName, SecondName = @SecondName where Id = @Id;
         /// </code>
-        /// Where expression used like in <see cref="GetSelectSql">GetSelectSql</see>, but you can't pass parameters object.
+        /// <para>Where expression used like in <see cref="GetSelectSql">GetSelectSql</see>, 
+        /// but you can't pass parameters object.</para>        
         /// </example>
         public string GetUpdateSql(Type type = null, Expression<Func<E, bool>> where = null)
         {
@@ -279,15 +296,18 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Generates DELETE SQL based on the passed parameters 
+        /// Creates a DELETE SQL based on the passed parameters.
         /// </summary>
-        /// <param name="where">Where expression. You can use members of <typeparamref name="E"/> or <paramref name="param"/>. Other values will be evaluated.</param>
-        /// <param name="param">Query parameters</param>
-        /// <returns>Returns delete SQL</returns>
+        /// <param name="where">
+        /// Where expression. You can use members of <typeparamref name="E"/> or <paramref name="param"/>.
+        /// Other values will be evaluated.</param>
+        /// <param name="param">Query parameters.</param>
+        /// <returns>A string with a delete query.</returns>
         /// <example>
-        /// Where expression used like in <see cref="GetSelectSql">GetSelectSql</see>. But if you don't pass where expression, method returns SQL
-        /// with where condition to delete item by key. <br/>
-        /// Suppose we have a class:
+        /// <para>Where expression used like in <see cref="GetSelectSql">GetSelectSql</see>.
+        /// But if you don't pass where expression, method returns SQL
+        /// with where condition to delete item by key.</para>
+        /// <para>Suppose we have a class:</para>
         /// <code lang="c#">
         /// public class User {
         ///     [SqlKey]
@@ -299,10 +319,10 @@ namespace LiteRepository
         ///     public string FullName { get { return FirstName + " " + SecondName; } }
         /// }
         /// </code>
-        /// Then you call method without parameters:
+        /// <para>Then you call method without parameters:</para>
         /// <code lang="c#">
         /// var sql = GetDeleteSql();
-        /// // delete from User whete Id=@Id;
+        /// // delete from User where Id=@Id;
         /// </code>
         /// </example>
         public string GetDeleteSql(Expression<Func<E, bool>> where = null, object param = null)
@@ -313,9 +333,9 @@ namespace LiteRepository
         }
 
         /// <summary>
-        /// Generated TRUNCATE SQL
+        /// Creates a TRUNCATE SQL.
         /// </summary>
-        /// <returns>Returns truncate SQL</returns>
+        /// <returns>A string with a truncate query.</returns>
         public string GetTruncateSql()
         {
             return Dialect.Delete(Metadata.DbName, string.Empty);

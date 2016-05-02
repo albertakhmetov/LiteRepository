@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 namespace LiteRepository.Attributes
 {
     /// <summary>
-    /// Denotes a property used as a part of a primary key
+    /// Denotes a property used as a part of a primary key.
     /// </summary>
     [AttributeUsage(validOn: AttributeTargets.Property, AllowMultiple = false)]
     public sealed class SqlKeyAttribute : Attribute

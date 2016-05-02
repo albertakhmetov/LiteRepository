@@ -24,13 +24,13 @@ using System.Threading.Tasks;
 namespace LiteRepository.Attributes
 {
     /// <summary>
-    /// Represents the database column (table) that a property (class) is mapped to
+    /// Represents the database column (table) that a property (class) is mapped to.
     /// </summary>
     [AttributeUsage(validOn: AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
     public sealed class SqlAliasAttribute : Attribute
     {
         /// <summary>
-        /// Gets the name of the column (table) the property (class) is mapped to
+        /// Gets the name of the column (table) the property (class) is mapped to.
         /// </summary>
         public string DbName
         {
@@ -41,7 +41,7 @@ namespace LiteRepository.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlAliasAttribute"/> class.
         /// </summary>
-        /// <param name="dbName">The name of the column (table) the property (class) is mapped to</param>
+        /// <param name="dbName">The name of the column (table) the property (class) is mapped to.</param>
         public SqlAliasAttribute(string dbName)
         {
             if (string.IsNullOrWhiteSpace(dbName))

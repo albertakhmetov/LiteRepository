@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 namespace LiteRepository.SqlServer
 {
     /// <summary>
-    /// Provides functionality to generate SQL with SQL Server dialect
+    /// Provides functionality to generate SQL with SQL Server dialect.
     /// </summary>
     public class SqlServerDialect : SqlDialect
     {
