@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <HelpTOC>
 
-  <HelpTOCNode Id="bca5c7c9-904b-4a35-aa91-ce6ffd6878f8" Title="LiteRepository - Namespaces" Url="html/R_Project_Documentation.htm">
-    <HelpTOCNode Id="2b044c0c-11fa-4b6c-91d5-7e0fe2d174ac" Title="LiteRepository" Url="html/N_LiteRepository.htm">
-      <HelpTOCNode Id="bdbe32d2-c5fa-436a-af10-6b7d8602c5a4" Title="Db Class" Url="html/T_LiteRepository_Db.htm">
-        <HelpTOCNode Id="28d43364-537f-4cdf-9430-01014dc0d168" Title="Db Constructor " Url="html/Overload_LiteRepository_Db__ctor.htm">
+  <HelpTOCNode Id="5cc88b8d-f5bb-4f48-9721-df4003fc8951" Title="LiteRepository - Namespaces" Url="html/R_Project_Documentation.htm">
+    <HelpTOCNode Id="9c7804b4-df83-4df5-8526-8a80dc30119a" Title="LiteRepository" Url="html/N_LiteRepository.htm">
+      <HelpTOCNode Id="9f1f8416-6ed5-4701-8dcd-29cd462bd1cd" Title="Db Class" Url="html/T_LiteRepository_Db.htm">
+        <HelpTOCNode Id="8419d7eb-9a0d-4baa-9f98-27ba77216cfb" Title="Db Constructor " Url="html/Overload_LiteRepository_Db__ctor.htm">
           <HelpTOCNode Title="Db Constructor (SqlDialect, DbConnection)" Url="html/M_LiteRepository_Db__ctor.htm" />
           <HelpTOCNode Title="Db Constructor (SqlDialect, Func(DbConnection))" Url="html/M_LiteRepository_Db__ctor_1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="7d64eb8b-8c4e-491c-b041-fe84a63bb33c" Title="Db Methods" Url="html/Methods_T_LiteRepository_Db.htm">
-          <HelpTOCNode Id="c8d1f3d5-54f4-4c22-93f8-19fe9371d98b" Title="Delete Method " Url="html/Overload_LiteRepository_Db_Delete.htm">
+        <HelpTOCNode Id="a44366e3-691a-4dad-9b41-e94424e2573c" Title="Db Methods" Url="html/Methods_T_LiteRepository_Db.htm">
+          <HelpTOCNode Id="f5306edb-2ab8-4b1a-98fd-8dc1db7219ef" Title="Delete Method " Url="html/Overload_LiteRepository_Db_Delete.htm">
             <HelpTOCNode Title="Delete(E, K) Method (K)" Url="html/M_LiteRepository_Db_Delete__2.htm" />
             <HelpTOCNode Title="Delete(E) Method (Expression(Func(E, Boolean)), Object)" Url="html/M_LiteRepository_Db_Delete__1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="1277160f-04a9-4ebf-81f5-5e87adaac243" Title="DeleteAsync Method " Url="html/Overload_LiteRepository_Db_DeleteAsync.htm">
+          <HelpTOCNode Id="5427c70f-8fd8-4a9a-bb8c-7b7c80fbfdad" Title="DeleteAsync Method " Url="html/Overload_LiteRepository_Db_DeleteAsync.htm">
             <HelpTOCNode Title="DeleteAsync(E, K) Method (K)" Url="html/M_LiteRepository_Db_DeleteAsync__2.htm" />
             <HelpTOCNode Title="DeleteAsync(E) Method (Expression(Func(E, Boolean)), Object)" Url="html/M_LiteRepository_Db_DeleteAsync__1.htm" />
           </HelpTOCNode>
@@ -29,44 +29,44 @@
           <HelpTOCNode Title="InsertAsync(E) Method " Url="html/M_LiteRepository_Db_InsertAsync__1.htm" />
           <HelpTOCNode Title="Truncate(E) Method " Url="html/M_LiteRepository_Db_Truncate__1.htm" />
           <HelpTOCNode Title="TruncateAsync(E) Method " Url="html/M_LiteRepository_Db_TruncateAsync__1.htm" />
-          <HelpTOCNode Id="eb8fdcc0-0a24-45ce-accd-258d42b785f2" Title="Update Method " Url="html/Overload_LiteRepository_Db_Update.htm">
+          <HelpTOCNode Id="cda115f1-d83f-4163-bc8d-425b2246fbbb" Title="Update Method " Url="html/Overload_LiteRepository_Db_Update.htm">
             <HelpTOCNode Title="Update(E) Method (E)" Url="html/M_LiteRepository_Db_Update__1_1.htm" />
             <HelpTOCNode Title="Update(E) Method (Object, Expression(Func(E, Boolean)))" Url="html/M_LiteRepository_Db_Update__1.htm" />
           </HelpTOCNode>
-          <HelpTOCNode Id="1388c35a-5fd0-4cf5-bddc-0df5293352e8" Title="UpdateAsync Method " Url="html/Overload_LiteRepository_Db_UpdateAsync.htm">
+          <HelpTOCNode Id="ec939c84-a70d-4313-8e58-a8c551db39db" Title="UpdateAsync Method " Url="html/Overload_LiteRepository_Db_UpdateAsync.htm">
             <HelpTOCNode Title="UpdateAsync(E) Method (E)" Url="html/M_LiteRepository_Db_UpdateAsync__1_1.htm" />
             <HelpTOCNode Title="UpdateAsync(E) Method (Object, Expression(Func(E, Boolean)))" Url="html/M_LiteRepository_Db_UpdateAsync__1.htm" />
           </HelpTOCNode>
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="a7324af2-6a0f-46ff-a366-f899f911530f" Title="IdentityKey Class" Url="html/T_LiteRepository_IdentityKey.htm">
+      <HelpTOCNode Id="62e9c04d-f549-43ff-b8fd-8d6d5fe3e5e7" Title="IdentityKey Class" Url="html/T_LiteRepository_IdentityKey.htm">
         <HelpTOCNode Title="IdentityKey Constructor " Url="html/M_LiteRepository_IdentityKey__ctor.htm" />
-        <HelpTOCNode Id="8bfaec7e-1894-475a-8bb9-c1721005e27c" Title="IdentityKey Properties" Url="html/Properties_T_LiteRepository_IdentityKey.htm">
+        <HelpTOCNode Id="b221221e-7726-4da9-8056-7add0f1225b0" Title="IdentityKey Properties" Url="html/Properties_T_LiteRepository_IdentityKey.htm">
           <HelpTOCNode Title="Id Property " Url="html/P_LiteRepository_IdentityKey_Id.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="6c29c5e7-1e89-4890-8bdb-24caea23213c" Title="IdentityKey Methods" Url="html/Methods_T_LiteRepository_IdentityKey.htm">
+        <HelpTOCNode Id="23b2912c-cc53-419a-92de-00e7b43b4337" Title="IdentityKey Methods" Url="html/Methods_T_LiteRepository_IdentityKey.htm">
           <HelpTOCNode Title="UpdateId Method " Url="html/M_LiteRepository_IdentityKey_UpdateId.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="6eaefa2e-094c-401f-801f-765c21fcf39c" Title="IIdentityEntity Interface" Url="html/T_LiteRepository_IIdentityEntity.htm">
-        <HelpTOCNode Id="4213d35f-658f-4bab-8dc1-dad3fb12c326" Title="IIdentityEntity Properties" Url="html/Properties_T_LiteRepository_IIdentityEntity.htm">
+      <HelpTOCNode Id="56edff7f-01f3-43e1-ab97-ceb173ad94bf" Title="IIdentityEntity Interface" Url="html/T_LiteRepository_IIdentityEntity.htm">
+        <HelpTOCNode Id="603e1c70-83c2-41c6-92cc-995bbfc86783" Title="IIdentityEntity Properties" Url="html/Properties_T_LiteRepository_IIdentityEntity.htm">
           <HelpTOCNode Title="Id Property " Url="html/P_LiteRepository_IIdentityEntity_Id.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="b7159734-aa22-4a5c-8f99-ed3fda5d673e" Title="IIdentityEntity Methods" Url="html/Methods_T_LiteRepository_IIdentityEntity.htm">
+        <HelpTOCNode Id="3d62b62c-dcf2-4d5a-adbf-e47bbe14f618" Title="IIdentityEntity Methods" Url="html/Methods_T_LiteRepository_IIdentityEntity.htm">
           <HelpTOCNode Title="UpdateId Method " Url="html/M_LiteRepository_IIdentityEntity_UpdateId.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="cbeebbe3-fdef-4ad3-8dc4-bae35f6bfb75" Title="InExtension Class" Url="html/T_LiteRepository_InExtension.htm">
-        <HelpTOCNode Id="49a2bf65-858d-448c-a18b-cea2ae5191ee" Title="InExtension Methods" Url="html/Methods_T_LiteRepository_InExtension.htm">
+      <HelpTOCNode Id="c269ed86-7809-4e7f-85b9-5e3dc833812b" Title="InExtension Class" Url="html/T_LiteRepository_InExtension.htm">
+        <HelpTOCNode Id="bcc2deac-8a08-4ec0-b38f-1f0ae488dd92" Title="InExtension Methods" Url="html/Methods_T_LiteRepository_InExtension.htm">
           <HelpTOCNode Title="In(T) Method " Url="html/M_LiteRepository_InExtension_In__1.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="23d879b4-2f95-431e-a483-c3d9f91c8480" Title="Repository(E, K) Class" Url="html/T_LiteRepository_Repository_2.htm">
+      <HelpTOCNode Id="4806c0c1-a10a-429f-b0e1-b84fa743b5bb" Title="Repository(E, K) Class" Url="html/T_LiteRepository_Repository_2.htm">
         <HelpTOCNode Title="Repository(E, K) Constructor " Url="html/M_LiteRepository_Repository_2__ctor.htm" />
-        <HelpTOCNode Id="253b468a-1893-4288-a938-0cc1b5c27051" Title="Repository(E, K) Properties" Url="html/Properties_T_LiteRepository_Repository_2.htm">
+        <HelpTOCNode Id="f356c3cb-eee6-4409-a733-d95608b46e97" Title="Repository(E, K) Properties" Url="html/Properties_T_LiteRepository_Repository_2.htm">
           <HelpTOCNode Title="Db Property " Url="html/P_LiteRepository_Repository_2_Db.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="945f2c9b-772a-4d15-8907-c89935768653" Title="Repository(E, K) Methods" Url="html/Methods_T_LiteRepository_Repository_2.htm">
+        <HelpTOCNode Id="5f0cedec-48e4-4b9b-8c73-119d94614a68" Title="Repository(E, K) Methods" Url="html/Methods_T_LiteRepository_Repository_2.htm">
           <HelpTOCNode Title="DeleteAsync Method " Url="html/M_LiteRepository_Repository_2_DeleteAsync.htm" />
           <HelpTOCNode Title="GetAllAsync Method " Url="html/M_LiteRepository_Repository_2_GetAllAsync.htm" />
           <HelpTOCNode Title="GetAsync Method " Url="html/M_LiteRepository_Repository_2_GetAsync.htm" />
@@ -75,9 +75,9 @@
           <HelpTOCNode Title="UpdateAsync Method " Url="html/M_LiteRepository_Repository_2_UpdateAsync.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="7db80f14-7081-44f8-9761-642c692dc25e" Title="SqlDialect Class" Url="html/T_LiteRepository_SqlDialect.htm">
+      <HelpTOCNode Id="31fd8c39-4e9f-48f8-8718-4b075e2057b1" Title="SqlDialect Class" Url="html/T_LiteRepository_SqlDialect.htm">
         <HelpTOCNode Title="SqlDialect Constructor " Url="html/M_LiteRepository_SqlDialect__ctor.htm" />
-        <HelpTOCNode Id="6eded8c4-0ed9-458c-92e5-468d68972adb" Title="SqlDialect Methods" Url="html/Methods_T_LiteRepository_SqlDialect.htm">
+        <HelpTOCNode Id="f4a73443-b422-46c9-8d7d-d43079e8659c" Title="SqlDialect Methods" Url="html/Methods_T_LiteRepository_SqlDialect.htm">
           <HelpTOCNode Title="Delete Method " Url="html/M_LiteRepository_SqlDialect_Delete.htm" />
           <HelpTOCNode Title="HasParameters Method " Url="html/M_LiteRepository_SqlDialect_HasParameters.htm" />
           <HelpTOCNode Title="Insert Method " Url="html/M_LiteRepository_SqlDialect_Insert.htm" />
@@ -87,13 +87,13 @@
           <HelpTOCNode Title="Update Method " Url="html/M_LiteRepository_SqlDialect_Update.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="1ac6121d-665c-4ab3-9391-602711f449a7" Title="SqlExpression(E) Class" Url="html/T_LiteRepository_SqlExpression_1.htm">
+      <HelpTOCNode Id="fd83322f-4c56-4971-99cc-ea4244584bb1" Title="SqlExpression(E) Class" Url="html/T_LiteRepository_SqlExpression_1.htm">
         <HelpTOCNode Title="SqlExpression(E) Constructor " Url="html/M_LiteRepository_SqlExpression_1__ctor.htm" />
-        <HelpTOCNode Id="24fbd1d7-a896-4847-b5e6-15ffc56db7a4" Title="SqlExpression(E) Properties" Url="html/Properties_T_LiteRepository_SqlExpression_1.htm">
+        <HelpTOCNode Id="01a58b93-06c5-4755-acc4-084e62e41f2b" Title="SqlExpression(E) Properties" Url="html/Properties_T_LiteRepository_SqlExpression_1.htm">
           <HelpTOCNode Title="Dialect Property " Url="html/P_LiteRepository_SqlExpression_1_Dialect.htm" />
           <HelpTOCNode Title="Metadata Property " Url="html/P_LiteRepository_SqlExpression_1_Metadata.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="fced1126-ab03-4af5-847c-05f7c8e7da43" Title="SqlExpression(E) Methods" Url="html/Methods_T_LiteRepository_SqlExpression_1.htm">
+        <HelpTOCNode Id="fe794ef8-43a7-4bcc-856c-671705b956c6" Title="SqlExpression(E) Methods" Url="html/Methods_T_LiteRepository_SqlExpression_1.htm">
           <HelpTOCNode Title="GetDeleteSql Method " Url="html/M_LiteRepository_SqlExpression_1_GetDeleteSql.htm" />
           <HelpTOCNode Title="GetInsertSql Method " Url="html/M_LiteRepository_SqlExpression_1_GetInsertSql.htm" />
           <HelpTOCNode Title="GetSelectByKeySql Method " Url="html/M_LiteRepository_SqlExpression_1_GetSelectByKeySql.htm" />
@@ -103,22 +103,22 @@
           <HelpTOCNode Title="GetUpdateSql Method " Url="html/M_LiteRepository_SqlExpression_1_GetUpdateSql.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="4b20ea9a-e0fa-4908-8a26-c8c095144a7c" Title="SqlMetadata Class" Url="html/T_LiteRepository_SqlMetadata.htm">
+      <HelpTOCNode Id="24685f03-d60a-4132-8282-11120f75cfce" Title="SqlMetadata Class" Url="html/T_LiteRepository_SqlMetadata.htm">
         <HelpTOCNode Title="SqlMetadata Constructor " Url="html/M_LiteRepository_SqlMetadata__ctor.htm" />
-        <HelpTOCNode Id="751a0fd9-8a63-49ba-ad81-e04e8cf29a62" Title="SqlMetadata Properties" Url="html/Properties_T_LiteRepository_SqlMetadata.htm">
+        <HelpTOCNode Id="be1cdfb0-d1a4-4ee9-bf6b-8eb5a607b01a" Title="SqlMetadata Properties" Url="html/Properties_T_LiteRepository_SqlMetadata.htm">
           <HelpTOCNode Title="Count Property " Url="html/P_LiteRepository_SqlMetadata_Count.htm" />
           <HelpTOCNode Title="DbName Property " Url="html/P_LiteRepository_SqlMetadata_DbName.htm" />
           <HelpTOCNode Title="IsIdentity Property " Url="html/P_LiteRepository_SqlMetadata_IsIdentity.htm" />
-          <HelpTOCNode Id="9a0e9aa6-8df9-4362-90fc-6604675da628" Title="Item Property " Url="html/Overload_LiteRepository_SqlMetadata_Item.htm">
+          <HelpTOCNode Id="7c14fde8-4b5e-4d16-b22d-3c7611c8fe24" Title="Item Property " Url="html/Overload_LiteRepository_SqlMetadata_Item.htm">
             <HelpTOCNode Title="Item Property (Int32)" Url="html/P_LiteRepository_SqlMetadata_Item.htm" />
             <HelpTOCNode Title="Item Property (String)" Url="html/P_LiteRepository_SqlMetadata_Item_1.htm" />
           </HelpTOCNode>
           <HelpTOCNode Title="Name Property " Url="html/P_LiteRepository_SqlMetadata_Name.htm" />
           <HelpTOCNode Title="Type Property " Url="html/P_LiteRepository_SqlMetadata_Type.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="1cf9f03c-7d83-45a2-b8f4-a4ee69c8f7c5" Title="SqlMetadata Methods" Url="html/Methods_T_LiteRepository_SqlMetadata.htm">
+        <HelpTOCNode Id="4acd9d40-b178-4b51-8fa0-6344e6d48b20" Title="SqlMetadata Methods" Url="html/Methods_T_LiteRepository_SqlMetadata.htm">
           <HelpTOCNode Title="ClearCache Method " Url="html/M_LiteRepository_SqlMetadata_ClearCache.htm" />
-          <HelpTOCNode Id="c5f8e2ef-ee8b-4bcb-a378-079b72470322" Title="Equals Method " Url="html/Overload_LiteRepository_SqlMetadata_Equals.htm">
+          <HelpTOCNode Id="94aaac81-9fee-4edf-b210-370bda0642b2" Title="Equals Method " Url="html/Overload_LiteRepository_SqlMetadata_Equals.htm">
             <HelpTOCNode Title="Equals Method (Object)" Url="html/M_LiteRepository_SqlMetadata_Equals_1.htm" />
             <HelpTOCNode Title="Equals Method (SqlMetadata)" Url="html/M_LiteRepository_SqlMetadata_Equals.htm" />
           </HelpTOCNode>
@@ -128,9 +128,9 @@
           <HelpTOCNode Title="GetSubsetForType Method " Url="html/M_LiteRepository_SqlMetadata_GetSubsetForType.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="97774087-e322-40e9-9bb8-c2a4c516cf55" Title="SqlMetadata.Property Class" Url="html/T_LiteRepository_SqlMetadata_Property.htm">
+      <HelpTOCNode Id="6750a9b3-02ed-4f8d-9d3e-b30ed9cb2b39" Title="SqlMetadata.Property Class" Url="html/T_LiteRepository_SqlMetadata_Property.htm">
         <HelpTOCNode Title="SqlMetadata.Property Constructor " Url="html/M_LiteRepository_SqlMetadata_Property__ctor.htm" />
-        <HelpTOCNode Id="c0644363-2acb-4e5b-a419-8c00ad254973" Title="Property Properties" Url="html/Properties_T_LiteRepository_SqlMetadata_Property.htm">
+        <HelpTOCNode Id="df5d324b-9523-46fd-b25e-5e0adc97315e" Title="Property Properties" Url="html/Properties_T_LiteRepository_SqlMetadata_Property.htm">
           <HelpTOCNode Title="DbName Property " Url="html/P_LiteRepository_SqlMetadata_Property_DbName.htm" />
           <HelpTOCNode Title="IsIdentity Property " Url="html/P_LiteRepository_SqlMetadata_Property_IsIdentity.htm" />
           <HelpTOCNode Title="IsPrimaryKey Property " Url="html/P_LiteRepository_SqlMetadata_Property_IsPrimaryKey.htm" />
@@ -139,29 +139,29 @@
         <HelpTOCNode Title="Property Methods" Url="html/Methods_T_LiteRepository_SqlMetadata_Property.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="6f83047f-07e0-4db6-8667-e2f3026ad46e" Title="LiteRepository.Attributes" Url="html/N_LiteRepository_Attributes.htm">
-      <HelpTOCNode Id="b74ac9e7-1050-4301-bd3a-103ed79586ad" Title="SqlAliasAttribute Class" Url="html/T_LiteRepository_Attributes_SqlAliasAttribute.htm">
+    <HelpTOCNode Id="e9265c0d-f472-4e07-b52d-2c5446fabc9d" Title="LiteRepository.Attributes" Url="html/N_LiteRepository_Attributes.htm">
+      <HelpTOCNode Id="addad032-2dd9-4f4f-9e63-7dfd7f1a095f" Title="SqlAliasAttribute Class" Url="html/T_LiteRepository_Attributes_SqlAliasAttribute.htm">
         <HelpTOCNode Title="SqlAliasAttribute Constructor " Url="html/M_LiteRepository_Attributes_SqlAliasAttribute__ctor.htm" />
-        <HelpTOCNode Id="ec37384b-e2fb-48fa-8cdd-ca28a0b9b456" Title="SqlAliasAttribute Properties" Url="html/Properties_T_LiteRepository_Attributes_SqlAliasAttribute.htm">
+        <HelpTOCNode Id="6716ac39-1ae1-4e74-bd55-1f51255c42d3" Title="SqlAliasAttribute Properties" Url="html/Properties_T_LiteRepository_Attributes_SqlAliasAttribute.htm">
           <HelpTOCNode Title="DbName Property " Url="html/P_LiteRepository_Attributes_SqlAliasAttribute_DbName.htm" />
         </HelpTOCNode>
         <HelpTOCNode Title="SqlAliasAttribute Methods" Url="html/Methods_T_LiteRepository_Attributes_SqlAliasAttribute.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="130378f5-3569-426a-a59d-8d331e5ff305" Title="SqlIgnoreAttribute Class" Url="html/T_LiteRepository_Attributes_SqlIgnoreAttribute.htm">
+      <HelpTOCNode Id="38c8d7eb-e096-4ae2-a0d2-c9d936c36e7e" Title="SqlIgnoreAttribute Class" Url="html/T_LiteRepository_Attributes_SqlIgnoreAttribute.htm">
         <HelpTOCNode Title="SqlIgnoreAttribute Constructor " Url="html/M_LiteRepository_Attributes_SqlIgnoreAttribute__ctor.htm" />
         <HelpTOCNode Title="SqlIgnoreAttribute Properties" Url="html/Properties_T_LiteRepository_Attributes_SqlIgnoreAttribute.htm" />
         <HelpTOCNode Title="SqlIgnoreAttribute Methods" Url="html/Methods_T_LiteRepository_Attributes_SqlIgnoreAttribute.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="5bb5d588-28da-4f79-b281-4b4d6cf70a1f" Title="SqlKeyAttribute Class" Url="html/T_LiteRepository_Attributes_SqlKeyAttribute.htm">
+      <HelpTOCNode Id="9de1d328-9088-495b-ad34-1d5e55f660eb" Title="SqlKeyAttribute Class" Url="html/T_LiteRepository_Attributes_SqlKeyAttribute.htm">
         <HelpTOCNode Title="SqlKeyAttribute Constructor " Url="html/M_LiteRepository_Attributes_SqlKeyAttribute__ctor.htm" />
         <HelpTOCNode Title="SqlKeyAttribute Properties" Url="html/Properties_T_LiteRepository_Attributes_SqlKeyAttribute.htm" />
         <HelpTOCNode Title="SqlKeyAttribute Methods" Url="html/Methods_T_LiteRepository_Attributes_SqlKeyAttribute.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="43a5c417-bafa-4aa6-a018-feceb0533820" Title="LiteRepository.SqlServer" Url="html/N_LiteRepository_SqlServer.htm">
-      <HelpTOCNode Id="93a8372d-6d36-4c8d-ab84-e7905b3442ee" Title="SqlServerDialect Class" Url="html/T_LiteRepository_SqlServer_SqlServerDialect.htm">
+    <HelpTOCNode Id="27b1465a-27bb-444a-835a-1282dd35ccdb" Title="LiteRepository.SqlServer" Url="html/N_LiteRepository_SqlServer.htm">
+      <HelpTOCNode Id="0defb1dd-f6f5-4c0c-9932-c27c6ffc8685" Title="SqlServerDialect Class" Url="html/T_LiteRepository_SqlServer_SqlServerDialect.htm">
         <HelpTOCNode Title="SqlServerDialect Constructor " Url="html/M_LiteRepository_SqlServer_SqlServerDialect__ctor.htm" />
-        <HelpTOCNode Id="af78c9d1-13da-44b9-b89d-3ba924c41333" Title="SqlServerDialect Methods" Url="html/Methods_T_LiteRepository_SqlServer_SqlServerDialect.htm">
+        <HelpTOCNode Id="af138f0f-8d96-48ac-8d85-fa1d9ac852a6" Title="SqlServerDialect Methods" Url="html/Methods_T_LiteRepository_SqlServer_SqlServerDialect.htm">
           <HelpTOCNode Title="Delete Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Delete.htm" />
           <HelpTOCNode Title="HasParameters Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_HasParameters.htm" />
           <HelpTOCNode Title="Insert Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Insert.htm" />
