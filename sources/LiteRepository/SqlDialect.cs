@@ -40,7 +40,7 @@ namespace LiteRepository
         public abstract string Select(string tableName, string fields, string where, string orderBy, int? top = null);
 
         /// <summary>
-        /// Creates a scalar select SQL
+        /// Creates a scalar select SQL.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="expression">Scalar expression. For example: sum(column1).</param>
@@ -59,16 +59,16 @@ namespace LiteRepository
         public abstract string Insert(string tableName, string fields, string values, bool isIdentity);
 
         /// <summary>
-        /// Returns update SQL
+        /// Creates a update SQL.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="set">A list of set expressions</param>
-        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2</param>
+        /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2.</param>
         /// <returns>A string with a update query.</returns>
         public abstract string Update(string tableName, string set, string where);
 
         /// <summary>
-        /// Returns delete SQL
+        /// Creates a delete SQL.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="where">Where conditions. For example: column1 = 'abc' and column2 &lt; 2.</param>

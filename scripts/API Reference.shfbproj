@@ -25,12 +25,13 @@
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\sources\LiteRepository\bin\Release\LiteRepository.dll" />
-<DocumentationSource sourceFile="..\sources\LiteRepository\bin\Release\LiteRepository.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\sources\LiteRepository\bin\Release\LiteRepository.xml" />
+    </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
-<NamespaceSummaryItem name="LiteRepository.Attributes" isDocumented="True">The LiteRepository.Attributes namespace provides support for attribute classes that are used to define metadata</NamespaceSummaryItem>
-<NamespaceSummaryItem name="LiteRepository.SqlServer" isDocumented="True">The System.Dynamic namespace provides classes that support SQL Server</NamespaceSummaryItem>
-<NamespaceSummaryItem name="LiteRepository" isDocumented="True">The LiteRepository.Attributes namespace contains main classes and interfaces</NamespaceSummaryItem></NamespaceSummaries>
+<NamespaceSummaryItem name="LiteRepository.Attributes" isDocumented="True">The LiteRepository.Attributes namespace provides support for attribute classes that are used to define metadata.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="LiteRepository.SqlServer" isDocumented="True">The System.Dynamic namespace provides classes that support SQL Server.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="LiteRepository" isDocumented="True">The LiteRepository.Attributes namespace contains main classes and interfaces.</NamespaceSummaryItem></NamespaceSummaries>
     <ProjectSummary>&amp;lt%3bp&amp;gt%3bLiteRepository is:&amp;lt%3b/p&amp;gt%3b
 &amp;lt%3bul&amp;gt%3b
     &amp;lt%3bli&amp;gt%3bGeneric Repository class %28supports only CRUD operations%29&amp;lt%3b/li&amp;gt%3b
