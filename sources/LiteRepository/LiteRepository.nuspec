@@ -8,17 +8,21 @@
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <summary>Lightweight implementation of Repository Pattern based on Dapper ORM. This implementation supports CRUD operations via auto-generated plain SQL</summary>
+    <summary>Lightweight implementation of Repository Pattern based on Dapper ORM. This implementation supports CRUD operations via auto-generated plain SQL.</summary>
     <copyright>Copyright © 2016, $author$</copyright>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/albertakhmetov/LiteRepository</projectUrl>
     <tags>Dapper Repository RepositoryPattern .NET SqlServer SQL CRUD ORM</tags>
-    <releaseNotes>
-      Backward compatibility with 1.x not supported
+    <releaseNotes>  
+	LiteRepository is:
 
-      version 2.0.2 (alpha)
-
-      * Changes in the processing of SQL Expressions
+	* Generic Repository class (supports only CRUD operations)
+	* POCO mapper (one class -> one database table by using attributes, if necessary)
+	* Toolkit for building CRUD queries without writing SQL
+	* The ability to create own repositories by using toolkit and POCO mapper
+	* The ability to add new RDBMS
+	
+	Backward compatibility with 1.x not supported.
     </releaseNotes>
   </metadata>
 </package>
