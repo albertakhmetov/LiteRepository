@@ -12,7 +12,9 @@ Designed for use with plain SQL. Support for Stored Procedures is not implemente
 
 [Install via NuGet](https://www.nuget.org/packages/LiteRepository/)
 
-**Current status is an early alpha. Use on own risk.** About all issues please report in the tracker.
+[API Reference](http://albertakhmetov.github.io/LiteRepository/api/)
+
+About all issues please report in the tracker.
 
 ## Usage
 
