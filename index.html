@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>LiteRepository | Home</title>
+<link rel="stylesheet" href="style.css" />
+
+</head>
+<body id="home">
+
+<h1>LiteRepository</h1>
+
+<p>LiteRepository is:</p>
+<ul>
+    <li>Generic Repository class (supports only CRUD operations)</li>
+    <li>POCO mapper (one class -> one database table by using attributes, if necessary)</li>
+    <li>Toolkit for building CRUD queries without writing SQL</li>
+    <li>The ability to create own repositories by using toolkit and POCO mapper</li>
+    <li>The ability to add new RDBMS</li>
+</ul>
+<p>Designed for use with plain SQL. Support for Stored Procedures is not implemented and not planned (use pure Dapper instead).</p>
+    <p><a href="https://www.nuget.org/packages/LiteRepository/">Install via NuGet</a>. Read the <a href="http://albertakhmetov.github.io/LiteRepository/api/">API Reference</a>. About all issues please report in the <a href="https://github.com/albertakhmetov/LiteRepository/issues">tracker</a>.</p>
+
+<h2>Usage</h2>
+
+<p>Each RDBMS includes a specialized dialect provider. At this moment LiteRepository supports only Sql Server (included in standart package).</p>
+
+<p>To congigure LiteRepository you need to create Db object:</p>
+<code>
+var dialect = new SqlServerDialect();<br />
+var dbConnectionFactory = () => new SqlConnection(ConfigurationManager.ConnectionStrings["DemoDb"].ConnectionString);<br />
+var db = new Db(dialect, dbConnectionFactory);
+</code>
+
+<p>The first parameter is the provider of the dialect. The second parameter is factory for database connection (or single connection).</p>
+
+<p>Db is responsible for connection with the database and providing tools for querying the database.</p>
+
+<h3>Repository</h3>
+
+<p>For using generic Repository you need to create Repository object by passing Db object as constructor's parameter:</p>
+<code>var repository = new Repository&lt;Entity, EntityKey&gt;(db);</code>
+
+<p>The first type parameter - is the type of data entity. The second - is the type of the entity's key. The entity must be inherited from it's key type.</p>
+
+<p>For inserting the entity into database call InsertAsync method (all methods of Repository class are async):</p>
+<code>
+var entity = new Entity { FirstName = "Alex", SecondName = "Lion" };<br />
+await repository.InsertAsync(entity);
+</code>
+
+<p>The method returns the added entity. In case of simple entity - it's the same entity which was passed as parameter. In case of identity entity (must implement IIdentityEntity interface) it returns result of IIdentityEntity.UpdateId entity's method.</p>
+
+<p>For updating the entity call UpdateAsync:</p>
+<code>
+var entity = new Entity { FirstName = "Alex", SecondName = "Lion" };<br />
+await repository.UpdateAsync(entity);
+</code>
+
+<p>The method returns a number of affected rows. 1 if data was successfully updated and 0 if entity was not found.</p>
+
+<p>For deleting the entity call DeleteAsync:</p>
+<code>
+var key = new EntityKey { Id = 12 };<br />
+await repository.DeleteAsync(entity);
+</code>
+
+<p>The method returns a number of affected rows. 1 if data was successfully deleted and 0 if entity with this key was not found.</p>
+
+<p>For getting the entity by it's key call GetAsync:</p>
+<code>
+var key = new EntityKey { Id = 12 };<br />
+var entity = await repository.GetAsync(entity);
+</code>
+
+<p>The method returns entity or null, if entity with this key was not found.</p>
+
+<p>For getting all entities from database call GetAllAsync:</p>
+<code>
+var entities = await repository.GetAllAsync(entity);
+</code>
+
+<p>The method returns a collection of enitities (empty if no entity was found).</p>
+
+<p>For getting a count of entities in database call GetCountAsync:</p>
+<code>
+var entities = await repository.GetAllAsync(entity);
+</code>
+
+<p>The method returns a count of all enitities (actually, it's a query - SELECT COUNT(1) FROM table).</p>
+
+<h3>POCO mapper</h3>
+
+<p>One class is mapped in one table in database. By default, the name of class = the name of table and property's name = the name of the table column. To change this behaviour there are three attributes:</p>
+<ul>
+    <li>SqlAlias. Allows to set database name of class or property.</li>
+    <li>SqlIgnore. Allows to hide property from mapper.</li>
+    <li>SqlKey. Allows to mark property as a part of the primary key.</li>
+</ul>
+
+<p>For example, this class:</p>
+<code>
+[SqlAlias("students")]<br />
+public class Student<br />
+{<br />
+    &nbsp;&nbsp;&nbsp;
+    [SqlKey]<br />
+    &nbsp;&nbsp;&nbsp;
+    public Id { get; set; }<br />
+    &nbsp;&nbsp;&nbsp;
+    [SqlAlias("first_name")]<br />
+    &nbsp;&nbsp;&nbsp;
+    public FirstName { get; set; }<br />
+    &nbsp;&nbsp;&nbsp;
+    [SqlAlias("second_name")<br />
+    &nbsp;&nbsp;&nbsp;
+    public SecondName { get; set; }<br />
+    &nbsp;&nbsp;&nbsp;
+    [SqlIgnore]<br />
+    &nbsp;&nbsp;&nbsp;
+    public DateTime CacheValidateTime { get; set; }<br />
+}
+</code>
+<p>corresponds to a table in the database:</p>
+<code>
+create table students (<br />
+    &nbsp;&nbsp;&nbsp;
+    Id,<br />
+    &nbsp;&nbsp;&nbsp;
+    first_name,<br />
+    &nbsp;&nbsp;&nbsp;
+    second_name<br />
+    );
+</code>
+
+<p>The data type has been specifically omitted, as the possibility of creating a table based on the POCO is not provided.</p>
+
+<p>For tables with identities Entity must implement IIdentityEntity interface:</p>
+<code>
+public interface IIdentityEntity<br />
+{<br />
+    &nbsp;&nbsp;&nbsp;
+    long Id { get; }<br />
+    &nbsp;&nbsp;&nbsp;
+    object UpdateId(long id);<br />
+}
+</code>
+<p>In this case, all SqlKey attributes will be ignored. Such entity's primary key consists of one field - Id. The UpdateId method will be invoked when a record is added to the database. The generated Id will be passed as the parameter. It is expected that the method will return the entity with the changed Id
+Toolkit</p>
+
+<p>Toolkit is implemented in the Db class. This is a set of methods that simplifies the implementation of CRUD queries. Unlike the repository, each method has both synchronous and asynchronous version.</p>
+
+<p>To execute any code within the same open connection is used by the Exec method:</p>
+<code>
+var execResult = db.Exec(connection =><br />
+{<br />
+    &nbsp;&nbsp;&nbsp;
+    return connection.Execute("select * from table");<br />
+});
+</code>
+<p>All the methods of Db class are made through this method.</p>
+
+<p>To add a record to the database use the Insert method:</p>
+<code>
+var execResult = db.Insert(new Entity { Id = 12, FirstName = "Alex", SecondName = "Lion" });
+</code>
+<p>SQL:</p>
+<code>
+INSERT INTO students (id, first_name, second_name)<br />
+VALUES (@Id, @FirstName, @SecondName);
+</code>
+<p>In the case of a table with identity:</p>
+<code>
+INSERT INTO students (first_name, second_name)<br />
+VALUES (@FirstName, @SecondName)<br />
+SELECT SCOPE_IDENTITY()
+</code>
+<p>To update the record you can use one of two methods. The first updates the record as a whole, finding it by the primary key:</p>
+<code>
+var entity = new Entity { Id = 42, FirstName = "Alex", SecondName = "Lion" };
+var execResult = db.Update(entity);
+</code>
+<p>SQL:</p>
+<code>
+UPDATE students SET<br />
+    &nbsp;&nbsp;&nbsp;
+    first_name = @FirstName<br />
+    &nbsp;&nbsp;&nbsp;
+    second_name = @SecondName<br />
+WHERE id = @Id;
+</code>
+<p>The second allows you to update only selected fields for multiple records that will satisfy the condition:</p>
+<code>
+var execResult = db.Update&lt;Entity&gt;(new { FirstName = "Alexander" }, i => i.FirstName = "Alex");
+</code>
+<p>SQL:</p>
+<code>
+UPDATE students SET first_name = @FirstName WHERE first_name = 'Alex';
+</code>
+<p>The use of parameters in condition is not allowed.</p>
+<p>To delete records you can use one of three methods. To delete a single record by key, use the method:</p>
+<code>
+var execResult = db.Delete&lt;Entity, EntityKey&gt;(new EntityKey(42));
+</code>
+<p>SQL:</p>
+<code>
+DELETE FROM students WHERE id = @Id;
+</code>
+<p>To delete multiple records satisfying the condition use the method:</p>
+<code>
+var execResult = db.Delete&lt;Entity&gt;(i => i.FirstName.StartsWith("Al"));
+</code>
+<p>SQL:</p>
+<code>
+DELETE FROM students WHERE first_name like 'Al%';
+</code>
+<p>You can also use parameters in the query:</p>
+<code>
+var param = new { FirstName = "Alex" };<br />
+var execResult = db.Delete&lt;Entity&gt;(i => i.FirstName = param.FirstName, param);
+</code>
+<p>SQL:</p>
+<code>
+DELETE FROM students WHERE first_name = @FirstName;
+</code>
+<p>To delete all records use Truncate method:</p>
+<code>
+db.Truncate&lt;Entity&gt;();
+</code>
+<p>SQL:</p>
+<code>
+TRUNCATE TABLE students;
+</code>
+<p>To receive data use one of three methods. To retrieve a record by primary key the GetByKey method is used. You can specify to receive only a subset of fields of the original recording.</p>
+<code>
+var p = new { FirstName = "", SecondName = "" };<br />
+var key = new EntityKey { Id = 42 };<br />
+var count = db.GetByKey&lt;Entity&gt;(key, p.GetType());
+</code>
+<p>SQL:</p>
+<code>
+SELECT first_name, second_name FROM students WHERE id = @Id
+</code>
+<p>To retrieve a set of records that meet specific criteria use the Get method. You can set to retrieve only some fields and set the sort order:</p>
+<code>
+var p = new { FirstName = "", SecondName = "" };<br />
+var param = new { FirstName = "Alex" };<br />
+var count = db.Get&lt;Entity&gt;(p.GetType(), where: i => i.FirstName = param.FirstName, param, orderBy: i => i.OrderBy(x => x.SecondName));
+</code>
+<p>SQL:</p>
+<code>
+SELECT first_name, second_name FROM students WHERE first_name = @FirstName ORDER BY second_name
+</code>
+<p>To obtain the scalar expression use GetScalar method. It supports only Count, Average, Sum:</p>
+<code>
+var param = new { FirstName = "Alex" };<br />
+var count = db.GetScalar&lt;int&gt;(i => i.Count, where: i => i.FirstName = param.FirstName, param);
+</code>
+<p>SQL:</p>
+<code>
+SELECT COUNT(1) FROM students WHERE first_name == @FirstName;
+</code>
+<h4>The syntax of conditions</h4>
+
+<p>The condition is given by the equation. Supports binary comparison operations (!=, <, >, <=, >=, ==), binary || and &&, and unary !. For string fields methods StartWith, EndsWith, Contains, ToLower and ToUpper are supported. For fields of DateTime type a constant can be set through the constructor.</p>
+
+<h4>The syntax of order</h4>
+
+<p>The chain of methods OrderBy and OrderByDescending is supported.</p>
+</body>
+</html>
