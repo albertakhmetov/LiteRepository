@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpKI>
+  <HelpKINode Title="ClearCache method" Url="html/M_LiteRepository_SqlMetadata_ClearCache.htm" />
+  <HelpKINode Title="Count property" Url="html/P_LiteRepository_SqlMetadata_Count.htm" />
+  <HelpKINode Title="Db class">
+    <HelpKINode Title="Db Class" Url="html/T_LiteRepository_Db.htm" />
+    <HelpKINode Title="about Db class" Url="html/T_LiteRepository_Db.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_LiteRepository_Db__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_Db.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Db property" Url="html/P_LiteRepository_Repository_2_Db.htm" />
+  <HelpKINode Title="Db.Db constructor" Url="html/Overload_LiteRepository_Db__ctor.htm" />
+  <HelpKINode Title="Db.Delete method" Url="html/Overload_LiteRepository_Db_Delete.htm" />
+  <HelpKINode Title="Db.DeleteAsync method" Url="html/Overload_LiteRepository_Db_DeleteAsync.htm" />
+  <HelpKINode Title="Db.Exec(Of T) method" Url="html/M_LiteRepository_Db_Exec__1.htm" />
+  <HelpKINode Title="Db.Exec&lt;T&gt; method" Url="html/M_LiteRepository_Db_Exec__1.htm" />
+  <HelpKINode Title="Db.ExecAsync(Of T) method" Url="html/M_LiteRepository_Db_ExecAsync__1.htm" />
+  <HelpKINode Title="Db.ExecAsync&lt;T&gt; method" Url="html/M_LiteRepository_Db_ExecAsync__1.htm" />
+  <HelpKINode Title="Db.Get(Of E) method" Url="html/M_LiteRepository_Db_Get__1.htm" />
+  <HelpKINode Title="Db.Get&lt;E&gt; method" Url="html/M_LiteRepository_Db_Get__1.htm" />
+  <HelpKINode Title="Db.GetAsync(Of E) method" Url="html/M_LiteRepository_Db_GetAsync__1.htm" />
+  <HelpKINode Title="Db.GetAsync&lt;E&gt; method" Url="html/M_LiteRepository_Db_GetAsync__1.htm" />
+  <HelpKINode Title="Db.GetByKey(Of E, K) method" Url="html/M_LiteRepository_Db_GetByKey__2.htm" />
+  <HelpKINode Title="Db.GetByKey&lt;E, K&gt; method" Url="html/M_LiteRepository_Db_GetByKey__2.htm" />
+  <HelpKINode Title="Db.GetByKeyAsync(Of E, K) method" Url="html/M_LiteRepository_Db_GetByKeyAsync__2.htm" />
+  <HelpKINode Title="Db.GetByKeyAsync&lt;E, K&gt; method" Url="html/M_LiteRepository_Db_GetByKeyAsync__2.htm" />
+  <HelpKINode Title="Db.GetScalar(Of E, T) method" Url="html/M_LiteRepository_Db_GetScalar__2.htm" />
+  <HelpKINode Title="Db.GetScalar&lt;E, T&gt; method" Url="html/M_LiteRepository_Db_GetScalar__2.htm" />
+  <HelpKINode Title="Db.GetScalarAsync(Of E, T) method" Url="html/M_LiteRepository_Db_GetScalarAsync__2.htm" />
+  <HelpKINode Title="Db.GetScalarAsync&lt;E, T&gt; method" Url="html/M_LiteRepository_Db_GetScalarAsync__2.htm" />
+  <HelpKINode Title="Db.Insert(Of E) method" Url="html/M_LiteRepository_Db_Insert__1.htm" />
+  <HelpKINode Title="Db.Insert&lt;E&gt; method" Url="html/M_LiteRepository_Db_Insert__1.htm" />
+  <HelpKINode Title="Db.InsertAsync(Of E) method" Url="html/M_LiteRepository_Db_InsertAsync__1.htm" />
+  <HelpKINode Title="Db.InsertAsync&lt;E&gt; method" Url="html/M_LiteRepository_Db_InsertAsync__1.htm" />
+  <HelpKINode Title="Db.Truncate(Of E) method" Url="html/M_LiteRepository_Db_Truncate__1.htm" />
+  <HelpKINode Title="Db.Truncate&lt;E&gt; method" Url="html/M_LiteRepository_Db_Truncate__1.htm" />
+  <HelpKINode Title="Db.TruncateAsync(Of E) method" Url="html/M_LiteRepository_Db_TruncateAsync__1.htm" />
+  <HelpKINode Title="Db.TruncateAsync&lt;E&gt; method" Url="html/M_LiteRepository_Db_TruncateAsync__1.htm" />
+  <HelpKINode Title="Db.Update method" Url="html/Overload_LiteRepository_Db_Update.htm" />
+  <HelpKINode Title="Db.UpdateAsync method" Url="html/Overload_LiteRepository_Db_UpdateAsync.htm" />
+  <HelpKINode Title="DbName property">
+    <HelpKINode Title="SqlAliasAttribute.DbName Property " Url="html/P_LiteRepository_Attributes_SqlAliasAttribute_DbName.htm" />
+    <HelpKINode Title="SqlMetadata.DbName Property " Url="html/P_LiteRepository_SqlMetadata_DbName.htm" />
+    <HelpKINode Title="SqlMetadata.Property.DbName Property " Url="html/P_LiteRepository_SqlMetadata_Property_DbName.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Delete method">
+    <HelpKINode Title="Db.Delete Method " Url="html/Overload_LiteRepository_Db_Delete.htm" />
+    <HelpKINode Title="SqlDialect.Delete Method " Url="html/M_LiteRepository_SqlDialect_Delete.htm" />
+    <HelpKINode Title="SqlServerDialect.Delete Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Delete.htm" />
+  </HelpKINode>
+  <HelpKINode Title="DeleteAsync method">
+    <HelpKINode Title="Db.DeleteAsync Method " Url="html/Overload_LiteRepository_Db_DeleteAsync.htm" />
+    <HelpKINode Title="Repository(E, K).DeleteAsync Method " Url="html/M_LiteRepository_Repository_2_DeleteAsync.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Dialect property" Url="html/P_LiteRepository_SqlExpression_1_Dialect.htm" />
+  <HelpKINode Title="Equals method" Url="html/Overload_LiteRepository_SqlMetadata_Equals.htm" />
+  <HelpKINode Title="Exec(Of T) method" Url="html/M_LiteRepository_Db_Exec__1.htm" />
+  <HelpKINode Title="Exec&lt;T&gt; method" Url="html/M_LiteRepository_Db_Exec__1.htm" />
+  <HelpKINode Title="ExecAsync(Of T) method" Url="html/M_LiteRepository_Db_ExecAsync__1.htm" />
+  <HelpKINode Title="ExecAsync&lt;T&gt; method" Url="html/M_LiteRepository_Db_ExecAsync__1.htm" />
+  <HelpKINode Title="Get(Of E) method" Url="html/M_LiteRepository_Db_Get__1.htm" />
+  <HelpKINode Title="Get&lt;E&gt; method" Url="html/M_LiteRepository_Db_Get__1.htm" />
+  <HelpKINode Title="GetAllAsync method" Url="html/M_LiteRepository_Repository_2_GetAllAsync.htm" />
+  <HelpKINode Title="GetAsync method" Url="html/M_LiteRepository_Repository_2_GetAsync.htm" />
+  <HelpKINode Title="GetAsync(Of E) method" Url="html/M_LiteRepository_Db_GetAsync__1.htm" />
+  <HelpKINode Title="GetAsync&lt;E&gt; method" Url="html/M_LiteRepository_Db_GetAsync__1.htm" />
+  <HelpKINode Title="GetByKey(Of E, K) method" Url="html/M_LiteRepository_Db_GetByKey__2.htm" />
+  <HelpKINode Title="GetByKey&lt;E, K&gt; method" Url="html/M_LiteRepository_Db_GetByKey__2.htm" />
+  <HelpKINode Title="GetByKeyAsync(Of E, K) method" Url="html/M_LiteRepository_Db_GetByKeyAsync__2.htm" />
+  <HelpKINode Title="GetByKeyAsync&lt;E, K&gt; method" Url="html/M_LiteRepository_Db_GetByKeyAsync__2.htm" />
+  <HelpKINode Title="GetCountAsync method" Url="html/M_LiteRepository_Repository_2_GetCountAsync.htm" />
+  <HelpKINode Title="GetDeleteSql method" Url="html/M_LiteRepository_SqlExpression_1_GetDeleteSql.htm" />
+  <HelpKINode Title="GetEnumerator method" Url="html/M_LiteRepository_SqlMetadata_GetEnumerator.htm" />
+  <HelpKINode Title="GetHashCode method" Url="html/M_LiteRepository_SqlMetadata_GetHashCode.htm" />
+  <HelpKINode Title="GetInsertSql method" Url="html/M_LiteRepository_SqlExpression_1_GetInsertSql.htm" />
+  <HelpKINode Title="GetScalar(Of E, T) method" Url="html/M_LiteRepository_Db_GetScalar__2.htm" />
+  <HelpKINode Title="GetScalar&lt;E, T&gt; method" Url="html/M_LiteRepository_Db_GetScalar__2.htm" />
+  <HelpKINode Title="GetScalarAsync(Of E, T) method" Url="html/M_LiteRepository_Db_GetScalarAsync__2.htm" />
+  <HelpKINode Title="GetScalarAsync&lt;E, T&gt; method" Url="html/M_LiteRepository_Db_GetScalarAsync__2.htm" />
+  <HelpKINode Title="GetSelectByKeySql method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectByKeySql.htm" />
+  <HelpKINode Title="GetSelectScalarSql(Of T) method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectScalarSql__1.htm" />
+  <HelpKINode Title="GetSelectScalarSql&lt;T&gt; method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectScalarSql__1.htm" />
+  <HelpKINode Title="GetSelectSql method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectSql.htm" />
+  <HelpKINode Title="GetSqlMetadata method" Url="html/M_LiteRepository_SqlMetadata_GetSqlMetadata.htm" />
+  <HelpKINode Title="GetSubsetForType method" Url="html/M_LiteRepository_SqlMetadata_GetSubsetForType.htm" />
+  <HelpKINode Title="GetTruncateSql method" Url="html/M_LiteRepository_SqlExpression_1_GetTruncateSql.htm" />
+  <HelpKINode Title="GetUpdateSql method" Url="html/M_LiteRepository_SqlExpression_1_GetUpdateSql.htm" />
+  <HelpKINode Title="HasParameters method">
+    <HelpKINode Title="SqlDialect.HasParameters Method " Url="html/M_LiteRepository_SqlDialect_HasParameters.htm" />
+    <HelpKINode Title="SqlServerDialect.HasParameters Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_HasParameters.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Id property">
+    <HelpKINode Title="IdentityKey.Id Property " Url="html/P_LiteRepository_IdentityKey_Id.htm" />
+    <HelpKINode Title="IIdentityEntity.Id Property " Url="html/P_LiteRepository_IIdentityEntity_Id.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IdentityKey class">
+    <HelpKINode Title="IdentityKey Class" Url="html/T_LiteRepository_IdentityKey.htm" />
+    <HelpKINode Title="about IdentityKey class" Url="html/T_LiteRepository_IdentityKey.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_IdentityKey__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_IdentityKey.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_IdentityKey.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IdentityKey.Id property" Url="html/P_LiteRepository_IdentityKey_Id.htm" />
+  <HelpKINode Title="IdentityKey.IdentityKey constructor" Url="html/M_LiteRepository_IdentityKey__ctor.htm" />
+  <HelpKINode Title="IdentityKey.UpdateId method" Url="html/M_LiteRepository_IdentityKey_UpdateId.htm" />
+  <HelpKINode Title="IIdentityEntity interface">
+    <HelpKINode Title="IIdentityEntity Interface" Url="html/T_LiteRepository_IIdentityEntity.htm" />
+    <HelpKINode Title="about IIdentityEntity interface" Url="html/T_LiteRepository_IIdentityEntity.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_IIdentityEntity.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_IIdentityEntity.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IIdentityEntity.Id property" Url="html/P_LiteRepository_IIdentityEntity_Id.htm" />
+  <HelpKINode Title="IIdentityEntity.UpdateId method" Url="html/M_LiteRepository_IIdentityEntity_UpdateId.htm" />
+  <HelpKINode Title="In(Of T) method" Url="html/M_LiteRepository_InExtension_In__1.htm" />
+  <HelpKINode Title="In&lt;T&gt; method" Url="html/M_LiteRepository_InExtension_In__1.htm" />
+  <HelpKINode Title="InExtension class">
+    <HelpKINode Title="InExtension Class" Url="html/T_LiteRepository_InExtension.htm" />
+    <HelpKINode Title="about InExtension class" Url="html/T_LiteRepository_InExtension.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_InExtension.htm" />
+  </HelpKINode>
+  <HelpKINode Title="InExtension.In(Of T) method" Url="html/M_LiteRepository_InExtension_In__1.htm" />
+  <HelpKINode Title="InExtension.In&lt;T&gt; method" Url="html/M_LiteRepository_InExtension_In__1.htm" />
+  <HelpKINode Title="Insert method">
+    <HelpKINode Title="SqlDialect.Insert Method " Url="html/M_LiteRepository_SqlDialect_Insert.htm" />
+    <HelpKINode Title="SqlServerDialect.Insert Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Insert.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Insert(Of E) method" Url="html/M_LiteRepository_Db_Insert__1.htm" />
+  <HelpKINode Title="Insert&lt;E&gt; method" Url="html/M_LiteRepository_Db_Insert__1.htm" />
+  <HelpKINode Title="InsertAsync method" Url="html/M_LiteRepository_Repository_2_InsertAsync.htm" />
+  <HelpKINode Title="InsertAsync(Of E) method" Url="html/M_LiteRepository_Db_InsertAsync__1.htm" />
+  <HelpKINode Title="InsertAsync&lt;E&gt; method" Url="html/M_LiteRepository_Db_InsertAsync__1.htm" />
+  <HelpKINode Title="IsIdentity property">
+    <HelpKINode Title="SqlMetadata.IsIdentity Property " Url="html/P_LiteRepository_SqlMetadata_IsIdentity.htm" />
+    <HelpKINode Title="SqlMetadata.Property.IsIdentity Property " Url="html/P_LiteRepository_SqlMetadata_Property_IsIdentity.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IsPrimaryKey property" Url="html/P_LiteRepository_SqlMetadata_Property_IsPrimaryKey.htm" />
+  <HelpKINode Title="Item property" Url="html/Overload_LiteRepository_SqlMetadata_Item.htm" />
+  <HelpKINode Title="LiteRepository namespace" Url="html/N_LiteRepository.htm" />
+  <HelpKINode Title="LiteRepository.Attributes namespace" Url="html/N_LiteRepository_Attributes.htm" />
+  <HelpKINode Title="LiteRepository.Attributes.SqlAliasAttribute class" Url="html/T_LiteRepository_Attributes_SqlAliasAttribute.htm" />
+  <HelpKINode Title="LiteRepository.Attributes.SqlIgnoreAttribute class" Url="html/T_LiteRepository_Attributes_SqlIgnoreAttribute.htm" />
+  <HelpKINode Title="LiteRepository.Attributes.SqlKeyAttribute class" Url="html/T_LiteRepository_Attributes_SqlKeyAttribute.htm" />
+  <HelpKINode Title="LiteRepository.Db class" Url="html/T_LiteRepository_Db.htm" />
+  <HelpKINode Title="LiteRepository.IdentityKey class" Url="html/T_LiteRepository_IdentityKey.htm" />
+  <HelpKINode Title="LiteRepository.IIdentityEntity interface" Url="html/T_LiteRepository_IIdentityEntity.htm" />
+  <HelpKINode Title="LiteRepository.InExtension class" Url="html/T_LiteRepository_InExtension.htm" />
+  <HelpKINode Title="LiteRepository.Repository(Of E, K) class" Url="html/T_LiteRepository_Repository_2.htm" />
+  <HelpKINode Title="LiteRepository.Repository&lt;E, K&gt; class" Url="html/T_LiteRepository_Repository_2.htm" />
+  <HelpKINode Title="LiteRepository.SqlDialect class" Url="html/T_LiteRepository_SqlDialect.htm" />
+  <HelpKINode Title="LiteRepository.SqlExpression(Of E) class" Url="html/T_LiteRepository_SqlExpression_1.htm" />
+  <HelpKINode Title="LiteRepository.SqlExpression&lt;E&gt; class" Url="html/T_LiteRepository_SqlExpression_1.htm" />
+  <HelpKINode Title="LiteRepository.SqlMetadata class" Url="html/T_LiteRepository_SqlMetadata.htm" />
+  <HelpKINode Title="LiteRepository.SqlMetadata.Property class" Url="html/T_LiteRepository_SqlMetadata_Property.htm" />
+  <HelpKINode Title="LiteRepository.SqlServer namespace" Url="html/N_LiteRepository_SqlServer.htm" />
+  <HelpKINode Title="LiteRepository.SqlServer.SqlServerDialect class" Url="html/T_LiteRepository_SqlServer_SqlServerDialect.htm" />
+  <HelpKINode Title="Metadata property" Url="html/P_LiteRepository_SqlExpression_1_Metadata.htm" />
+  <HelpKINode Title="Name property">
+    <HelpKINode Title="SqlMetadata.Name Property " Url="html/P_LiteRepository_SqlMetadata_Name.htm" />
+    <HelpKINode Title="SqlMetadata.Property.Name Property " Url="html/P_LiteRepository_SqlMetadata_Property_Name.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Parameter method">
+    <HelpKINode Title="SqlDialect.Parameter Method " Url="html/M_LiteRepository_SqlDialect_Parameter.htm" />
+    <HelpKINode Title="SqlServerDialect.Parameter Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Parameter.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Property class">
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_SqlMetadata_Property.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_SqlMetadata_Property.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Repository(Of E, K) class">
+    <HelpKINode Title="Repository(E, K) Class" Url="html/T_LiteRepository_Repository_2.htm" />
+    <HelpKINode Title="about Repository(Of E, K) class" Url="html/T_LiteRepository_Repository_2.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_Repository_2__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_Repository_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_Repository_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Repository(Of E, K).Db property" Url="html/P_LiteRepository_Repository_2_Db.htm" />
+  <HelpKINode Title="Repository(Of E, K).DeleteAsync method" Url="html/M_LiteRepository_Repository_2_DeleteAsync.htm" />
+  <HelpKINode Title="Repository(Of E, K).GetAllAsync method" Url="html/M_LiteRepository_Repository_2_GetAllAsync.htm" />
+  <HelpKINode Title="Repository(Of E, K).GetAsync method" Url="html/M_LiteRepository_Repository_2_GetAsync.htm" />
+  <HelpKINode Title="Repository(Of E, K).GetCountAsync method" Url="html/M_LiteRepository_Repository_2_GetCountAsync.htm" />
+  <HelpKINode Title="Repository(Of E, K).InsertAsync method" Url="html/M_LiteRepository_Repository_2_InsertAsync.htm" />
+  <HelpKINode Title="Repository(Of E, K).Repository constructor" Url="html/M_LiteRepository_Repository_2__ctor.htm" />
+  <HelpKINode Title="Repository(Of E, K).UpdateAsync method" Url="html/M_LiteRepository_Repository_2_UpdateAsync.htm" />
+  <HelpKINode Title="Repository&lt;E, K&gt; class">
+    <HelpKINode Title="Repository(E, K) Class" Url="html/T_LiteRepository_Repository_2.htm" />
+    <HelpKINode Title="about Repository&lt;E, K&gt; class" Url="html/T_LiteRepository_Repository_2.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_Repository_2__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_Repository_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_Repository_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Repository&lt;E, K&gt;.Db property" Url="html/P_LiteRepository_Repository_2_Db.htm" />
+  <HelpKINode Title="Repository&lt;E, K&gt;.DeleteAsync method" Url="html/M_LiteRepository_Repository_2_DeleteAsync.htm" />
+  <HelpKINode Title="Repository&lt;E, K&gt;.GetAllAsync method" Url="html/M_LiteRepository_Repository_2_GetAllAsync.htm" />
+  <HelpKINode Title="Repository&lt;E, K&gt;.GetAsync method" Url="html/M_LiteRepository_Repository_2_GetAsync.htm" />
+  <HelpKINode Title="Repository&lt;E, K&gt;.GetCountAsync method" Url="html/M_LiteRepository_Repository_2_GetCountAsync.htm" />
+  <HelpKINode Title="Repository&lt;E, K&gt;.InsertAsync method" Url="html/M_LiteRepository_Repository_2_InsertAsync.htm" />
+  <HelpKINode Title="Repository&lt;E, K&gt;.Repository constructor" Url="html/M_LiteRepository_Repository_2__ctor.htm" />
+  <HelpKINode Title="Repository&lt;E, K&gt;.UpdateAsync method" Url="html/M_LiteRepository_Repository_2_UpdateAsync.htm" />
+  <HelpKINode Title="Select method">
+    <HelpKINode Title="SqlDialect.Select Method " Url="html/M_LiteRepository_SqlDialect_Select.htm" />
+    <HelpKINode Title="SqlServerDialect.Select Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Select.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SelectScalar method">
+    <HelpKINode Title="SqlDialect.SelectScalar Method " Url="html/M_LiteRepository_SqlDialect_SelectScalar.htm" />
+    <HelpKINode Title="SqlServerDialect.SelectScalar Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_SelectScalar.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlAliasAttribute class">
+    <HelpKINode Title="SqlAliasAttribute Class" Url="html/T_LiteRepository_Attributes_SqlAliasAttribute.htm" />
+    <HelpKINode Title="about SqlAliasAttribute class" Url="html/T_LiteRepository_Attributes_SqlAliasAttribute.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_Attributes_SqlAliasAttribute__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_Attributes_SqlAliasAttribute.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_Attributes_SqlAliasAttribute.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlAliasAttribute.DbName property" Url="html/P_LiteRepository_Attributes_SqlAliasAttribute_DbName.htm" />
+  <HelpKINode Title="SqlAliasAttribute.SqlAliasAttribute constructor" Url="html/M_LiteRepository_Attributes_SqlAliasAttribute__ctor.htm" />
+  <HelpKINode Title="SqlDialect class">
+    <HelpKINode Title="SqlDialect Class" Url="html/T_LiteRepository_SqlDialect.htm" />
+    <HelpKINode Title="about SqlDialect class" Url="html/T_LiteRepository_SqlDialect.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_SqlDialect__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_SqlDialect.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlDialect.Delete method" Url="html/M_LiteRepository_SqlDialect_Delete.htm" />
+  <HelpKINode Title="SqlDialect.HasParameters method" Url="html/M_LiteRepository_SqlDialect_HasParameters.htm" />
+  <HelpKINode Title="SqlDialect.Insert method" Url="html/M_LiteRepository_SqlDialect_Insert.htm" />
+  <HelpKINode Title="SqlDialect.Parameter method" Url="html/M_LiteRepository_SqlDialect_Parameter.htm" />
+  <HelpKINode Title="SqlDialect.Select method" Url="html/M_LiteRepository_SqlDialect_Select.htm" />
+  <HelpKINode Title="SqlDialect.SelectScalar method" Url="html/M_LiteRepository_SqlDialect_SelectScalar.htm" />
+  <HelpKINode Title="SqlDialect.SqlDialect constructor" Url="html/M_LiteRepository_SqlDialect__ctor.htm" />
+  <HelpKINode Title="SqlDialect.Update method" Url="html/M_LiteRepository_SqlDialect_Update.htm" />
+  <HelpKINode Title="SqlExpression(Of E) class">
+    <HelpKINode Title="SqlExpression(E) Class" Url="html/T_LiteRepository_SqlExpression_1.htm" />
+    <HelpKINode Title="about SqlExpression(Of E) class" Url="html/T_LiteRepository_SqlExpression_1.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_SqlExpression_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_SqlExpression_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_SqlExpression_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlExpression(Of E).Dialect property" Url="html/P_LiteRepository_SqlExpression_1_Dialect.htm" />
+  <HelpKINode Title="SqlExpression(Of E).GetDeleteSql method" Url="html/M_LiteRepository_SqlExpression_1_GetDeleteSql.htm" />
+  <HelpKINode Title="SqlExpression(Of E).GetInsertSql method" Url="html/M_LiteRepository_SqlExpression_1_GetInsertSql.htm" />
+  <HelpKINode Title="SqlExpression(Of E).GetSelectByKeySql method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectByKeySql.htm" />
+  <HelpKINode Title="SqlExpression(Of E).GetSelectScalarSql(Of T) method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectScalarSql__1.htm" />
+  <HelpKINode Title="SqlExpression(Of E).GetSelectSql method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectSql.htm" />
+  <HelpKINode Title="SqlExpression(Of E).GetTruncateSql method" Url="html/M_LiteRepository_SqlExpression_1_GetTruncateSql.htm" />
+  <HelpKINode Title="SqlExpression(Of E).GetUpdateSql method" Url="html/M_LiteRepository_SqlExpression_1_GetUpdateSql.htm" />
+  <HelpKINode Title="SqlExpression(Of E).Metadata property" Url="html/P_LiteRepository_SqlExpression_1_Metadata.htm" />
+  <HelpKINode Title="SqlExpression(Of E).SqlExpression constructor" Url="html/M_LiteRepository_SqlExpression_1__ctor.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt; class">
+    <HelpKINode Title="SqlExpression(E) Class" Url="html/T_LiteRepository_SqlExpression_1.htm" />
+    <HelpKINode Title="about SqlExpression&lt;E&gt; class" Url="html/T_LiteRepository_SqlExpression_1.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_SqlExpression_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_SqlExpression_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_SqlExpression_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlExpression&lt;E&gt;.Dialect property" Url="html/P_LiteRepository_SqlExpression_1_Dialect.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt;.GetDeleteSql method" Url="html/M_LiteRepository_SqlExpression_1_GetDeleteSql.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt;.GetInsertSql method" Url="html/M_LiteRepository_SqlExpression_1_GetInsertSql.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt;.GetSelectByKeySql method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectByKeySql.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt;.GetSelectScalarSql&lt;T&gt; method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectScalarSql__1.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt;.GetSelectSql method" Url="html/M_LiteRepository_SqlExpression_1_GetSelectSql.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt;.GetTruncateSql method" Url="html/M_LiteRepository_SqlExpression_1_GetTruncateSql.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt;.GetUpdateSql method" Url="html/M_LiteRepository_SqlExpression_1_GetUpdateSql.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt;.Metadata property" Url="html/P_LiteRepository_SqlExpression_1_Metadata.htm" />
+  <HelpKINode Title="SqlExpression&lt;E&gt;.SqlExpression constructor" Url="html/M_LiteRepository_SqlExpression_1__ctor.htm" />
+  <HelpKINode Title="SqlIgnoreAttribute class">
+    <HelpKINode Title="SqlIgnoreAttribute Class" Url="html/T_LiteRepository_Attributes_SqlIgnoreAttribute.htm" />
+    <HelpKINode Title="about SqlIgnoreAttribute class" Url="html/T_LiteRepository_Attributes_SqlIgnoreAttribute.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_Attributes_SqlIgnoreAttribute__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_Attributes_SqlIgnoreAttribute.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_Attributes_SqlIgnoreAttribute.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlIgnoreAttribute.SqlIgnoreAttribute constructor" Url="html/M_LiteRepository_Attributes_SqlIgnoreAttribute__ctor.htm" />
+  <HelpKINode Title="SqlKeyAttribute class">
+    <HelpKINode Title="SqlKeyAttribute Class" Url="html/T_LiteRepository_Attributes_SqlKeyAttribute.htm" />
+    <HelpKINode Title="about SqlKeyAttribute class" Url="html/T_LiteRepository_Attributes_SqlKeyAttribute.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_Attributes_SqlKeyAttribute__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_Attributes_SqlKeyAttribute.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_Attributes_SqlKeyAttribute.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlKeyAttribute.SqlKeyAttribute constructor" Url="html/M_LiteRepository_Attributes_SqlKeyAttribute__ctor.htm" />
+  <HelpKINode Title="SqlMetadata class">
+    <HelpKINode Title="SqlMetadata Class" Url="html/T_LiteRepository_SqlMetadata.htm" />
+    <HelpKINode Title="about SqlMetadata class" Url="html/T_LiteRepository_SqlMetadata.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_SqlMetadata__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_SqlMetadata.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_LiteRepository_SqlMetadata.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlMetadata.ClearCache method" Url="html/M_LiteRepository_SqlMetadata_ClearCache.htm" />
+  <HelpKINode Title="SqlMetadata.Count property" Url="html/P_LiteRepository_SqlMetadata_Count.htm" />
+  <HelpKINode Title="SqlMetadata.DbName property" Url="html/P_LiteRepository_SqlMetadata_DbName.htm" />
+  <HelpKINode Title="SqlMetadata.Equals method" Url="html/Overload_LiteRepository_SqlMetadata_Equals.htm" />
+  <HelpKINode Title="SqlMetadata.GetEnumerator method" Url="html/M_LiteRepository_SqlMetadata_GetEnumerator.htm" />
+  <HelpKINode Title="SqlMetadata.GetHashCode method" Url="html/M_LiteRepository_SqlMetadata_GetHashCode.htm" />
+  <HelpKINode Title="SqlMetadata.GetSqlMetadata method" Url="html/M_LiteRepository_SqlMetadata_GetSqlMetadata.htm" />
+  <HelpKINode Title="SqlMetadata.GetSubsetForType method" Url="html/M_LiteRepository_SqlMetadata_GetSubsetForType.htm" />
+  <HelpKINode Title="SqlMetadata.IsIdentity property" Url="html/P_LiteRepository_SqlMetadata_IsIdentity.htm" />
+  <HelpKINode Title="SqlMetadata.Item property" Url="html/Overload_LiteRepository_SqlMetadata_Item.htm" />
+  <HelpKINode Title="SqlMetadata.Name property" Url="html/P_LiteRepository_SqlMetadata_Name.htm" />
+  <HelpKINode Title="SqlMetadata.Property class">
+    <HelpKINode Title="SqlMetadata.Property Class" Url="html/T_LiteRepository_SqlMetadata_Property.htm" />
+    <HelpKINode Title="about SqlMetadata.Property class" Url="html/T_LiteRepository_SqlMetadata_Property.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_SqlMetadata_Property__ctor.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlMetadata.Property.DbName property" Url="html/P_LiteRepository_SqlMetadata_Property_DbName.htm" />
+  <HelpKINode Title="SqlMetadata.Property.IsIdentity property" Url="html/P_LiteRepository_SqlMetadata_Property_IsIdentity.htm" />
+  <HelpKINode Title="SqlMetadata.Property.IsPrimaryKey property" Url="html/P_LiteRepository_SqlMetadata_Property_IsPrimaryKey.htm" />
+  <HelpKINode Title="SqlMetadata.Property.Name property" Url="html/P_LiteRepository_SqlMetadata_Property_Name.htm" />
+  <HelpKINode Title="SqlMetadata.Property.Property constructor" Url="html/M_LiteRepository_SqlMetadata_Property__ctor.htm" />
+  <HelpKINode Title="SqlMetadata.SqlMetadata constructor" Url="html/M_LiteRepository_SqlMetadata__ctor.htm" />
+  <HelpKINode Title="SqlMetadata.Type property" Url="html/P_LiteRepository_SqlMetadata_Type.htm" />
+  <HelpKINode Title="SqlServerDialect class">
+    <HelpKINode Title="SqlServerDialect Class" Url="html/T_LiteRepository_SqlServer_SqlServerDialect.htm" />
+    <HelpKINode Title="about SqlServerDialect class" Url="html/T_LiteRepository_SqlServer_SqlServerDialect.htm" />
+    <HelpKINode Title="constructor" Url="html/M_LiteRepository_SqlServer_SqlServerDialect__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_LiteRepository_SqlServer_SqlServerDialect.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SqlServerDialect.Delete method" Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Delete.htm" />
+  <HelpKINode Title="SqlServerDialect.HasParameters method" Url="html/M_LiteRepository_SqlServer_SqlServerDialect_HasParameters.htm" />
+  <HelpKINode Title="SqlServerDialect.Insert method" Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Insert.htm" />
+  <HelpKINode Title="SqlServerDialect.Parameter method" Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Parameter.htm" />
+  <HelpKINode Title="SqlServerDialect.Select method" Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Select.htm" />
+  <HelpKINode Title="SqlServerDialect.SelectScalar method" Url="html/M_LiteRepository_SqlServer_SqlServerDialect_SelectScalar.htm" />
+  <HelpKINode Title="SqlServerDialect.SqlServerDialect constructor" Url="html/M_LiteRepository_SqlServer_SqlServerDialect__ctor.htm" />
+  <HelpKINode Title="SqlServerDialect.Update method" Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Update.htm" />
+  <HelpKINode Title="Truncate(Of E) method" Url="html/M_LiteRepository_Db_Truncate__1.htm" />
+  <HelpKINode Title="Truncate&lt;E&gt; method" Url="html/M_LiteRepository_Db_Truncate__1.htm" />
+  <HelpKINode Title="TruncateAsync(Of E) method" Url="html/M_LiteRepository_Db_TruncateAsync__1.htm" />
+  <HelpKINode Title="TruncateAsync&lt;E&gt; method" Url="html/M_LiteRepository_Db_TruncateAsync__1.htm" />
+  <HelpKINode Title="Type property" Url="html/P_LiteRepository_SqlMetadata_Type.htm" />
+  <HelpKINode Title="Update method">
+    <HelpKINode Title="Db.Update Method " Url="html/Overload_LiteRepository_Db_Update.htm" />
+    <HelpKINode Title="SqlDialect.Update Method " Url="html/M_LiteRepository_SqlDialect_Update.htm" />
+    <HelpKINode Title="SqlServerDialect.Update Method " Url="html/M_LiteRepository_SqlServer_SqlServerDialect_Update.htm" />
+  </HelpKINode>
+  <HelpKINode Title="UpdateAsync method">
+    <HelpKINode Title="Db.UpdateAsync Method " Url="html/Overload_LiteRepository_Db_UpdateAsync.htm" />
+    <HelpKINode Title="Repository(E, K).UpdateAsync Method " Url="html/M_LiteRepository_Repository_2_UpdateAsync.htm" />
+  </HelpKINode>
+  <HelpKINode Title="UpdateId method">
+    <HelpKINode Title="IdentityKey.UpdateId Method " Url="html/M_LiteRepository_IdentityKey_UpdateId.htm" />
+    <HelpKINode Title="IIdentityEntity.UpdateId Method " Url="html/M_LiteRepository_IIdentityEntity_UpdateId.htm" />
+  </HelpKINode>
+</HelpKI>
